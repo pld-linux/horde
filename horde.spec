@@ -5,7 +5,6 @@
 %define name horde
 %define version 3.0.3
 %define pre rc1
-%define release 0.1
 %define fname %{name}-%{version}-%{pre}
 
 %include	/usr/lib/rpm/macros.php
@@ -15,7 +14,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	%{version}
-Release:	%{release}
+Release:	0.%{pre}.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
