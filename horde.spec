@@ -12,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.4
-Release:	3
+Release:	4
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -23,7 +23,6 @@ Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
-Patch4:		%{name}-ldap-choraprefs.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -110,7 +109,6 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p0
-%patch4 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
