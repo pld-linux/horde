@@ -6,9 +6,6 @@ Release:	1
 License:	GPL
 Vendor:		The Horde Project
 Group:		Applications/Mail
-Group(de):	Applikationen/Post
-Group(pl):	Aplikacje/Poczta
-Group(pt):	Aplicações/Correio Eletrônico
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 URL:		http://www.horde.org
@@ -50,9 +47,6 @@ help do IMP'a) zajrzyj na stronê http://www.horde.org
 Summary:	MySQL configuration for the Horde Framework
 Summary(pl):	Konfiguracja MySQL dla Horde
 Group:		Applications/Mail
-Group(de):	Applikationen/Post
-Group(pl):	Aplikacje/Poczta
-Group(pt):	Aplicações/Correio Eletrônico
 Requires:	horde = %{version}
 Requires:	php-mysql >= 4.0.3pl1
 Provides:	horde-phplib-storage
@@ -70,9 +64,6 @@ Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z MySQL.
 Summary:	PostgreSQL configuration for the Horde Framework
 Summary(pl):	Konfiguracja PostgreSQL dla Horde
 Group:		Applications/Mail
-Group(de):	Applikationen/Post
-Group(pl):	Aplikacje/Poczta
-Group(pt):	Aplicações/Correio Eletrônico
 Requires:	horde = %{version}
 Requires:	php-pgsql >= 4.0.3pl1
 Provides:	horde-phplib-storage
@@ -90,9 +81,6 @@ Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z PostgreSQL.
 Summary:	Shared memory configuration for the Horde Framework
 Summary(pl):	Konfiguracja pamiêci dzielonej dla Horde
 Group:		Applications/Mail
-Group(de):	Applikationen/Post
-Group(pl):	Aplikacje/Poczta
-Group(pt):	Aplicações/Correio Eletrônico
 Requires:	horde = %{version} 
 Requires:	php-sysvsem >= 4.0.3pl1
 Requires:	php-sysvshm >= 4.0.3pl1
