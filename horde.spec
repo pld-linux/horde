@@ -8,16 +8,16 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.1
-Release:	0.2
+Release:	0.3
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
-Patch0:		%{name}-Horde_Auth.patch
+#Patch0:		%{name}-Horde_Auth.patch
 Patch1:		%{name}-XML_xml2sql.patch
 URL:		http://www.horde.org/
-BuildRequires:	rpm-php-pearprov
+BuildRequires:	rpm-php-pearprov >= 4.0.2-97
 PreReq:		apache-mod_dir >= 1.3.22
 Prereq:		perl
 Requires:	apache >= 1.3.22
@@ -68,7 +68,7 @@ relação ao Horde e seus módulos), por favor visite http://www.horde.org/.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 
 %install
