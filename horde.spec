@@ -1,6 +1,7 @@
 Summary:	The common Horde Framework for all Horde modules
+Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Name:		horde
-Version:	1.2.4
+Version:	1.2.6
 Release:	1
 License:	GPL
 Vendor:		The Horde Project
@@ -10,7 +11,7 @@ Group(pl):	Aplikacje/Poczta
 Group(pt):	Aplicações/Correio Eletrônico
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
-URL:		http://www.horde.org/
+URL:		http://www.horde.org
 Requires:	php >= 4.0.3pl1
 Requires:	php-imap >= 4.0.3pl1
 Requires:	php-pcre >= 4.0.3pl1
@@ -24,7 +25,6 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		apachedir	/etc/httpd
-%define		apacheuser	http
 %define		apachegroup	http
 %define		contentdir	/home/httpd
 
@@ -37,8 +37,18 @@ The Horde Project writes web applications in PHP and releases them
 under the GNU Public License. For more information (including help
 with Horde and its modules) please visit http://www.horde.org/.
 
+%description -l pl
+Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla 
+modu³ów Horde, takich jak IMP (obs³uga poczty poprzez www). Ten
+pakiet jest wymagany dla wszystkich innych modu³ów Horde.
+
+Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
+Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e
+help do IMP'a) zajrzyj na stronê http://www.horde.org
+
 %package mysql
 Summary:	MySQL configuration for the Horde Framework
+Summary(pl):	Konfiguracja MySQL dla Horde
 Group:		Applications/Mail
 Group(de):	Applikationen/Post
 Group(pl):	Aplikacje/Poczta
@@ -53,8 +63,12 @@ Conflicts:	horde-shm
 This RPM configures the Horde Framework to use MySQL for its PHPLIB
 session storage.
 
+%description -l pl mysql
+Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z MySQL.
+
 %package pgsql
 Summary:	PostgreSQL configuration for the Horde Framework
+Summary(pl):	Konfiguracja PostgreSQL dla Horde
 Group:		Applications/Mail
 Group(de):	Applikationen/Post
 Group(pl):	Aplikacje/Poczta
@@ -69,8 +83,12 @@ Conflicts:	horde-shm
 This RPM configures the Horde Framework to use PostgreSQL for its
 PHPLIB session storage.
 
+%description -l pl pgsql
+Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z PostgreSQL.
+
 %package shm
 Summary:	Shared memory configuration for the Horde Framework
+Summary(pl):	Konfiguracja pamiêci dzielonej dla Horde
 Group:		Applications/Mail
 Group(de):	Applikationen/Post
 Group(pl):	Aplikacje/Poczta
@@ -85,6 +103,9 @@ Conflicts:	horde-pgsql
 %description shm
 This RPM configures the Horde Framework to use shared memory for its
 PHPLIB session storage.
+
+%description -l pl shm
+Ten pakiet konfiguruje Horde do u¿ywania pamiêci dzielonej
 
 %prep
 %setup -q
@@ -107,6 +128,7 @@ sh install.sh
 rm -rf $RPM_BUILD_ROOT
 
 %post
+echo "Changing apache configuration"
 perl -pi -e 's/$/ index.php3/ if (/DirectoryIndex\s.*index\.html/ && !/index\.php3/);' %{apachedir}/httpd.conf
 grep -i 'Include.*horde.conf$' %{apachedir}/httpd.conf >/dev/null 2>&1
 if [ $? -eq 0 ]; then
@@ -114,13 +136,24 @@ if [ $? -eq 0 ]; then
 else
 	echo "Include %{apachedir}/horde.conf" >>%{apachedir}/httpd.conf
 fi
-/etc/rc.d/init.d/httpd restart
+if [ -f /var/lock/subsys/httpd ]; then
+        echo "Restarting httpd daemon"
+	/etc/rc.d/init.d/httpd restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/httpd start\" to start apache http daemon."
+fi
 
 %postun
 if [ $1 -eq 0 ]; then
+	echo "Changing apache configuration"
 	perl -pi -e 's/^/#/ if (/^Include.*horde.conf$/i);' %{apachedir}/httpd.conf
-	/etc/rc.d/init.d/httpd restart
-	sleep 1  # settling time vs. installing multiple RPMs at a time
+	if [ -f /var/lock/subsys/httpd ]; then
+	        echo "Restarting httpd daemon"
+		/etc/rc.d/init.d/httpd restart 1>&2
+	else
+		echo "Run \"/etc/rc.d/init.d/httpd start\" to start apache http daemon."
+	fi
+				
 fi
 
 %post mysql
