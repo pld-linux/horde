@@ -8,7 +8,7 @@
 
 %define name horde
 %define version 3.0.4
-%define pre rc1
+%define pre rc2
 %define fname %{name}-%{version}-%{pre}
 
 %include	/usr/lib/rpm/macros.php
@@ -23,7 +23,7 @@ License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}-%{pre}.tar.gz
-# Source0-md5:	296587f261cda99790d132da0425bad8
+# Source0-md5:	6c4f9f12cafb155285fc0b07380fc204
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
