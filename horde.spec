@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.24
+Release:	2.27
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -91,7 +91,7 @@ rm test.php
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/horde \
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
 	$RPM_BUILD_ROOT%{hordedir}/{admin,js,lib,locale,services} \
 	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util} \
 	$RPM_BUILD_ROOT/var/log/%{name}
@@ -103,16 +103,13 @@ for i in admin js lib locale services templates themes util; do
 	cp -pR $i/*		$RPM_BUILD_ROOT%{hordedir}/$i
 done
 
-for i in lib locale templates; do
-	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{hordedir}/$i
-done
-
 for i in config/*.php.dist; do
-	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/horde/$(basename $i .dist)
+	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/$(basename $i .dist)
 done
-cp -p  config/*.xml		$RPM_BUILD_ROOT%{_sysconfdir}/horde
+cp -p  config/*.xml		$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
+> $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.php.bak
 
-sed -i -e 's,/tmp/horde.log,/var/log/%{name}/%{name}.log,' $RPM_BUILD_ROOT%{_sysconfdir}/horde/conf.xml
+sed -i -e 's,/tmp/horde.log,/var/log/%{name}/%{name}.log,' $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.xml
 
 > $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
@@ -230,7 +227,9 @@ fi
 %dir %{_sysconfdir}
 %attr(770,root,http) %dir %{_sysconfdir}/%{name}
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{name}.conf
-%attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/*.php
+%attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/conf.php
+%attr(640,root,http) %config(noreplace) %{_sysconfdir}/%{name}/[^c]*.php
+%ghost %{_sysconfdir}/%{name}/*.php.bak
 %attr(640,root,http) %{_sysconfdir}/%{name}/*.xml
 
 %dir %{hordedir}
