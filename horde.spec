@@ -7,13 +7,13 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	2.2.4
+Version:	2.2.5
 Release:	1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
-# Source0-md5:	b1d70da4ec4e06344abe88670e29b093
+# Source0-md5:	44a1f60246c2916498ff12ad72f9f811
 Source1:	%{name}.conf
 Patch0:		%{name}-XML_xml2sql.patch
 URL:		http://www.horde.org/
@@ -27,6 +27,7 @@ Requires:	php-gettext >= 4.1.0
 Requires:	php-imap >= 4.1.0
 Requires:	php-mcrypt >= 4.1.0
 Requires:	php-pear >= 4.1.0
+Requires:	php-pear-Log
 Requires:	php-pcre >= 4.1.0
 Requires:	php-posix >= 4.1.0
 Requires:	php-session >= 4.1.0
