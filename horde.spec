@@ -7,16 +7,15 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	2.2.7
-Release:	3
+Version:	3.0
+Release:	0.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
-Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
-# Source0-md5:	f13c20221312a0d3951687a84813167f
+Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
+# Source0-md5:	afe2a76062169cf5cd2cc5a3001fcc6a
 Source1:	%{name}.conf
-Patch0:		%{name}-XML_xml2sql.patch
-Patch1:		%{name}-path.patch
+Patch0:		%{name}-path.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 PreReq:		apache-mod_dir >= 1.3.22
@@ -72,17 +71,16 @@ http://www.horde.org/ .
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{apachedir},%{confdir}/horde} \
-	$RPM_BUILD_ROOT%{hordedir}/{admin,graphics,lib,locale,templates,util}
+	$RPM_BUILD_ROOT%{hordedir}/{admin,lib,locale,templates,util}
 
 cp -pR scripts docs
 cp -pR	*.php		$RPM_BUILD_ROOT%{hordedir}
 
-for i in graphics lib locale templates util; do
+for i in lib locale templates util; do
 	cp -pR $i/*	$RPM_BUILD_ROOT%{hordedir}/$i
 done
 for i in lib locale templates; do
@@ -157,7 +155,6 @@ done
 %{hordedir}/*.php
 %{hordedir}/admin
 %{hordedir}/config
-%{hordedir}/graphics
 %{hordedir}/lib
 %{hordedir}/locale
 %{hordedir}/templates
