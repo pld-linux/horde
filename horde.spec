@@ -108,7 +108,8 @@ else
 fi
 
 cat <<_EOF2_
-IMPORTANT:     If you are installing for the first time, you must now
+IMPORTANT:
+If you are installing for the first time, you must now
 create the Horde database tables. Look into directory 
 /usr/share/doc/%{name}-%{version}/scripts/db
 to find out how to do this for your database.
