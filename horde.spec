@@ -38,9 +38,14 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
 
-%define		apachedir	/etc/httpd
 %define		hordedir	/usr/share/horde
 %define		confdir		/etc/horde.org
+%define		_apache2	%{?with_apache1:0}%{?!with_apache1:1}
+%if %{_apache2}
+%define		apachedir	/etc/httpd
+%else
+%define		apachedir	/etc/apache
+%endif
 
 %description
 The Horde Framework provides a common structure and interface for
