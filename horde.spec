@@ -1,7 +1,7 @@
 # TODO:
 # - support for Oracle and Sybase
+#
 %include	/usr/lib/rpm/macros.php
-
 Summary:	The common Horde Framework for all Horde modules
 Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
@@ -19,7 +19,8 @@ Patch1:		%{name}-source-fix.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 PreReq:		apache-mod_dir >= 1.3.22
-Prereq:		perl
+Requires(post):	grep
+Requires(post,preun):	perl
 Requires:	apache >= 1.3.22
 Requires:	php >= 4.1.0
 Requires:	php-gettext >= 4.1.0
@@ -30,14 +31,14 @@ Requires:	php-pcre >= 4.1.0
 Requires:	php-posix >= 4.1.0
 Requires:	php-session >= 4.1.0
 Requires:	php-xml >= 4.1.0
-BuildArch:	noarch
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		apachedir	/etc/httpd
-%define		apachegroup	http
 %define		contentdir	/home/services/httpd
+%define		htmldir		%{contentdir}/html
 
 %description
 The Horde Framework provides a common structure and interface for
@@ -134,17 +135,17 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES}
-%dir %{contentdir}/html/horde
-%{contentdir}/html/horde/*.php
-%{contentdir}/html/horde/admin
-%{contentdir}/html/horde/graphics
-%{contentdir}/html/horde/lib
-%{contentdir}/html/horde/locale
-%{contentdir}/html/horde/templates
-%{contentdir}/html/horde/util
+%dir %{htmldir}/horde
+%{htmldir}/horde/*.php
+%{htmldir}/horde/admin
+%{htmldir}/horde/graphics
+%{htmldir}/horde/lib
+%{htmldir}/horde/locale
+%{htmldir}/horde/templates
+%{htmldir}/horde/util
 %{apachedir}/horde
 %attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
-%attr(750,root,http) %dir %{contentdir}/html/horde/config
-%attr(640,root,http) %{contentdir}/html/horde/config/*.dist
-%attr(640,root,http) %config %{contentdir}/html/horde/config/*.php
+%attr(750,root,http) %dir %{htmldir}/horde/config
+%attr(640,root,http) %{htmldir}/horde/config/*.dist
+%attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/*.php
 %attr(640,root,http) %config(noreplace) %{contentdir}/html/horde/config/.htaccess
