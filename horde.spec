@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.20
+Release:	2.23
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -110,9 +110,10 @@ done
 for i in config/*.php.dist; do
 	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/horde/$(basename $i .dist)
 done
-
 cp -p  config/*.xml		$RPM_BUILD_ROOT%{_sysconfdir}/horde
+
 sed -i -e 's,/tmp/horde.log,/var/log/%{name}/%{name}.log,' $RPM_BUILD_ROOT%{_sysconfdir}/horde/conf.xml
+
 > $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
 install	%{SOURCE1}		$RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
@@ -158,7 +159,7 @@ EOF
 
 fi
 
-%preun
+%postun
 if [ "$1" = "0" ]; then
 	# apache1
 	if [ -d %{_apache1dir}/conf.d ]; then
@@ -220,8 +221,13 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES,INSTALL,scripts}
-%dir %{hordedir}
 %dir %{_sysconfdir}
+%attr(770,root,http) %dir %{_sysconfdir}/%{name}
+%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache.conf
+%attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/*.php
+%attr(640,root,http) %{_sysconfdir}/%{name}/*.xml
+
+%dir %{hordedir}
 %{hordedir}/*.php
 %{hordedir}/admin
 %{hordedir}/config
@@ -232,9 +238,6 @@ fi
 %{hordedir}/templates
 %{hordedir}/themes
 %{hordedir}/util
-%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache.conf
-%attr(770,root,http) %dir %{_sysconfdir}/horde
-%attr(660,root,http) %config(noreplace) %{_sysconfdir}/horde/*.php
-%attr(660,root,http) %config(noreplace) %{_sysconfdir}/horde/*.xml
+
 %attr(750,root,http) /var/log/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
