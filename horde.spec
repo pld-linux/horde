@@ -8,7 +8,7 @@ Vendor:		The Horde Project
 Group:		Applications/Mail
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
-URL:		http://www.horde.org
+URL:		http://www.horde.org/
 Requires:	php >= 4.0.3pl1
 Requires:	php-imap >= 4.0.3pl1
 Requires:	php-pcre >= 4.0.3pl1
