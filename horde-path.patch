@@ -428,3 +428,14 @@
      'webroot' => $this->applications['horde']['webroot'] . '/wicked',
      'name' => _("Wiki"),
      'status' => 'inactive',
+--- ./config/registry.php.dist~	2005-03-04 21:02:58.000000000 +0200
++++ ./config/registry.php.dist	2005-03-04 21:12:11.517027935 +0200
+@@ -223,7 +223,7 @@
+     'fileroot' => '/usr/share/horde/whups',
+     'webroot' => $this->applications['horde']['webroot'] . '/whups',
+     'name' => _("Tickets"),
+-    'status' => 'inactive',
++    'status' => 'active',
+     'provides' => 'tickets',
+     'menu_parent' => 'devel'
+ );
