@@ -139,6 +139,7 @@ fi
 %{contentdir}/html/horde/lib
 %{contentdir}/html/horde/locale
 %{contentdir}/html/horde/templates
+%{contentdir}/html/horde/util
 %{apachedir}/horde
 %attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
 %attr(750,root,http) %dir %{contentdir}/html/horde/config
