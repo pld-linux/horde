@@ -13,6 +13,7 @@ License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
+# Source0-md5:	27e5c190a6a22a6aa2201e6b714a653d
 Source1:	%{name}.conf
 Patch0:		%{name}-XML_xml2sql.patch
 URL:		http://www.horde.org/
