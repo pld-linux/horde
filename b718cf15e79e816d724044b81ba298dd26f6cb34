@@ -1,0 +1,3 @@
+- still, put conf.php.bak as %ghost, to avoid conf.php.bak.rpmnew files
+- move util to %doc
+- R: php-zip for lib/Horde/Image/png.php
