@@ -20,7 +20,7 @@ Requires:	php-posix >= 4.0.3pl1
 Requires:	php-xml >= 4.0.3pl1
 Requires:	php-mcrypt >= 4.0.3pl1
 Requires:	apache >= 1.3.12
-Prereq:		/usr/bin/perl
+Prereq:		perl
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
