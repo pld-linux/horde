@@ -1,5 +1,6 @@
 Summary:	The common Horde Framework for all Horde modules
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
+Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	1.2.6
 Release:	1
@@ -43,9 +44,19 @@ Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
 Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e help
 do IMP'a) zajrzyj na stronê http://www.horde.org
 
+%description -l pt_BR
+Este pacote provê uma interface e estrutura comuns para os módulos Horde
+(como IMP, um programa de webmail) e é requerido por todos os outros
+módulos Horde.
+
+O Projeto Horde é constituído por diversos aplicativos web escritos em PHP,
+todos liberados sob a GPL. Para mais informações (incluindo ajuda com
+relação ao Horde e seus módulos), por favor visite http://www.horde.org/.
+
 %package mysql
 Summary:	MySQL configuration for the Horde Framework
 Summary(pl):	Konfiguracja MySQL dla Horde
+Summary(pt_BR):	Configuração MySQL para o Sistema Horde
 Group:		Applications/Mail
 Requires:	horde = %{version}
 Requires:	php-mysql >= 4.0.3pl1
@@ -60,9 +71,14 @@ session storage.
 %description mysql -l pl
 Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z MySQL.
 
+%description -l es mysql
+This RPM configures the Horde Framework to use MySQL for its PHPLIB session
+storage.
+
 %package pgsql
 Summary:	PostgreSQL configuration for the Horde Framework
 Summary(pl):	Konfiguracja PostgreSQL dla Horde
+Summary(pt_BR):	Configuração PostgreSQL para o Sistema Horde.
 Group:		Applications/Mail
 Requires:	horde = %{version}
 Requires:	php-pgsql >= 4.0.3pl1
@@ -77,9 +93,14 @@ PHPLIB session storage.
 %description pgsql -l pl
 Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z PostgreSQL.
 
+%description -l pt_BR pgsql
+Este pacote configura o sistema Horde para usar PostgreSQL para
+o armazenamento de sessões PHPLIB.
+
 %package shm
 Summary:	Shared memory configuration for the Horde Framework
 Summary(pl):	Konfiguracja pamiêci dzielonej dla Horde
+Summary(pt_BR):	Configuração de memória compartilhada para o Sistema Horde
 Group:		Applications/Mail
 Requires:	horde = %{version}
 Requires:	php-sysvsem >= 4.0.3pl1
@@ -94,6 +115,10 @@ PHPLIB session storage.
 
 %description shm -l pl
 Ten pakiet konfiguruje Horde do u¿ywania pamiêci dzielonej
+
+%description -l pt_BR shm
+Este pacote configura o sistema Horde para usar memória compartilhada
+para o armazenamento de sessões PHPLIB.
 
 %prep
 %setup -q
