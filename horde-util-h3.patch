@@ -1,0 +1,26 @@
+--- ./util/google_example.php	2003-09-28 06:23:52.000000000 +0300
++++ ./util/google_example.php.patched	2005-02-27 20:44:46.000000000 +0200
+@@ -5,9 +5,9 @@
+ 
+ $google_key = '';
+ 
+-define('HORDE_BASE', dirname(__FILE__));
++@define('HORDE_BASE', dirname(__FILE__) . '/..');
+ require_once HORDE_BASE . '/lib/base.php';
+-require_once HORDE_BASE . '/lib/Search.php';
++require_once HORDE_BASE . '/lib/Horde/Search.php';
+ 
+ if (empty($google_key)) {
+     exit('You must provide a Google API key.');
+--- ./util/regex_test.php	2004-10-06 12:45:54.000000000 +0300
++++ ./util/regex_test.php.fixed	2005-02-27 20:47:25.000000000 +0200
+@@ -6,7 +6,8 @@
+  * Based on: http://myfluffydog.com/programming/php/scripts/regexp.php
+  */
+ 
+-require 'Horde/Util.php';
++@define('HORDE_BASE', dirname(__FILE__) . '/..');
++require_once HORDE_BASE . '/lib/core.php';
+ $regexp = Util::getFormData('regexp');
+ $subject = Util::getFormData('subject');
+ $submit = Util::getFormData('submit');
