@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.6
+Release:	2.8
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -42,8 +42,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/horde.org
 %define		hordedir	/usr/share/horde
-%define		_apache1dir	/etc/apache/conf.d
-%define		_apache2dir	/etc/httpd/httpd.conf
+%define		_apache1dir	/etc/apache
+%define		_apache2dir	/etc/httpd
 
 %define		_php5		%(rpm -q php | awk -F- '{print $2}' | awk -F. '{print $1}')
 %if "%{_php5}" == "5"
@@ -120,15 +120,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 # apache1
-if [ -d %{_apache1dir} ]; then
-	ln -sf %{_sysconfdir}/apache.conf %{_apache1dir}/99_%{name}.conf
+if [ -d %{_apache1dir}/conf.d ]; then
+	ln -sf %{_sysconfdir}/apache.conf %{_apache1dir}/conf.d/99_%{name}.conf
 	if [ -f /var/lock/subsys/apache ]; then
 		/etc/rc.d/init.d/apache restart 1>&2
 	fi
 fi
 # apache2
-if [ -d %{_apache2dir} ]; then
-	ln -sf %{_sysconfdir}/apache.conf %{_apache2dir}/99_%{name}.conf
+if [ -d %{_apache2dir}/httpd.conf ]; then
+	ln -sf %{_sysconfdir}/apache.conf %{_apache2dir}/httpd.conf/99_%{name}.conf
 	if [ -f /var/lock/subsys/httpd ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
@@ -145,15 +145,15 @@ EOF
 %preun
 if [ "$1" = "0" ]; then
 	# apache1
-	if [ -d %{_apache1dir} ]; then
-		rm -f %{_apache1dir}/99_%{name}.conf
+	if [ -d %{_apache1dir}/conf.d ]; then
+		rm -f %{_apache1dir}/conf.d/99_%{name}.conf
 		if [ -f /var/lock/subsys/apache ]; then
 			/etc/rc.d/init.d/apache restart 1>&2
 		fi
 	fi
 	# apache2
-	if [ -d %{_apache2dir} ]; then
-		rm -f %{_apache2dir}/99_%{name}.conf
+	if [ -d %{_apache2dir}/httpd.conf ]; then
+		rm -f %{_apache2dir}/httpd.conf/99_%{name}.conf
 		if [ -f /var/lock/subsys/httpd ]; then
 			/etc/rc.d/init.d/httpd restart 1>&2
 		fi
@@ -193,6 +193,10 @@ fi
 
 if [ -f /var/lock/subsys/apache ]; then
 	/etc/rc.d/init.d/apache restart 1>&2
+fi
+
+if [ -f /var/lock/subsys/httpd ]; then
+	/etc/rc.d/init.d/httpd restart 1>&2
 fi
 
 %files
