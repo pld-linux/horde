@@ -1,5 +1,6 @@
 # TODO:
 # - support for Oracle and Sybase
+# - /home/services/httpd -> /usr/share
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
