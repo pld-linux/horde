@@ -7,13 +7,13 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	2.2.3
+Version:	2.2.4
 Release:	1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
-# Source0-md5:	27e5c190a6a22a6aa2201e6b714a653d
+# Source0-md5:	b1d70da4ec4e06344abe88670e29b093
 Source1:	%{name}.conf
 Patch0:		%{name}-XML_xml2sql.patch
 URL:		http://www.horde.org/
@@ -76,6 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{apachedir} \
 	$RPM_BUILD_ROOT%{contentdir}/html/horde/{admin,config,graphics,lib,locale,templates,util}
 
+cp -pR scripts docs
 ln -fs %{contentdir}/html/horde/config $RPM_BUILD_ROOT%{apachedir}/horde
 install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
 cp -pR	*.php		$RPM_BUILD_ROOT%{contentdir}/html/horde
@@ -133,7 +134,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES}
+%doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES,INSTALL,scripts}
 %dir %{htmldir}/horde
 %{htmldir}/horde/*.php
 %{htmldir}/horde/admin
