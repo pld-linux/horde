@@ -1,24 +1,23 @@
 # TODO:
 # - support for Oracle and Sybase
-# - /home/services/httpd -> /usr/share
+# - trigger to change config location
+# - move configs to /etc
+# - fix %post to be like in phpMyAdmin
 #
 %include	/usr/lib/rpm/macros.php
-%define		_turba_ver  1.2
 Summary:	The common Horde Framework for all Horde modules
 Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.2.7
-Release:	2
+Release:	2.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 # Source0-md5:	f13c20221312a0d3951687a84813167f
-Source1:	http://ftp.horde.org/pub/turba/turba-%{_turba_ver}.tar.gz
-# Source1-md5: 7c082cdbeb499eef99ff4dbf6b3608f5
-Source2:	%{name}.conf
+Source1:	%{name}.conf
 Patch0:		%{name}-XML_xml2sql.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -42,8 +41,7 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		apachedir	/etc/httpd
-%define		contentdir	/home/services/httpd
-%define		htmldir		%{contentdir}/html
+%define		hordedir	/usr/share/horde
 
 %description
 The Horde Framework provides a common structure and interface for
@@ -73,32 +71,6 @@ PHP, todos liberados sob a GPL. Para mais informações (incluindo ajuda
 com relação ao Horde e seus módulos), por favor visite
 http://www.horde.org/ .
 
-%package addons-turba
-Summary:	TURBA - Adress book for IMP
-Summary(pl):	TURBA - Ksi±¿ka adresowa dla IMP-a
-Group:		Applications/Mail
-Requires:	%{name} = %{version}-%{release}
-
-%description addons-turba
-Turba is a complete basic contact management application. SQL, LDAP,
-and Horde Preferences backends are available and are well tested. You
-can define the fields in your address books in a very flexible way,
-just by changing the config files. You can import/export from/to Pine,
-Mulberry, CSV, TSV, and vCard contacts. You can create distribution
-lists from your addressbooks, which are handled transparently by IMP
-and other Horde applications. And there are Horde API functions to add
-and search for contacts.
-
-%description addons-turba -l pl
-Turba to kompletna aplikacja do podstawowego zarz±dzania kontaktami.
-Dostêpne i dobrze przetestowane s± backendy ustawieñ SQL, LDAP i
-Horde. Mo¿na definiowaæ pola ksi±¿ki adresowej w bardzo elastyczny
-sposób, po prostu zmieniaj±c pliki konfiguracyjne. Kontakty mo¿na
-importowaæ/eksportowaæ z/do Pine, Mulberry, CSV, TSV i vCard. Mo¿na
-tworzyæ listy dystrybucyjne z ksi±¿ek adresowych, które s± obs³ugiwane
-w sposób przezroczysty przez IMP-a i inne aplikacje Horde. S± tak¿e
-funkcje API Horde do dodawania i wyszukiwania kontaktów.
-
 %prep
 %setup -q
 %patch0 -p1
@@ -106,29 +78,25 @@ funkcje API Horde do dodawania i wyszukiwania kontaktów.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{apachedir} \
-	$RPM_BUILD_ROOT%{htmldir}/horde/{admin,config,graphics,lib,locale,templates,turba,util}
-
-cp %{SOURCE1} .
-tar zxf turba-1.2.tar.gz
-mv turba-1.2/* $RPM_BUILD_ROOT%{htmldir}/horde/turba
+	$RPM_BUILD_ROOT%{hordedir}/{admin,config,graphics,lib,locale,templates,util}
 
 cp -pR scripts docs
-ln -fs %{htmldir}/horde/config $RPM_BUILD_ROOT%{apachedir}/horde
-install	%{SOURCE2}	$RPM_BUILD_ROOT%{apachedir}/
-cp -pR	*.php		$RPM_BUILD_ROOT%{htmldir}/horde
+ln -fs $RM_BUILD_ROOT%{hordedir}/config $RPM_BUILD_ROOT%{apachedir}/horde
+install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
+cp -pR	*.php		$RPM_BUILD_ROOT%{hordedir}
 
 for i in config graphics lib locale templates util; do
-	cp -pR $i/*	$RPM_BUILD_ROOT%{htmldir}/horde/$i
+	cp -pR $i/*	$RPM_BUILD_ROOT%{hordedir}/$i
 done
 for i in config lib locale templates; do
-	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{htmldir}/horde/$i
+	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{hordedir}/$i
 done
 
 # Described in documentation as dangerous file...
-rm $RPM_BUILD_ROOT%{htmldir}/horde/test.php
+rm $RPM_BUILD_ROOT%{hordedir}/test.php
 
 # bit unclean..
-cd $RPM_BUILD_ROOT%{htmldir}/horde/config
+cd $RPM_BUILD_ROOT%{hordedir}/config
 for i in *.dist; do cp $i `basename $i .dist`; done
 
 %clean
@@ -136,12 +104,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 echo "Changing apache configuration"
-perl -pi -e 's/$/ index.php/ if (/DirectoryIndex\s.*index\.html/ && !/index\.php/);' %{apachedir}/httpd.conf
-grep -i 'Include.*horde.conf$' %{apachedir}/httpd.conf >/dev/null 2>&1
+perl -pi -e 's/$/ index.php/ if (/DirectoryIndex\s.*index\.html/ && !/index\.php/);' %{apachedir}/httpd.conf/10_httpd.conf
+grep -i 'Include.*horde.conf$' %{apachedir}/httpd.conf/10_httpd.conf >/dev/null 2>&1
+
 if [ $? -eq 0 ]; then
-	perl -pi -e 's/^#+// if (/Include.*horde.conf$/i);' %{apachedir}/httpd.conf
+	perl -pi -e 's/^#+// if (/Include.*horde.conf$/i);' %{apachedir}/httpd.conf/10_httpd.conf
 else
-	echo "Include %{apachedir}/horde.conf" >>%{apachedir}/httpd.conf
+	echo "Include %{apachedir}/horde.conf" >>%{apachedir}/httpd.conf/10_httpd.conf
 fi
 if [ -f /var/lock/subsys/httpd ]; then
 	/etc/rc.d/init.d/httpd restart 1>&2
@@ -160,7 +129,7 @@ _EOF2_
 %postun
 if [ $1 -eq 0 ]; then
 	echo "Changing apache configuration"
-	perl -pi -e 's/^/#/ if (/^Include.*horde.conf$/i);' %{apachedir}/httpd.conf
+	perl -pi -e 's/^/#/ if (/^Include.*horde.conf$/i);' %{apachedir}/httpd.conf/10_httpd.conf
 	if [ -f /var/lock/subsys/httpd ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	else
@@ -171,29 +140,17 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES,INSTALL,scripts}
-%dir %{htmldir}/horde
-%{htmldir}/horde/*.php
-%{htmldir}/horde/admin
-%{htmldir}/horde/graphics
-%{htmldir}/horde/lib
-%{htmldir}/horde/locale
-%{htmldir}/horde/templates
-%{htmldir}/horde/util
+%dir %{hordedir}
+%{hordedir}/*.php
+%{hordedir}/admin
+%{hordedir}/graphics
+%{hordedir}/lib
+%{hordedir}/locale
+%{hordedir}/templates
+%{hordedir}/util
 %{apachedir}/horde
 %attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
-%attr(750,root,http) %dir %{htmldir}/horde/config
-%attr(640,root,http) %{htmldir}/horde/config/*.dist
-%attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/*.php
-%attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/.htaccess
-
-%files addons-turba
-%defattr(644,root,root,755)
-%dir %{htmldir}/horde/turba
-%{htmldir}/horde/turba/*.php
-%{htmldir}/horde/turba/config
-%{htmldir}/horde/turba/graphics
-%{htmldir}/horde/turba/lib
-%{htmldir}/horde/turba/locale
-%{htmldir}/horde/turba/po
-%{htmldir}/horde/turba/scripts
-%{htmldir}/horde/turba/templates
+%attr(750,root,http) %dir %{hordedir}/config
+%attr(640,root,http) %{hordedir}/config/*.dist
+%attr(640,root,http) %config(noreplace) %{hordedir}/config/*.php
+%attr(640,root,http) %config(noreplace) %{hordedir}/config/.htaccess
