@@ -1,6 +1,5 @@
 # TODO:
 # - support for Oracle and Sybase
-# - php-ldap might be needed if ldap auth is used
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -139,14 +138,23 @@ if [ -d %{_apache2dir}/httpd.conf ]; then
 fi
 
 if [ "$1" = 1 ]; then
+# put this message all properly together.
 %banner %{name} -e <<EOF
 
 IMPORTANT:
-If you are installing for the first time, You must now
+If You are installing horde for the first time, You must
 create the Horde database tables. Look into directory
 /usr/share/doc/%{name}-%{version}/scripts/sql
-to find out how to do this for your database.
+to find out how to do this for Your database.
+
+Depending on authorization You choose,
+You need to install php-ldap package and setup ldap schema from
+/usr/share/doc/%{name}-%{version}/scripts/ldap.
+
+NOTE: You don't need SQL database, if you use just LDAP.
+
 EOF
+# '
 
 fi
 
