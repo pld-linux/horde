@@ -1,25 +1,29 @@
+# TODO:
+# - support for Oracle and Sybase
 Summary:	The common Horde Framework for all Horde modules
 Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	1.2.6
-Release:	2
-License:	GPL
+Version:	2.0
+Release:	1
+License:	LGPL
 Vendor:		The Horde Project
-Group:		Applications/Mail
+Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 URL:		http://www.horde.org/
-Requires:	php >= 4.0.3pl1
-Requires:	php-imap >= 4.0.3pl1
-Requires:	php-pcre >= 4.0.3pl1
-Requires:	php-gettext >= 4.0.3pl1
-Requires:	php-posix >= 4.0.3pl1
-Requires:	php-xml >= 4.0.3pl1
-Requires:	php-mcrypt >= 4.0.3pl1
-Requires:	apache >= 1.3.12
+PreReq:		apache-mod_dir >= 1.3.22
 Prereq:		perl
+Requires:	apache >= 1.3.22
+Requires:	php >= 4.1.0
+Requires:	php-gettext >= 4.1.0
+Requires:	php-imap >= 4.1.0
+Requires:	php-mcrypt >= 4.1.0
+Requires:	php-pear >= 4.1.0
+Requires:	php-pcre >= 4.1.0
+Requires:	php-posix >= 4.1.0
+Requires:	php-xml >= 4.1.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -54,96 +58,41 @@ O Projeto Horde é constituído por diversos aplicativos web escritos em PHP,
 todos liberados sob a GPL. Para mais informações (incluindo ajuda com
 relação ao Horde e seus módulos), por favor visite http://www.horde.org/.
 
-%package mysql
-Summary:	MySQL configuration for the Horde Framework
-Summary(pl):	Konfiguracja MySQL dla Horde
-Summary(pt_BR):	Configuração MySQL para o Sistema Horde
-Group:		Applications/Mail
-Requires:	horde = %{version}
-Requires:	php-mysql >= 4.0.3pl1
-Provides:	horde-phplib-storage
-Conflicts:	horde-pgsql
-Conflicts:	horde-shm
-
-%description mysql
-This RPM configures the Horde Framework to use MySQL for its PHPLIB
-session storage.
-
-%description mysql -l pl
-Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z MySQL.
-
-%description -l es mysql
-This RPM configures the Horde Framework to use MySQL for its PHPLIB session
-storage.
-
-%package pgsql
-Summary:	PostgreSQL configuration for the Horde Framework
-Summary(pl):	Konfiguracja PostgreSQL dla Horde
-Summary(pt_BR):	Configuração PostgreSQL para o Sistema Horde.
-Group:		Applications/Mail
-Requires:	horde = %{version}
-Requires:	php-pgsql >= 4.0.3pl1
-Provides:	horde-phplib-storage
-Conflicts:	horde-mysql
-Conflicts:	horde-shm
-
-%description pgsql
-This RPM configures the Horde Framework to use PostgreSQL for its
-PHPLIB session storage.
-
-%description pgsql -l pl
-Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z PostgreSQL.
-
-%description -l pt_BR pgsql
-Este pacote configura o sistema Horde para usar PostgreSQL para
-o armazenamento de sessões PHPLIB.
-
-%package shm
-Summary:	Shared memory configuration for the Horde Framework
-Summary(pl):	Konfiguracja pamiêci dzielonej dla Horde
-Summary(pt_BR):	Configuração de memória compartilhada para o Sistema Horde
-Group:		Applications/Mail
-Requires:	horde = %{version}
-Requires:	php-sysvsem >= 4.0.3pl1
-Requires:	php-sysvshm >= 4.0.3pl1
-Provides:	horde-phplib-storage
-Conflicts:	horde-mysql
-Conflicts:	horde-pgsql
-
-%description shm
-This RPM configures the Horde Framework to use shared memory for its
-PHPLIB session storage.
-
-%description shm -l pl
-Ten pakiet konfiguruje Horde do u¿ywania pamiêci dzielonej
-
-%description -l pt_BR shm
-Este pacote configura o sistema Horde para usar memória compartilhada
-para o armazenamento de sessões PHPLIB.
-
 %prep
 %setup -q
 
-%build
-perl -pi -e "s/'.*';/'hordemgr';/ if (/var\\s+\\\$(User|Password)\\s+=/);" phplib/local.inc
-
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{apachedir},%{contentdir}/html/horde}
+install -d $RPM_BUILD_ROOT%{apachedir} \
+	$RPM_BUILD_ROOT%{contentdir}/html/horde/{admin,config,graphics,lib,locale,templates,util}
 
-cp -p $RPM_SOURCE_DIR/horde.conf $RPM_BUILD_ROOT%{apachedir}
-cp -pR * $RPM_BUILD_ROOT%{contentdir}/html/horde
+ln -fs %{contentdir}/html/horde/config $RPM_BUILD_ROOT%{apachedir}/horde 
+install %{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
+cp -pR *.php		$RPM_BUILD_ROOT%{contentdir}/html/horde
+cp -pR admin/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/admin
+cp -pR config/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/config
+cp -pR graphics/*	$RPM_BUILD_ROOT%{contentdir}/html/horde/graphics
+cp -pR lib/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/lib
+cp -pR locale/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/locale
+cp -pR templates/*	$RPM_BUILD_ROOT%{contentdir}/html/horde/templates
+cp -pR util/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/util
 
-cd $RPM_BUILD_ROOT%{contentdir}/html/horde
-mv phplib ../../horde-phplib
-sh install.sh
+
+# Described in documentation as dangerous file...
+rm $RPM_BUILD_ROOT%{contentdir}/html/horde/test.php
+
+gzip -9nf README docs/HACKING docs/CONTRIBUTING docs/CODING_STANDARDS docs/CHANGES
+
+# bit unclean..
+cd $RPM_BUILD_ROOT%{contentdir}/html/horde/config
+for i in *.dist; do cp $i `basename $i .dist`; done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 echo "Changing apache configuration"
-perl -pi -e 's/$/ index.php3/ if (/DirectoryIndex\s.*index\.html/ && !/index\.php3/);' %{apachedir}/httpd.conf
+perl -pi -e 's/$/ index.php/ if (/DirectoryIndex\s.*index\.html/ && !/index\.php/);' %{apachedir}/httpd.conf
 grep -i 'Include.*horde.conf$' %{apachedir}/httpd.conf >/dev/null 2>&1
 if [ $? -eq 0 ]; then
 	perl -pi -e 's/^#+// if (/Include.*horde.conf$/i);' %{apachedir}/httpd.conf
@@ -151,106 +100,41 @@ else
 	echo "Include %{apachedir}/horde.conf" >>%{apachedir}/httpd.conf
 fi
 if [ -f /var/lock/subsys/httpd ]; then
-        echo "Restarting httpd daemon"
 	/etc/rc.d/init.d/httpd restart 1>&2
 else
-	echo "Run \"/etc/rc.d/init.d/httpd start\" to start apache http daemon."
+	echo "Run \"/etc/rc.d/init.d/httpd start\" to start http daemon."
 fi
+
+cat <<_EOF2_
+IMPORTANT:     If you are installing for the first time, you must now
+create the Horde database tables. Look into directory 
+/usr/share/doc/%{name}-%{version}/scripts/db
+to find out how to do this for your database.
+_EOF2_
 
 %postun
 if [ $1 -eq 0 ]; then
 	echo "Changing apache configuration"
 	perl -pi -e 's/^/#/ if (/^Include.*horde.conf$/i);' %{apachedir}/httpd.conf
 	if [ -f /var/lock/subsys/httpd ]; then
-	        echo "Restarting httpd daemon"
 		/etc/rc.d/init.d/httpd restart 1>&2
 	else
-		echo "Run \"/etc/rc.d/init.d/httpd start\" to start apache http daemon."
+		echo "Run \"/etc/rc.d/init.d/httpd start\" to start http daemon."
 	fi
 fi
 
-%post mysql
-perl -pi -e 's/^#// if (/To use an SQL database/../To use shared memory/);' %{contentdir}/horde-phplib/local.inc
-cat <<_EOF2_
-
-IMPORTANT:	If you are installing for the first time, you must now
-create the Horde database tables.  The following commands (run as root)
-will do this:
-
-# mysql -p <%{contentdir}/html/horde/scripts/database/mysql_create.sql
-# mysqladmin -p reload
-
-For more information on creating the database tables, please consult
-%{contentdir}/html/horde/docs/DATABASE.
-
-_EOF2_
-
-%post pgsql
-perl -pi -e 's/^#// if (/To use an SQL database/../To use shared memory/);' %{contentdir}/horde-phplib/local.inc
-perl -pi -e 's/db_mysql\.inc/db_pgsql.inc/;' %{contentdir}/horde-phplib/prepend.php3
-cat <<_EOF2_
-
-IMPORTANT:	If you are installing for the first time, you must now
-create the Horde database tables.  The following commands (run as postgres)
-will do this:
-
-$ sh %{contentdir}/html/horde/scripts/database/pgsql_cuser.sh
-$ psql template1 <%{contentdir}/html/horde/scripts/database/pgsql_create.sql
-
-For more information on creating the database tables, please consult
-%{contentdir}/html/horde/docs/DATABASE.
-
-_EOF2_
-
-%post shm
-perl -pi -e 's/^#// if (/To use shared memory/../To use LDAP/);' %{contentdir}/horde-phplib/local.inc
-perl -pi -e 's/ct_sql\.inc/ct_shm.inc/;' %{contentdir}/horde-phplib/prepend.php3
-
 %files
 %defattr(644,root,root,755)
-# Apache horde.conf file
-%config %{apachedir}/horde.conf
-# Include top level with %dir so not all files are sucked in
+%doc *.gz docs/*.gz scripts/db/*
 %dir %{contentdir}/html/horde
-# Include top-level files by hand
-%{contentdir}/html/horde/*.php3
-%{contentdir}/html/horde/*.sh
-# Include these dirs so that all files _will_ get sucked in
+%{contentdir}/html/horde/*.php
+%{contentdir}/html/horde/admin
 %{contentdir}/html/horde/graphics
 %{contentdir}/html/horde/lib
 %{contentdir}/html/horde/locale
-%{contentdir}/html/horde/scripts
 %{contentdir}/html/horde/templates
-# Include phplib directory, but don't include local.inc and prepend.php3
-# %config files, which are included in subpackages
-%dir %{contentdir}/horde-phplib
-%{contentdir}/horde-phplib/[0-9_a-km-oq-z]*
-%{contentdir}/horde-phplib/page.inc
-# Mark documentation files with %doc and %docdir
-%doc %{contentdir}/html/horde/COPYING
-%doc %{contentdir}/html/horde/README
-%docdir %{contentdir}/html/horde/docs
-%{contentdir}/html/horde/docs
-# Mark configuration files with %config and use secure permissions
-# (note that .dist files are considered software; don't mark %config)
-%attr(750,root,%{apachegroup}) %dir %{contentdir}/html/horde/config
-%{contentdir}/html/horde/config/*.dist
-%defattr(-,root,%{apachegroup})
-%config %{contentdir}/html/horde/config/*.html
-%config %{contentdir}/html/horde/config/*.php3
-%config %{contentdir}/html/horde/config/*.txt
-
-%files mysql
-%defattr(644,root,root,755)
-%attr(640,root,%{apachegroup}) %config %{contentdir}/horde-phplib/local.inc
-%config %{contentdir}/horde-phplib/prepend.php3
-
-%files pgsql
-%defattr(644,root,root,755)
-%attr(640,root,%{apachegroup}) %config %{contentdir}/horde-phplib/local.inc
-%config %{contentdir}/horde-phplib/prepend.php3
-
-%files shm
-%defattr(644,root,root,755)
-%attr(640,root,%{apachegroup}) %config %{contentdir}/horde-phplib/local.inc
-%config %{contentdir}/horde-phplib/prepend.php3
+%{apachedir}/horde
+%attr(750,root,http) %config(noreplace) %{apachedir}/horde.conf
+%attr(750,root,http) %dir %{contentdir}/html/horde/config
+%attr(640,root,http) %{contentdir}/html/horde/config/*.dist
+%attr(640,root,http) %config %{contentdir}/html/horde/config/*.php
