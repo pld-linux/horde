@@ -3,19 +3,22 @@
 # - /home/services/httpd -> /usr/share
 #
 %include	/usr/lib/rpm/macros.php
+%define		_turba_ver  1.2
 Summary:	The common Horde Framework for all Horde modules
 Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.2.7
-Release:	1
+Release:	2
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 # Source0-md5:	f13c20221312a0d3951687a84813167f
-Source1:	%{name}.conf
+Source1:	http://ftp.horde.org/pub/turba/turba-%{_turba_ver}.tar.gz
+# Source1-md5: 7c082cdbeb499eef99ff4dbf6b3608f5
+Source2:	%{name}.conf
 Patch0:		%{name}-XML_xml2sql.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -70,6 +73,19 @@ PHP, todos liberados sob a GPL. Para mais informações (incluindo ajuda
 com relação ao Horde e seus módulos), por favor visite
 http://www.horde.org/ .
 
+%package addons-turba
+Summary:        TURBA - Adress book for IMP
+Summary(pl):    TURBA - Ksi±¿ka adresowa dla IMP
+Group:          Applications/Mail
+Requires:       %{name} = %{version}-%{release}
+
+%description addons-turba
+Turba is a complete basic contact management application. SQL, LDAP, and Horde Preferences backends are available and 
+are well tested. You can define the fields in your address books in a very flexible way, just by changing the config 
+files. You can import/export from/to Pine, Mulberry, CSV, TSV, and vCard contacts. You can create distribution lists 
+from your addressbooks, which are handled transparently by IMP and other Horde applications. And there are Horde API 
+functions to add and search for contacts..
+
 %prep
 %setup -q
 %patch0 -p1
@@ -77,11 +93,15 @@ http://www.horde.org/ .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{apachedir} \
-	$RPM_BUILD_ROOT%{htmldir}/horde/{admin,config,graphics,lib,locale,templates,util}
+	$RPM_BUILD_ROOT%{htmldir}/horde/{admin,config,graphics,lib,locale,templates,turba,util}
+
+cp %{SOURCE1} .
+tar zxf turba-1.2.tar.gz
+mv turba-1.2/* $RPM_BUILD_ROOT%{htmldir}/horde/turba
 
 cp -pR scripts docs
 ln -fs %{htmldir}/horde/config $RPM_BUILD_ROOT%{apachedir}/horde
-install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
+install	%{SOURCE2}	$RPM_BUILD_ROOT%{apachedir}/
 cp -pR	*.php		$RPM_BUILD_ROOT%{htmldir}/horde
 
 for i in config graphics lib locale templates util; do
@@ -152,3 +172,14 @@ fi
 %attr(640,root,http) %{htmldir}/horde/config/*.dist
 %attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/*.php
 %attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/.htaccess
+
+%files addons-turba
+%dir %{htmldir}/horde/turba
+%{htmldir}/horde/turba/*.php
+%{htmldir}/horde/turba/config
+%{htmldir}/horde/turba/graphics
+%{htmldir}/horde/turba/lib
+%{htmldir}/horde/turba/locale
+%{htmldir}/horde/turba/po
+%{htmldir}/horde/turba/scripts
+%{htmldir}/horde/turba/templates
