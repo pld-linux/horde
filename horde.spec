@@ -40,14 +40,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
 
+%define		_sysconfdir	/etc/horde.org
 %define		hordedir	/usr/share/horde
-%define		confdir		/etc/horde.org
-%define		_apache2	%{?with_apache1:0}%{?!with_apache1:1}
-%if %{_apache2}
-%define		apachedir	/etc/httpd
-%else
-%define		apachedir	/etc/apache
-%endif
+%define		_apache1dir	/etc/apache
+%define		_apache2dir	/etc/httpd
+
 %define		_php5		%(rpm -q php | awk -F- '{print $2}' | awk -F. '{print $1}')
 %if "%{_php5}" == "5"
 Requires:	php-dom
@@ -55,9 +52,6 @@ Requires:	php-dom
 Requires:	php-domxml
 %endif
 
-%define		_apache1dir	/etc/apache
-%define		_apache2dir	/etc/httpd
-%define		_sysconfdir	/etc/horde.org
 
 %description
 The Horde Framework provides a common structure and interface for
@@ -175,7 +169,6 @@ for i in horde.php html.php lang.php mime_drivers.php mime_mapping.php motd.php 
 done
 
 %triggerpostun -- horde <= 3.0.3-2
-set -x
 # apache1 confdir
 if [ -f /etc/apache/apache.conf ] && grep -q '^Include conf\.d' /etc/apache/apache.conf; then
 	sed -i -e '
