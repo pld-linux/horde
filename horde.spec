@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.8
+Release:	2.11
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -52,7 +52,6 @@ Requires:	php-dom
 Requires:	php-domxml
 %endif
 
-
 %description
 The Horde Framework provides a common structure and interface for
 Horde modules (such as IMP, a web-based mail program). This RPM is
@@ -85,6 +84,9 @@ com relação ao Horde e seus módulos), por favor visite
 %setup -q
 %patch0 -p1
 
+# Described in documentation as dangerous file...
+rm test.php
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/horde \
@@ -97,23 +99,19 @@ cp -pR	*.php			$RPM_BUILD_ROOT%{hordedir}
 for i in admin js lib locale services templates themes util; do
 	cp -pR $i/*		$RPM_BUILD_ROOT%{hordedir}/$i
 done
+
 for i in lib locale templates; do
 	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{hordedir}/$i
 done
 
-cp -pR config/*.php.dist	$RPM_BUILD_ROOT%{_sysconfdir}/horde
-cp -p  config/.htaccess		$RPM_BUILD_ROOT%{_sysconfdir}/horde
+for i in config/*.php.dist; do
+	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/horde/$(basename $i .dist)
+done
+
 cp -p  config/*.xml		$RPM_BUILD_ROOT%{_sysconfdir}/horde
 
 install	%{SOURCE1}		$RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 ln -fs %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
-
-# Described in documentation as dangerous file...
-rm $RPM_BUILD_ROOT%{hordedir}/test.php
-
-# bit unclean..
-cd $RPM_BUILD_ROOT%{_sysconfdir}/horde
-for i in *.dist; do cp $i `basename $i .dist`; done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -214,9 +212,7 @@ fi
 %{hordedir}/templates
 %{hordedir}/themes
 %{hordedir}/util
-%attr(640,root,http) %config(noreplace) %{_sysconfdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache.conf
 %attr(770,root,http) %dir %{_sysconfdir}/horde
-%attr(640,root,http) %{_sysconfdir}/horde/*.dist
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/horde/*.php
-%attr(640,root,http) %config(noreplace) %{_sysconfdir}/horde/.htaccess
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/horde/*.xml
