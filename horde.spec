@@ -12,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.40
+Release:	2.42
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -23,6 +23,7 @@ Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
+Patch4:		%{name}-ldap-choraprefs.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -95,7 +96,7 @@ com relação ao Horde e seus módulos), por favor visite
 %package -n openldap-schema-horde
 Summary:	Horde LDAP schema
 Group:		Networking/Daemons
-Requires(post,pre): sed >= 4.0
+Requires(post,postun): sed >= 4.0
 Requires:	openldap-servers
 
 %description -n openldap-schema-horde
@@ -225,15 +226,17 @@ if [ -f /var/lock/subsys/ldap ]; then
     /etc/rc.d/init.d/ldap restart >&2
 fi
 
-%preun -n openldap-schema-horde
-if grep -q /usr/share/openldap/schema/horde.schema /etc/openldap/slapd.conf; then
-	sed -i -e '
-	/^include.*\/usr\/share\/openldap\/schema\/horde.schema/d
-	' /etc/openldap/slapd.conf
-fi
+%postun -n openldap-schema-horde
+if [ "$1" = "0" ]; then
+	if grep -q /usr/share/openldap/schema/horde.schema /etc/openldap/slapd.conf; then
+		sed -i -e '
+		/^include.*\/usr\/share\/openldap\/schema\/horde.schema/d
+		' /etc/openldap/slapd.conf
+	fi
 
-if [ -f /var/lock/subsys/ldap ]; then
-    /etc/rc.d/init.d/ldap restart >&2 || :
+	if [ -f /var/lock/subsys/ldap ]; then
+		/etc/rc.d/init.d/ldap restart >&2 || :
+	fi
 fi
 
 %triggerpostun -- horde <= 2.2.7-2
