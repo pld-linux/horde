@@ -1,7 +1,6 @@
 # TODO:
 # - support for Oracle and Sybase
-
-%define		_relcand	RC3
+%include	/usr/lib/rpm/macros.php
 
 Summary:	The common Horde Framework for all Horde modules
 Summary(es):	Elementos básicos do Horde Web Application Suite
@@ -9,13 +8,15 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.1
-Release:	%{_relcand}.0.1
+Release:	0.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
-Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}-%{_relcand}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
+Patch0:		%{name}-Horde_Auth.patch
 URL:		http://www.horde.org/
+BuildRequires:	rpm-php-pearprov
 PreReq:		apache-mod_dir >= 1.3.22
 Prereq:		perl
 Requires:	apache >= 1.3.22
@@ -66,6 +67,7 @@ relação ao Horde e seus módulos), por favor visite http://www.horde.org/.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -85,8 +87,6 @@ done
 
 # Described in documentation as dangerous file...
 rm $RPM_BUILD_ROOT%{contentdir}/html/horde/test.php
-
-gzip -9nf README docs/HACKING docs/CONTRIBUTING docs/CODING_STANDARDS docs/CHANGES
 
 # bit unclean..
 cd $RPM_BUILD_ROOT%{contentdir}/html/horde/config
@@ -131,7 +131,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz docs/*.gz scripts/db/*
+%doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES}
 %dir %{contentdir}/html/horde
 %{contentdir}/html/horde/*.php
 %{contentdir}/html/horde/admin
