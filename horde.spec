@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.11
+Release:	2.18
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -19,10 +19,10 @@ Patch0:		%{name}-path.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-PreReq:		apache-mod_dir >= 1.3.22
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	apache >= 1.3.33-3
+Requires:	apache(mod_dir) >= 1.3.22
 Requires:	php >= 4.1.0
 Requires:	php-gettext >= 4.1.0
 Requires:	php-imap >= 4.1.0
@@ -132,13 +132,17 @@ if [ -d %{_apache2dir}/httpd.conf ]; then
 	fi
 fi
 
+if [ "$1" = 1 ]; then
 %banner %{name} -e <<EOF
+
 IMPORTANT:
 If you are installing for the first time, You must now
 create the Horde database tables. Look into directory
 /usr/share/doc/%{name}-%{version}/scripts/sql
 to find out how to do this for your database.
 EOF
+
+fi
 
 %preun
 if [ "$1" = "0" ]; then
