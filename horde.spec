@@ -1,19 +1,26 @@
 # TODO:
 # - support for Oracle and Sybase
 #
+
+%define name horde
+%define version 3.0.3
+%define pre rc1
+%define release 0.1
+%define fname %{name}-%{version}-%{pre}
+
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
 Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	3.0.2
-Release:	0.4
+Version:	%{version}
+Release:	%{release}
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
-Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
-# Source0-md5:	620745a4e94dd848fff72edb3b45c184
+Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}-%{pre}.tar.gz
+# Source0-md5:	0c9ebed41a82cc32eefc157530934115
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 URL:		http://www.horde.org/
@@ -78,7 +85,7 @@ com relação ao Horde e seus módulos), por favor visite
 http://www.horde.org/ .
 
 %prep
-%setup -q
+%setup -q -n %{fname}
 %patch0 -p1
 
 %install
