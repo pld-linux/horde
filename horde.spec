@@ -1,7 +1,5 @@
 # TODO:
 # - support for Oracle and Sybase
-# - trigger to change config location
-# - move configs to /etc
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -10,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.2.7
-Release:	2.2
+Release:	2.5
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -18,6 +16,7 @@ Source0:	ftp://ftp.horde.org/pub/horde/tarballs/%{name}-%{version}.tar.gz
 # Source0-md5:	f13c20221312a0d3951687a84813167f
 Source1:	%{name}.conf
 Patch0:		%{name}-XML_xml2sql.patch
+Patch1:		%{name}-path.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 PreReq:		apache-mod_dir >= 1.3.22
@@ -40,6 +39,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		apachedir	/etc/httpd
 %define		hordedir	/usr/share/horde
+%define		confdir		/etc/horde.org
 
 %description
 The Horde Framework provides a common structure and interface for
@@ -72,29 +72,34 @@ http://www.horde.org/ .
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{apachedir} \
-	$RPM_BUILD_ROOT%{hordedir}/{admin,config,graphics,lib,locale,templates,util}
+install -d $RPM_BUILD_ROOT{%{apachedir},%{confdir}/horde} \
+	$RPM_BUILD_ROOT%{hordedir}/{admin,graphics,lib,locale,templates,util}
 
 cp -pR scripts docs
-ln -fs $RM_BUILD_ROOT%{hordedir}/config $RPM_BUILD_ROOT%{apachedir}/horde
-install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
 cp -pR	*.php		$RPM_BUILD_ROOT%{hordedir}
 
-for i in config graphics lib locale templates util; do
+for i in graphics lib locale templates util; do
 	cp -pR $i/*	$RPM_BUILD_ROOT%{hordedir}/$i
 done
-for i in config lib locale templates; do
+for i in lib locale templates; do
 	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{hordedir}/$i
 done
+
+cp -pR config/*.php.dist	$RPM_BUILD_ROOT%{confdir}/horde
+cp -p  config/.htaccess		$RPM_BUILD_ROOT%{confdir}/horde
+
+install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}
+ln -fs %{confdir}/%{name} $RPM_BUILD_ROOT%{hordedir}/config
 
 # Described in documentation as dangerous file...
 rm $RPM_BUILD_ROOT%{hordedir}/test.php
 
 # bit unclean..
-cd $RPM_BUILD_ROOT%{hordedir}/config
+cd $RPM_BUILD_ROOT%{confdir}/horde
 for i in *.dist; do cp $i `basename $i .dist`; done
 
 %clean
@@ -136,20 +141,29 @@ if [ "$1" = "0" ]; then
 	fi
 fi
 
+%triggerpostun -- horde <= 2.2.7-2
+for i in horde.php html.php lang.php mime_drivers.php mime_mapping.php motd.php prefs.php registry.php; do
+	if [ -f /home/services/httpd/html/horde/config/$i.rpmsave ]; then
+		cp -f %{confdir}/%{name}/$i %{confdir}/%{name}/$i.rpmnew
+		mv -f /home/services/httpd/html/horde/config/$i.rpmsave %{confdir}/%{name}/$i
+	fi
+done
+ 
 %files
 %defattr(644,root,root,755)
 %doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES,INSTALL,scripts}
 %dir %{hordedir}
+%dir %{confdir}
 %{hordedir}/*.php
 %{hordedir}/admin
+%{hordedir}/config
 %{hordedir}/graphics
 %{hordedir}/lib
 %{hordedir}/locale
 %{hordedir}/templates
 %{hordedir}/util
-%{apachedir}/horde
 %attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
-%attr(750,root,http) %dir %{hordedir}/config
-%attr(640,root,http) %{hordedir}/config/*.dist
-%attr(640,root,http) %config(noreplace) %{hordedir}/config/*.php
-%attr(640,root,http) %config(noreplace) %{hordedir}/config/.htaccess
+%attr(750,root,http) %dir %{confdir}/horde
+%attr(640,root,http) %{confdir}/horde/*.dist
+%attr(640,root,http) %config(noreplace) %{confdir}/horde/*.php
+%attr(640,root,http) %config(noreplace) %{confdir}/horde/.htaccess
