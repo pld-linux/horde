@@ -4,7 +4,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	1.2.6
-Release:	1
+Release:	2
 License:	GPL
 Vendor:		The Horde Project
 Group:		Applications/Mail
