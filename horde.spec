@@ -1,5 +1,6 @@
 # TODO:
 # - support for Oracle and Sybase
+# - php-ldap might be needed if ldap auth is used
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -8,7 +9,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.19
+Release:	2.20
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -94,6 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/horde \
 	$RPM_BUILD_ROOT%{hordedir}/{admin,js,lib,locale,services} \
 	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util} \
+	$RPM_BUILD_ROOT/var/log/%{name}
 
 cp -pR scripts docs
 cp -pR	*.php			$RPM_BUILD_ROOT%{hordedir}
@@ -111,6 +113,8 @@ for i in config/*.php.dist; do
 done
 
 cp -p  config/*.xml		$RPM_BUILD_ROOT%{_sysconfdir}/horde
+sed -i -e 's,/tmp/horde.log,/var/log/%{name}/%{name}.log,' $RPM_BUILD_ROOT%{_sysconfdir}/horde/conf.xml
+> $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
 install	%{SOURCE1}		$RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 ln -fs %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
@@ -222,3 +226,5 @@ fi
 %attr(770,root,http) %dir %{_sysconfdir}/horde
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/horde/*.php
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/horde/*.xml
+%attr(750,root,http) /var/log/%{name}
+%ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
