@@ -1,5 +1,9 @@
 # TODO:
 # - support for Oracle and Sybase
+# - make default install secure. so that it doesn't auto auth you to
+#   administrator. ip restriction in apache? any better ideas?
+# - put docs/CREDITS to package, rather in doc (so installations with
+#   --excludedocs have functional horde?)
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -8,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.27
+Release:	2.30
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -39,6 +43,8 @@ Obsoletes:	horde-pgsql
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+# horde accesses it directly in help->about
+%define		_noautocompressdoc  CREDITS
 %define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
 
 %define		hordedir	/usr/share/horde
@@ -93,7 +99,7 @@ rm test.php
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
 	$RPM_BUILD_ROOT%{hordedir}/{admin,js,lib,locale,services} \
-	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util} \
+	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util,docs} \
 	$RPM_BUILD_ROOT/var/log/%{name}
 
 cp -pR scripts docs
@@ -114,7 +120,8 @@ sed -i -e 's,/tmp/horde.log,/var/log/%{name}/%{name}.log,' $RPM_BUILD_ROOT%{_sys
 > $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
 install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
-ln -fs %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
+ln -s %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
+ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{hordedir}/docs
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -223,7 +230,9 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES,INSTALL,scripts}
+%doc README scripts
+%doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
+%doc docs/{PERFORMANCE,RELEASE{,_NOTES},SECURITY,TODO,TRANSLATIONS,UPGRADING}
 %dir %{_sysconfdir}
 %attr(770,root,http) %dir %{_sysconfdir}/%{name}
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{name}.conf
@@ -236,6 +245,7 @@ fi
 %{hordedir}/*.php
 %{hordedir}/admin
 %{hordedir}/config
+%{hordedir}/docs
 %{hordedir}/js
 %{hordedir}/lib
 %{hordedir}/locale
@@ -244,5 +254,5 @@ fi
 %{hordedir}/themes
 %{hordedir}/util
 
-%attr(750,root,http) /var/log/%{name}
+%dir %attr(750,root,http) /var/log/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
