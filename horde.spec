@@ -11,13 +11,13 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	3.0.3
-Release:	3
+Version:	3.0.4
+Release:	1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
-# Source0-md5:	96a4c9fb2047987164a3981a31667ef2
+# Source0-md5:	e2221d409ba1c8841ce4ecee981d7b61
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
@@ -299,7 +299,7 @@ fi
 %defattr(644,root,root,755)
 %doc README scripts util
 %doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
-%doc docs/{PERFORMANCE,RELEASE{,_NOTES},SECURITY,TODO,TRANSLATIONS,UPGRADING}
+%doc docs/{PERFORMANCE,RELEASE_NOTES,SECURITY,TODO,TRANSLATIONS,UPGRADING}
 %dir %{_sysconfdir}
 %attr(750,root,http) %dir %{_sysconfdir}/%{name}
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{name}.conf
