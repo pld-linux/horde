@@ -26,7 +26,7 @@ Requires:	php >= 4.1.0
 Requires:	php-gettext >= 4.1.0
 Requires:	php-imap >= 4.1.0
 Requires:	php-mcrypt >= 4.1.0
-Requires:	php-pear >= 4.1.0
+Requires:	php-pear-PEAR
 Requires:	php-pear-Log
 Requires:	php-pcre >= 4.1.0
 Requires:	php-posix >= 4.1.0
