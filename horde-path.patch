@@ -93,3 +93,338 @@
      'webroot' => $this->applications['horde']['webroot'] . '/klutz',
      'name' => _("Comics"),
      'status' => 'inactive',
+--- ./config/registry.php.dist~	2005-03-04 20:59:19.000000000 +0200
++++ ./config/registry.php.dist	2005-03-04 21:00:57.000000000 +0200
+@@ -90,7 +90,7 @@
+ );
+ 
+ $this->applications['sam'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../sam',
++    'fileroot' => '/usr/share/horde/sam',
+     'webroot' => $this->applications['horde']['webroot'] . '/sam',
+     'name' => _("Spam"),
+     'status' => 'inactive',
+@@ -101,7 +101,7 @@
+ );
+ 
+ $this->applications['troll'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../troll',
++    'fileroot' => '/usr/share/horde/troll',
+     'webroot' => $this->applications['horde']['webroot'] . '/troll',
+     'name' => _("Newsgroups"),
+     'status' => 'inactive',
+@@ -109,7 +109,7 @@
+ );
+ 
+ $this->applications['vilma'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../vilma',
++    'fileroot' => '/usr/share/horde/vilma',
+     'webroot' => $this->applications['horde']['webroot'] . '/vilma',
+     'name' => _("Mail Admin"),
+     'status' => 'inactive',
+@@ -117,7 +117,7 @@
+ );
+ 
+ $this->applications['mimp'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../mimp',
++    'fileroot' => '/usr/share/horde/mimp',
+     'webroot' => $this->applications['horde']['webroot'] . '/mimp',
+     'name' => _("Mobile Mail"),
+     'status' => 'inactive'
+@@ -172,7 +172,7 @@
+ );
+ 
+ $this->applications['genie'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../genie',
++    'fileroot' => '/usr/share/horde/genie',
+     'webroot' => $this->applications['horde']['webroot'] . '/genie',
+     'name' => _("Wishlists"),
+     'status' => 'inactive',
+@@ -181,7 +181,7 @@
+ );
+ 
+ $this->applications['trean'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../trean',
++    'fileroot' => '/usr/share/horde/trean',
+     'webroot' => $this->applications['horde']['webroot'] . '/trean',
+     'name' => _("Bookmarks"),
+     'status' => 'inactive',
+@@ -203,7 +203,7 @@
+ );
+ 
+ $this->applications['babel'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../babel',
++    'fileroot' => '/usr/share/horde/babel',
+     'webroot' => $this->applications['horde']['webroot'] . '/babel',
+     'name' => _("i18n"),
+     'status' => 'inactive',
+@@ -211,7 +211,7 @@
+ );
+ 
+ $this->applications['thor'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../thor',
++    'fileroot' => '/usr/share/horde/thor',
+     'webroot' => $this->applications['horde']['webroot'] . '/thor',
+     'name' => _("Projects"),
+     'status' => 'inactive',
+@@ -220,7 +220,7 @@
+ );
+ 
+ $this->applications['whups'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../whups',
++    'fileroot' => '/usr/share/horde/whups',
+     'webroot' => $this->applications['horde']['webroot'] . '/whups',
+     'name' => _("Tickets"),
+     'status' => 'inactive',
+@@ -229,7 +229,7 @@
+ );
+ 
+ $this->applications['luxor'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../luxor',
++    'fileroot' => '/usr/share/horde/luxor',
+     'webroot' => $this->applications['horde']['webroot'] . '/luxor',
+     'name' => _("X-Ref"),
+     'status' => 'inactive',
+@@ -237,7 +237,7 @@
+ );
+ 
+ $this->applications['nic'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../nic',
++    'fileroot' => '/usr/share/horde/nic',
+     'webroot' => $this->applications['horde']['webroot'] . '/nic',
+     'name' => _("Network"),
+     'status' => 'inactive',
+@@ -251,7 +251,7 @@
+ );
+ 
+ $this->applications['mottle'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../mottle',
++    'fileroot' => '/usr/share/horde/mottle',
+     'webroot' => $this->applications['horde']['webroot'] . '/mottle',
+     'name' => _("MOTD"),
+     'status' => 'inactive',
+@@ -259,7 +259,7 @@
+ );
+ 
+ $this->applications['jonah'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../jonah',
++    'fileroot' => '/usr/share/horde/jonah',
+     'webroot' => $this->applications['horde']['webroot'] . '/jonah',
+     'name' => _("News"),
+     'status' => 'inactive',
+@@ -268,7 +268,7 @@
+ );
+ 
+ $this->applications['occam'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../occam',
++    'fileroot' => '/usr/share/horde/occam',
+     'webroot' => $this->applications['horde']['webroot'] . '/occam',
+     'name' => _("Courses"),
+     'status' => 'inactive',
+@@ -276,7 +276,7 @@
+ );
+ 
+ $this->applications['goops'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../goops',
++    'fileroot' => '/usr/share/horde/goops',
+     'webroot' => $this->applications['horde']['webroot'] . '/goops',
+     'name' => _("Search Engines"),
+     'status' => 'inactive',
+@@ -293,7 +293,7 @@
+ );
+ 
+ $this->applications['orator'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../orator',
++    'fileroot' => '/usr/share/horde/orator',
+     'webroot' => $this->applications['horde']['webroot'] . '/orator',
+     'name' => _("Presentations"),
+     'status' => 'inactive',
+@@ -306,7 +306,7 @@
+ );
+ 
+ $this->applications['hermes'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../hermes',
++    'fileroot' => '/usr/share/horde/hermes',
+     'webroot' => $this->applications['horde']['webroot'] . '/hermes',
+     'name' => _("Time Tracking"),
+     'status' => 'inactive',
+@@ -315,7 +315,7 @@
+ );
+ 
+ $this->applications['juno'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../juno',
++    'fileroot' => '/usr/share/horde/juno',
+     'webroot' => $this->applications['horde']['webroot'] . '/juno',
+     'name' => _("Accounting"),
+     'status' => 'inactive',
+@@ -323,7 +323,7 @@
+ );
+ 
+ $this->applications['sesha'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../sesha',
++    'fileroot' => '/usr/share/horde/sesha',
+     'webroot' => $this->applications['horde']['webroot'] . '/sesha',
+     'name' => _("Inventory"),
+     'status' => 'inactive',
+@@ -336,7 +336,7 @@
+ );
+ 
+ $this->applications['accounts'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../accounts',
++    'fileroot' => '/usr/share/horde/accounts',
+     'webroot' => $this->applications['horde']['webroot'] . '/accounts',
+     'name' => _("My Account"),
+     'status' => 'inactive',
+@@ -344,7 +344,7 @@
+ );
+ 
+ $this->applications['gollem'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../gollem',
++    'fileroot' => '/usr/share/horde/gollem',
+     'webroot' => $this->applications['horde']['webroot'] . '/gollem',
+     'name' => _("File Manager"),
+     'status' => 'inactive',
+@@ -353,7 +353,7 @@
+ );
+ 
+ $this->applications['forwards'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../forwards',
++    'fileroot' => '/usr/share/horde/forwards',
+     'webroot' => $this->applications['horde']['webroot'] . '/forwards',
+     'name' => _("Forwards"),
+     'status' => 'inactive',
+@@ -362,7 +362,7 @@
+ );
+ 
+ $this->applications['passwd'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../passwd',
++    'fileroot' => '/usr/share/horde/passwd',
+     'webroot' => $this->applications['horde']['webroot'] . '/passwd',
+     'name' => _("Password"),
+     'status' => 'inactive',
+@@ -370,7 +370,7 @@
+ );
+ 
+ $this->applications['jeta'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../jeta',
++    'fileroot' => '/usr/share/horde/jeta',
+     'webroot' => $this->applications['horde']['webroot'] . '/jeta',
+     'name' => _("SSH"),
+     'status' => 'inactive',
+@@ -378,7 +378,7 @@
+ );
+ 
+ $this->applications['vacation'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../vacation',
++    'fileroot' => '/usr/share/horde/vacation',
+     'webroot' => $this->applications['horde']['webroot'] . '/vacation',
+     'name' => _("Vacation"),
+     'status' => 'inactive',
+@@ -392,7 +392,7 @@
+ );
+ 
+ $this->applications['giapeto'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../giapeto',
++    'fileroot' => '/usr/share/horde/giapeto',
+     'webroot' => $this->applications['horde']['webroot'] . '/giapeto',
+     'name' => _("CMS"),
+     'status' => 'inactive',
+@@ -401,7 +401,7 @@
+ );
+ 
+ $this->applications['midas'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../midas',
++    'fileroot' => '/usr/share/horde/midas',
+     'webroot' => $this->applications['horde']['webroot'] . '/midas',
+     'name' => _("Ads"),
+     'status' => 'inactive',
+@@ -409,7 +409,7 @@
+ );
+ 
+ $this->applications['agora'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../agora',
++    'fileroot' => '/usr/share/horde/agora',
+     'webroot' => $this->applications['horde']['webroot'] . '/agora',
+     'name' => _("Forums"),
+     'status' => 'inactive',
+@@ -418,7 +418,7 @@
+ );
+ 
+ $this->applications['odin'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../odin',
++    'fileroot' => '/usr/share/horde/odin',
+     'webroot' => $this->applications['horde']['webroot'] . '/odin',
+     'name' => _("Data"),
+     'status' => 'inactive',
+@@ -426,7 +426,7 @@
+ );
+ 
+ $this->applications['ulaform'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../ulaform',
++    'fileroot' => '/usr/share/horde/ulaform',
+     'webroot' => $this->applications['horde']['webroot'] . '/ulaform',
+     'name' => _("Forms"),
+     'status' => 'inactive',
+@@ -434,7 +434,7 @@
+ );
+ 
+ $this->applications['volos'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../volos',
++    'fileroot' => '/usr/share/horde/volos',
+     'webroot' => $this->applications['horde']['webroot'] . '/volos',
+     'name' => _("Guestbook"),
+     'status' => 'inactive',
+@@ -442,7 +442,7 @@
+ );
+ 
+ $this->applications['ansel'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../ansel',
++    'fileroot' => '/usr/share/horde/ansel',
+     'webroot' => $this->applications['horde']['webroot'] . '/ansel',
+     'name' => _("Photos"),
+     'status' => 'inactive',
+@@ -451,7 +451,7 @@
+ );
+ 
+ $this->applications['scry'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../scry',
++    'fileroot' => '/usr/share/horde/scry',
+     'webroot' => $this->applications['horde']['webroot'] . '/scry',
+     'name' => _("Polls"),
+     'status' => 'inactive',
+@@ -460,7 +460,7 @@
+ );
+ 
+ $this->applications['rakim'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../rakim',
++    'fileroot' => '/usr/share/horde/rakim',
+     'webroot' => $this->applications['horde']['webroot'] . '/rakim',
+     'name' => _("Support"),
+     'status' => 'inactive',
+@@ -468,7 +468,7 @@
+ );
+ 
+ $this->applications['merk'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../merk',
++    'fileroot' => '/usr/share/horde/merk',
+     'webroot' => $this->applications['horde']['webroot'] . '/merk',
+     'name' => _("Shopping"),
+     'status' => 'inactive',
+@@ -476,7 +476,7 @@
+ );
+ 
+ $this->applications['swoosh'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../swoosh',
++    'fileroot' => '/usr/share/horde/swoosh',
+     'webroot' => $this->applications['horde']['webroot'] . '/swoosh',
+     'name' => _("SMS Messaging"),
+     'status' => 'inactive',
+@@ -485,7 +485,7 @@
+ );
+ 
+ $this->applications['wicked'] = array(
+-    'fileroot' => dirname(__FILE__) . '/../wicked',
++    'fileroot' => '/usr/share/horde/wicked',
+     'webroot' => $this->applications['horde']['webroot'] . '/wicked',
+     'name' => _("Wiki"),
+     'status' => 'inactive',
