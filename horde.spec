@@ -2,8 +2,11 @@
 # - support for Oracle and Sybase
 # - make default install secure. so that it doesn't auto auth you to
 #   administrator. ip restriction in apache? any better ideas?
+# - remove config/ (and others in apache.conf) from document root, so
+#   apache deny from all not needed.
 # - put docs/CREDITS to package, rather in doc (so installations with
 #   --excludedocs have functional horde?)
+# - [Sun Feb 27 20:36:12 2005] [error] PHP Fatal error:  Call to undefined function:  gzdeflate() in /usr/share/horde/lib/Horde/Image/png.php on line 198
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -12,7 +15,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.33
+Release:	2.36
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -21,6 +24,7 @@ Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
+Patch2:		%{name}-util-h3.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -38,6 +42,7 @@ Requires:	php-pcre >= 4.1.0
 Requires:	php-posix >= 4.1.0
 Requires:	php-session >= 4.1.0
 Requires:	php-xml >= 4.1.0
+Requires:	php-zlib >= 4.1.0
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
@@ -92,6 +97,7 @@ com relação ao Horde e seus módulos), por favor visite
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
@@ -99,7 +105,7 @@ rm test.php
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
-	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services,util} \
+	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services} \
 	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
 	$RPM_BUILD_ROOT/var/log/%{name}
 
@@ -115,7 +121,6 @@ sed -e '
 cp -pR  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
 cp -pR  js/*                    $RPM_BUILD_ROOT%{_appdir}/js
 cp -pR  services/*              $RPM_BUILD_ROOT%{_appdir}/services
-cp -pR  util/*                  $RPM_BUILD_ROOT%{_appdir}/util
 
 cp -pR  lib/*                   $RPM_BUILD_ROOT%{_appdir}/lib
 cp -pR  locale/*                $RPM_BUILD_ROOT%{_appdir}/locale
@@ -133,6 +138,10 @@ install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
 rm -rf $RPM_BUILD_ROOT
 
 %post
+if [ ! -f %{_sysconfdir}/%{name}/conf.php.bak ]; then
+	install /dev/null -o root -g http -m660 %{_sysconfdir}/%{name}/conf.php.bak
+fi
+
 # apache1
 if [ -d %{_apache1dir}/conf.d ]; then
 	ln -sf %{_sysconfdir}/apache-%{name}.conf %{_apache1dir}/conf.d/99_%{name}.conf
@@ -162,7 +171,8 @@ Depending on authorization You choose,
 You need to install php-ldap package and setup ldap schema from
 %{_defaultdocdir}/%{name}-%{version}/scripts/ldap.
 
-NOTE: You don't need SQL database, if you use just LDAP.
+NOTE: You don't need SQL database, if you use LDAP for
+authorization.
 
 EOF
 # '
@@ -236,14 +246,14 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README scripts
+%doc README scripts util
 %doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
 %doc docs/{PERFORMANCE,RELEASE{,_NOTES},SECURITY,TODO,TRANSLATIONS,UPGRADING}
 %dir %{_sysconfdir}
 %attr(750,root,http) %dir %{_sysconfdir}/%{name}
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{name}.conf
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/conf.php
-%attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/conf.php.bak
+%attr(660,root,http) %config(noreplace) %ghost %{_sysconfdir}/%{name}/conf.php.bak
 %attr(640,root,http) %config(noreplace) %{_sysconfdir}/%{name}/[!c]*.php
 %attr(640,root,http) %{_sysconfdir}/%{name}/*.xml
 
@@ -258,7 +268,6 @@ fi
 %{_appdir}/services
 %{_appdir}/templates
 %{_appdir}/themes
-%{_appdir}/util
 
 %dir %attr(750,root,http) /var/log/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
