@@ -6,7 +6,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.0
-Release:	1
+Release:	2
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -69,16 +69,15 @@ install -d $RPM_BUILD_ROOT%{apachedir} \
 	$RPM_BUILD_ROOT%{contentdir}/html/horde/{admin,config,graphics,lib,locale,templates,util}
 
 ln -fs %{contentdir}/html/horde/config $RPM_BUILD_ROOT%{apachedir}/horde 
-install %{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
-cp -pR *.php		$RPM_BUILD_ROOT%{contentdir}/html/horde
-cp -pR admin/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/admin
-cp -pR config/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/config
-cp -pR graphics/*	$RPM_BUILD_ROOT%{contentdir}/html/horde/graphics
-cp -pR lib/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/lib
-cp -pR locale/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/locale
-cp -pR templates/*	$RPM_BUILD_ROOT%{contentdir}/html/horde/templates
-cp -pR util/*		$RPM_BUILD_ROOT%{contentdir}/html/horde/util
+install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
+cp -pR	*.php		$RPM_BUILD_ROOT%{contentdir}/html/horde
 
+for i in admin config graphics lib locale templates util; do
+	cp -pR $i/*	$RPM_BUILD_ROOT%{contentdir}/html/horde/$i
+done
+for i in config lib locale templates; do
+	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{contentdir}/html/horde/$i
+done
 
 # Described in documentation as dangerous file...
 rm $RPM_BUILD_ROOT%{contentdir}/html/horde/test.php
@@ -137,7 +136,8 @@ fi
 %{contentdir}/html/horde/locale
 %{contentdir}/html/horde/templates
 %{apachedir}/horde
-%attr(750,root,http) %config(noreplace) %{apachedir}/horde.conf
+%attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
 %attr(750,root,http) %dir %{contentdir}/html/horde/config
 %attr(640,root,http) %{contentdir}/html/horde/config/*.dist
 %attr(640,root,http) %config %{contentdir}/html/horde/config/*.php
+%attr(640,root,http) %config %{contentdir}/html/horde/config/.htaccess
