@@ -44,7 +44,7 @@ Requires:	php-posix >= 4.1.0
 Requires:	php-session >= 4.1.0
 Requires:	php-xml >= 4.1.0
 Requires:	php-zlib >= 4.1.0
-Requires:	php-dom
+Requires:	php-domxml
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
