@@ -75,7 +75,7 @@ http://www.horde.org/ .
 
 %package addons-turba
 Summary:	TURBA - Adress book for IMP
-Summary(pl):	TURBA - Ksi±¿ka adresowa dla IMP
+Summary(pl):	TURBA - Ksi±¿ka adresowa dla IMP-a
 Group:		Applications/Mail
 Requires:	%{name} = %{version}-%{release}
 
@@ -87,7 +87,17 @@ just by changing the config files. You can import/export from/to Pine,
 Mulberry, CSV, TSV, and vCard contacts. You can create distribution
 lists from your addressbooks, which are handled transparently by IMP
 and other Horde applications. And there are Horde API functions to add
-and search for contacts..
+and search for contacts.
+
+%description addons-turba -l pl
+Turba to kompletna aplikacja do podstawowego zarz±dzania kontaktami.
+Dostêpne i dobrze przetestowane s± backendy ustawieñ SQL, LDAP i
+Horde. Mo¿na definiowaæ pola ksi±¿ki adresowej w bardzo elastyczny
+sposób, po prostu zmieniaj±c pliki konfiguracyjne. Kontakty mo¿na
+importowaæ/eksportowaæ z/do Pine, Mulberry, CSV, TSV i vCard. Mo¿na
+tworzyæ listy dystrybucyjne z ksi±¿ek adresowych, które s± obs³ugiwane
+w sposób przezroczysty przez IMP-a i inne aplikacje Horde. S± tak¿e
+funkcje API Horde do dodawania i wyszukiwania kontaktów.
 
 %prep
 %setup -q
