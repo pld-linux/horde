@@ -2,7 +2,6 @@
 # - support for Oracle and Sybase
 # - trigger to change config location
 # - move configs to /etc
-# - fix %post to be like in phpMyAdmin
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -11,7 +10,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.2.7
-Release:	2.1
+Release:	2.2
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -23,7 +22,6 @@ URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 PreReq:		apache-mod_dir >= 1.3.22
 Requires(post):	grep
-Requires(post,preun):	perl
 Requires:	apache >= 1.3.22
 Requires:	php >= 4.1.0
 Requires:	php-gettext >= 4.1.0
@@ -103,19 +101,16 @@ for i in *.dist; do cp $i `basename $i .dist`; done
 rm -rf $RPM_BUILD_ROOT
 
 %post
-echo "Changing apache configuration"
-perl -pi -e 's/$/ index.php/ if (/DirectoryIndex\s.*index\.html/ && !/index\.php/);' %{apachedir}/httpd.conf/10_httpd.conf
-grep -i 'Include.*horde.conf$' %{apachedir}/httpd.conf/10_httpd.conf >/dev/null 2>&1
-
-if [ $? -eq 0 ]; then
-	perl -pi -e 's/^#+// if (/Include.*horde.conf$/i);' %{apachedir}/httpd.conf/10_httpd.conf
-else
-	echo "Include %{apachedir}/horde.conf" >>%{apachedir}/httpd.conf/10_httpd.conf
-fi
-if [ -f /var/lock/subsys/httpd ]; then
-	/etc/rc.d/init.d/httpd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/httpd start\" to start http daemon."
+if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*%{name}.conf" /etc/httpd/httpd.conf; then
+	echo "Include /etc/httpd/%{name}.conf" >> /etc/httpd/httpd.conf
+	if [ -f /var/lock/subsys/httpd ]; then
+		/usr/sbin/apachectl restart 1>&2
+	fi
+elif [ -d /etc/httpd/httpd.conf ]; then
+	ln -sf /etc/httpd/%{name}.conf /etc/httpd/httpd.conf/99_%{name}.conf
+	if [ -f /var/lock/subsys/httpd ]; then
+		/usr/sbin/apachectl restart 1>&2
+	fi
 fi
 
 cat <<_EOF2_
@@ -126,14 +121,18 @@ create the Horde database tables. Look into directory
 to find out how to do this for your database.
 _EOF2_
 
-%postun
-if [ $1 -eq 0 ]; then
-	echo "Changing apache configuration"
-	perl -pi -e 's/^/#/ if (/^Include.*horde.conf$/i);' %{apachedir}/httpd.conf/10_httpd.conf
-	if [ -f /var/lock/subsys/httpd ]; then
-		/etc/rc.d/init.d/httpd restart 1>&2
+%preun
+if [ "$1" = "0" ]; then
+	umask 027
+	if [ -d /etc/httpd/httpd.conf ]; then
+	    rm -f /etc/httpd/httpd.conf/99_%{name}.conf
 	else
-		echo "Run \"/etc/rc.d/init.d/httpd start\" to start http daemon."
+		grep -v "^Include.*%{name}.conf" /etc/httpd/httpd.conf > \
+			/etc/httpd/httpd.conf.tmp
+		mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
+	fi
+	if [ -f /var/lock/subsys/httpd ]; then
+	    /usr/sbin/apachectl restart 1>&2
 	fi
 fi
 
