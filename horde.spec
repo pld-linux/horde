@@ -12,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.37
+Release:	2.40
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -91,6 +91,16 @@ PHP, todos liberados sob a GPL. Para mais informações (incluindo ajuda
 com relação ao Horde e seus módulos), por favor visite
 <http://www.horde.org/>.
 
+# FIXME: package name?
+%package -n openldap-schema-horde
+Summary:	Horde LDAP schema
+Group:		Networking/Daemons
+Requires(post,pre): sed >= 4.0
+Requires:	openldap-servers
+
+%description -n openldap-schema-horde
+This package contains horde.schema for openldap.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -106,7 +116,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
 	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services} \
 	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
-	$RPM_BUILD_ROOT/var/log/%{name}
+	$RPM_BUILD_ROOT/var/log/%{name} \
+	$RPM_BUILD_ROOT/usr/share/openldap/schema
 
 cp -pR *.php			$RPM_BUILD_ROOT%{_appdir}
 for i in config/*.php.dist; do
@@ -132,6 +143,8 @@ ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/doc
 install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
 
 > $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
+
+install scripts/ldap/horde.schema $RPM_BUILD_ROOT/usr/share/openldap/schema
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -170,9 +183,11 @@ Depending on authorization You choose, You need to create Horde database tables.
 Look into directory %{_defaultdocdir}/%{name}-%{version}/scripts/sql
 to find out how to do this for Your database.
 
-If You've chosen LDAP authorization, please install php-ldap package and
-setup ldap schema from %{_defaultdocdir}/%{name}-%{version}/scripts/ldap.
-NOTE: You don't need SQL database, if You use LDAP for authorization.
+If You've chosen LDAP authorization, please install php-ldap package.
+To configure your openldap server to use horde schema, install
+openldap-schema-horde package.
+
+NOTE: You don't need SQL database if You use LDAP for authorization.
 
 EOF
 # '
@@ -195,6 +210,30 @@ if [ "$1" = "0" ]; then
 			/etc/rc.d/init.d/httpd restart 1>&2
 		fi
 	fi
+fi
+
+%post -n openldap-schema-horde
+if ! grep -q /usr/share/openldap/schema/horde.schema /etc/openldap/slapd.conf; then
+	sed -i -e '
+		/^include.*local.schema/{
+			i\
+include		/usr/share/openldap/schema/horde.schema
+		}' /etc/openldap/slapd.conf
+fi
+
+if [ -f /var/lock/subsys/ldap ]; then
+    /etc/rc.d/init.d/ldap restart >&2
+fi
+
+%preun -n openldap-schema-horde
+if grep -q /usr/share/openldap/schema/horde.schema /etc/openldap/slapd.conf; then
+	sed -i -e '
+	/^include.*\/usr\/share\/openldap\/schema\/horde.schema/d
+	' /etc/openldap/slapd.conf
+fi
+
+if [ -f /var/lock/subsys/ldap ]; then
+    /etc/rc.d/init.d/ldap restart >&2 || :
 fi
 
 %triggerpostun -- horde <= 2.2.7-2
@@ -271,3 +310,7 @@ fi
 
 %dir %attr(750,root,http) /var/log/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
+
+%files -n openldap-schema-horde
+%defattr(644,root,root,755)
+/usr/share/openldap/schema/*.schema
