@@ -76,7 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{apachedir} \
 	$RPM_BUILD_ROOT%{contentdir}/html/horde/{admin,config,graphics,lib,locale,templates,util}
 
-ln -fs %{contentdir}/html/horde/config $RPM_BUILD_ROOT%{apachedir}/horde 
+ln -fs %{contentdir}/html/horde/config $RPM_BUILD_ROOT%{apachedir}/horde
 install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
 cp -pR	*.php		$RPM_BUILD_ROOT%{contentdir}/html/horde
 
@@ -115,7 +115,7 @@ fi
 cat <<_EOF2_
 IMPORTANT:
 If you are installing for the first time, you must now
-create the Horde database tables. Look into directory 
+create the Horde database tables. Look into directory
 /usr/share/doc/%{name}-%{version}/scripts/db
 to find out how to do this for your database.
 _EOF2_
