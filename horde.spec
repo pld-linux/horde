@@ -37,7 +37,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		apachedir	/etc/httpd
 %define		apachegroup	http
-%define		contentdir	/home/httpd
+%define		contentdir	/home/services/httpd
 
 %description
 The Horde Framework provides a common structure and interface for
