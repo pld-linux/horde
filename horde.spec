@@ -12,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.30
+Release:	2.32
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -49,6 +49,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		hordedir	/usr/share/horde
 %define		_sysconfdir	/etc/horde.org
+%define		_appdir		%{hordedir}
 %define		_apache1dir	/etc/apache
 %define		_apache2dir	/etc/httpd
 
@@ -98,30 +99,35 @@ rm test.php
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
-	$RPM_BUILD_ROOT%{hordedir}/{admin,js,lib,locale,services} \
-	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util,docs} \
+	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services,util} \
+	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
 	$RPM_BUILD_ROOT/var/log/%{name}
 
-cp -pR scripts docs
-cp -pR	*.php			$RPM_BUILD_ROOT%{hordedir}
-
-for i in admin js lib locale services templates themes util; do
-	cp -pR $i/*		$RPM_BUILD_ROOT%{hordedir}/$i
-done
-
+cp -pR *.php			$RPM_BUILD_ROOT%{_appdir}
 for i in config/*.php.dist; do
 	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/$(basename $i .dist)
 done
-cp -p  config/*.xml		$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
+sed -e '
+    s,/tmp/horde.log,/var/log/%{name}/%{name}.log,
+'< config/conf.xml > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.xml
 > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.php.bak
 
-sed -i -e 's,/tmp/horde.log,/var/log/%{name}/%{name}.log,' $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.xml
+cp -pR  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
+cp -pR  js/*                    $RPM_BUILD_ROOT%{_appdir}/js
+cp -pR  services/*              $RPM_BUILD_ROOT%{_appdir}/services
+cp -pR  util/*                  $RPM_BUILD_ROOT%{_appdir}/util
 
-> $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
+cp -pR  lib/*                   $RPM_BUILD_ROOT%{_appdir}/lib
+cp -pR  locale/*                $RPM_BUILD_ROOT%{_appdir}/locale
+cp -pR  templates/*             $RPM_BUILD_ROOT%{_appdir}/templates
+cp -pR  themes/*                $RPM_BUILD_ROOT%{_appdir}/themes
+
+ln -s %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{_appdir}/config
+ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 
 install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
-ln -s %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
-ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{hordedir}/docs
+
+> $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -149,12 +155,12 @@ if [ "$1" = 1 ]; then
 IMPORTANT:
 If You are installing horde for the first time, You must
 create the Horde database tables. Look into directory
-/usr/share/doc/%{name}-%{version}/scripts/sql
+%{_defaultdocdir}/%{name}-%{version}/scripts/sql
 to find out how to do this for Your database.
 
 Depending on authorization You choose,
 You need to install php-ldap package and setup ldap schema from
-/usr/share/doc/%{name}-%{version}/scripts/ldap.
+%{_defaultdocdir}/%{name}-%{version}/scripts/ldap.
 
 NOTE: You don't need SQL database, if you use just LDAP.
 
@@ -241,18 +247,18 @@ fi
 %ghost %{_sysconfdir}/%{name}/*.php.bak
 %attr(640,root,http) %{_sysconfdir}/%{name}/*.xml
 
-%dir %{hordedir}
-%{hordedir}/*.php
-%{hordedir}/admin
-%{hordedir}/config
-%{hordedir}/docs
-%{hordedir}/js
-%{hordedir}/lib
-%{hordedir}/locale
-%{hordedir}/services
-%{hordedir}/templates
-%{hordedir}/themes
-%{hordedir}/util
+%dir %{_appdir}
+%{_appdir}/*.php
+%{_appdir}/admin
+%{_appdir}/config
+%{_appdir}/docs
+%{_appdir}/js
+%{_appdir}/lib
+%{_appdir}/locale
+%{_appdir}/services
+%{_appdir}/templates
+%{_appdir}/themes
+%{_appdir}/util
 
 %dir %attr(750,root,http) /var/log/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
