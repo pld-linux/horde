@@ -6,7 +6,6 @@
 #   apache deny from all not needed.
 # - put docs/CREDITS to package, rather in doc (so installations with
 #   --excludedocs have functional horde?)
-# - [Sun Feb 27 20:36:12 2005] [error] PHP Fatal error:  Call to undefined function:  gzdeflate() in /usr/share/horde/lib/Horde/Image/png.php on line 198
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
