@@ -12,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.42
+Release:	2.50
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -31,6 +31,8 @@ Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	apache >= 1.3.33-3
 Requires:	apache(mod_dir) >= 1.3.22
+Requires:	apache(mod_access)
+Requires:	apache(mod_alias)
 Requires:	php >= 4.1.0
 Requires:	php-gettext >= 4.1.0
 Requires:	php-imap >= 4.1.0
@@ -56,6 +58,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_appdir		%{hordedir}
 %define		_apache1dir	/etc/apache
 %define		_apache2dir	/etc/httpd
+%define		schemadir	/usr/share/openldap/schema
 
 %define		_php5		%(rpm -q php | awk -F- '{print $2}' | awk -F. '{print $1}')
 %if "%{_php5}" == "5"
@@ -97,7 +100,7 @@ com relação ao Horde e seus módulos), por favor visite
 Summary:	Horde LDAP schema
 Summary(pl):	Schemat LDAP dla Horde
 Group:		Networking/Daemons
-Requires(post,postun): sed >= 4.0
+Requires(post,postun):	sed >= 4.0
 Requires:	openldap-servers
 
 %description -n openldap-schema-horde
@@ -112,6 +115,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p0
+%patch4 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
@@ -122,7 +126,7 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
 	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services} \
 	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
 	$RPM_BUILD_ROOT/var/log/%{name} \
-	$RPM_BUILD_ROOT/usr/share/openldap/schema
+	$RPM_BUILD_ROOT%{schemadir}
 
 cp -pR *.php			$RPM_BUILD_ROOT%{_appdir}
 for i in config/*.php.dist; do
@@ -149,7 +153,7 @@ install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
 
 > $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
-install scripts/ldap/horde.schema $RPM_BUILD_ROOT/usr/share/openldap/schema
+install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -218,12 +222,13 @@ if [ "$1" = "0" ]; then
 fi
 
 %post -n openldap-schema-horde
-if ! grep -q /usr/share/openldap/schema/horde.schema /etc/openldap/slapd.conf; then
+if ! grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
 	sed -i -e '
 		/^include.*local.schema/{
 			i\
-include		/usr/share/openldap/schema/horde.schema
-		}' /etc/openldap/slapd.conf
+include		%{schemadir}/horde.schema
+		}
+	' /etc/openldap/slapd.conf
 fi
 
 if [ -f /var/lock/subsys/ldap ]; then
@@ -232,7 +237,7 @@ fi
 
 %postun -n openldap-schema-horde
 if [ "$1" = "0" ]; then
-	if grep -q /usr/share/openldap/schema/horde.schema /etc/openldap/slapd.conf; then
+	if grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
 		sed -i -e '
 		/^include.*\/usr\/share\/openldap\/schema\/horde.schema/d
 		' /etc/openldap/slapd.conf
@@ -320,4 +325,4 @@ fi
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
-/usr/share/openldap/schema/*.schema
+%{schemadir}/*.schema
