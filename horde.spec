@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.2
-Release:	0.3
+Release:	0.4
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -174,7 +174,7 @@ done
 %{hordedir}/themes
 %{hordedir}/util
 %attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
-%attr(750,root,http) %dir %{confdir}/horde
+%attr(770,root,http) %dir %{confdir}/horde
 %attr(640,root,http) %{confdir}/horde/*.dist
 %attr(660,root,http) %config(noreplace) %{confdir}/horde/*.php
 %attr(640,root,http) %config(noreplace) %{confdir}/horde/.htaccess
