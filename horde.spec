@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.2
-Release:	0.1
+Release:	0.2
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -43,8 +43,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_apache2	%{?with_apache1:0}%{?!with_apache1:1}
 %if %{_apache2}
 %define		apachedir	/etc/httpd
+Requires:	php-dom
 %else
 %define		apachedir	/etc/apache
+Requires:	php-domxml
 %endif
 
 %description
@@ -82,12 +84,13 @@ http://www.horde.org/ .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{apachedir},%{confdir}/horde} \
-	$RPM_BUILD_ROOT%{hordedir}/{admin,lib,locale,templates,util}
+	$RPM_BUILD_ROOT%{hordedir}/{admin,js,lib,locale,services} \
+	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util}
 
 cp -pR scripts docs
 cp -pR	*.php		$RPM_BUILD_ROOT%{hordedir}
 
-for i in lib locale templates util; do
+for i in admin js lib locale services templates themes util; do
 	cp -pR $i/*	$RPM_BUILD_ROOT%{hordedir}/$i
 done
 for i in lib locale templates; do
@@ -96,6 +99,7 @@ done
 
 cp -pR config/*.php.dist	$RPM_BUILD_ROOT%{confdir}/horde
 cp -p  config/.htaccess		$RPM_BUILD_ROOT%{confdir}/horde
+cp -p  config/*.xml		$RPM_BUILD_ROOT%{confdir}/horde
 
 install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}
 ln -fs %{confdir}/%{name} $RPM_BUILD_ROOT%{hordedir}/config
@@ -162,12 +166,16 @@ done
 %{hordedir}/*.php
 %{hordedir}/admin
 %{hordedir}/config
+%{hordedir}/js
 %{hordedir}/lib
 %{hordedir}/locale
+%{hordedir}/services
 %{hordedir}/templates
+%{hordedir}/themes
 %{hordedir}/util
 %attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
 %attr(750,root,http) %dir %{confdir}/horde
 %attr(640,root,http) %{confdir}/horde/*.dist
-%attr(640,root,http) %config(noreplace) %{confdir}/horde/*.php
+%attr(660,root,http) %config(noreplace) %{confdir}/horde/*.php
 %attr(640,root,http) %config(noreplace) %{confdir}/horde/.htaccess
+%attr(660,root,http) %config(noreplace) %{confdir}/horde/*.xml
