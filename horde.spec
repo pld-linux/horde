@@ -35,13 +35,13 @@ under the GNU Public License. For more information (including help
 with Horde and its modules) please visit http://www.horde.org/.
 
 %description -l pl
-Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla 
-modu³ów Horde, takich jak IMP (obs³uga poczty poprzez www). Ten
-pakiet jest wymagany dla wszystkich innych modu³ów Horde.
+Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla modu³ów
+Horde, takich jak IMP (obs³uga poczty poprzez www). Ten pakiet jest
+wymagany dla wszystkich innych modu³ów Horde.
 
 Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
-Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e
-help do IMP'a) zajrzyj na stronê http://www.horde.org
+Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e help
+do IMP'a) zajrzyj na stronê http://www.horde.org
 
 %package mysql
 Summary:	MySQL configuration for the Horde Framework
@@ -57,7 +57,7 @@ Conflicts:	horde-shm
 This RPM configures the Horde Framework to use MySQL for its PHPLIB
 session storage.
 
-%description -l pl mysql
+%description mysql -l pl
 Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z MySQL.
 
 %package pgsql
@@ -74,14 +74,14 @@ Conflicts:	horde-shm
 This RPM configures the Horde Framework to use PostgreSQL for its
 PHPLIB session storage.
 
-%description -l pl pgsql
+%description pgsql -l pl
 Ten pakiet dostarcza konfiguracjê Horde do wykorzystania z PostgreSQL.
 
 %package shm
 Summary:	Shared memory configuration for the Horde Framework
 Summary(pl):	Konfiguracja pamiêci dzielonej dla Horde
 Group:		Applications/Mail
-Requires:	horde = %{version} 
+Requires:	horde = %{version}
 Requires:	php-sysvsem >= 4.0.3pl1
 Requires:	php-sysvshm >= 4.0.3pl1
 Provides:	horde-phplib-storage
@@ -92,7 +92,7 @@ Conflicts:	horde-pgsql
 This RPM configures the Horde Framework to use shared memory for its
 PHPLIB session storage.
 
-%description -l pl shm
+%description shm -l pl
 Ten pakiet konfiguruje Horde do u¿ywania pamiêci dzielonej
 
 %prep
@@ -141,7 +141,6 @@ if [ $1 -eq 0 ]; then
 	else
 		echo "Run \"/etc/rc.d/init.d/httpd start\" to start apache http daemon."
 	fi
-				
 fi
 
 %post mysql
@@ -150,7 +149,7 @@ cat <<_EOF2_
 
 IMPORTANT:	If you are installing for the first time, you must now
 create the Horde database tables.  The following commands (run as root)
-will do this:	
+will do this:
 
 # mysql -p <%{contentdir}/html/horde/scripts/database/mysql_create.sql
 # mysqladmin -p reload
@@ -167,7 +166,7 @@ cat <<_EOF2_
 
 IMPORTANT:	If you are installing for the first time, you must now
 create the Horde database tables.  The following commands (run as postgres)
-will do this:	
+will do this:
 
 $ sh %{contentdir}/html/horde/scripts/database/pgsql_cuser.sh
 $ psql template1 <%{contentdir}/html/horde/scripts/database/pgsql_create.sql
