@@ -22,7 +22,7 @@ BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 PreReq:		apache-mod_dir >= 1.3.22
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-Requires:	apache >= 1.3.33-2
+Requires:	apache >= 1.3.33-3
 Requires:	php >= 4.1.0
 Requires:	php-gettext >= 4.1.0
 Requires:	php-imap >= 4.1.0
