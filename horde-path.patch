@@ -1,5 +1,14 @@
---- horde-3.0-rc3/config/registry.php.dist	2004-11-01 11:39:39.000000000 +0000
-+++ horde-3.0-rc3.new/config/registry.php.dist	2004-12-12 23:00:36.489047024 +0000
+--- registry.php.dist	2004-12-24 02:05:12.000000000 +0100
++++ reg.new	2005-01-17 11:03:11.000000000 +0100
+@@ -45,7 +45,7 @@
+ // variable uses forward slashes. If it does not, you'll have to tweak
+ // this.
+ if (isset($_SERVER['PHP_SELF'])) {
+-    $webroot = strstr(dirname(__FILE__), '/' . array_shift(preg_split(';/;', $_SERVER['PHP_SELF'], 2, PREG_SPLIT_NO_EMPTY)));
++    $webroot = strstr("/usr/share/horde", '/' . array_shift(preg_split(';/;', $_SERVER['PHP_SELF'], 2, PREG_SPLIT_NO_EMPTY)));
+     if ($webroot !== false) {
+         $webroot = preg_replace(';/config$;', '', $webroot);
+     } else {
 @@ -56,17 +56,17 @@
  }
  
@@ -75,7 +84,7 @@
      'webroot' => $this->applications['horde']['webroot'] . '/chora',
      'name' => _("Version Control"),
      'status' => 'active',
-@@ -283,7 +283,7 @@
+@@ -284,7 +284,7 @@
  );
  
  $this->applications['klutz'] = array(
@@ -83,4 +92,4 @@
 +    'fileroot' => '/usr/share/horde/klutz',
      'webroot' => $this->applications['horde']['webroot'] . '/klutz',
      'name' => _("Comics"),
-     'status' => 'active',
+     'status' => 'inactive',
