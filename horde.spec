@@ -76,25 +76,25 @@ http://www.horde.org/ .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{apachedir} \
-	$RPM_BUILD_ROOT%{contentdir}/html/horde/{admin,config,graphics,lib,locale,templates,util}
+	$RPM_BUILD_ROOT%{htmldir}/horde/{admin,config,graphics,lib,locale,templates,util}
 
 cp -pR scripts docs
-ln -fs %{contentdir}/html/horde/config $RPM_BUILD_ROOT%{apachedir}/horde
+ln -fs %{htmldir}/horde/config $RPM_BUILD_ROOT%{apachedir}/horde
 install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}/
-cp -pR	*.php		$RPM_BUILD_ROOT%{contentdir}/html/horde
+cp -pR	*.php		$RPM_BUILD_ROOT%{htmldir}/horde
 
 for i in config graphics lib locale templates util; do
-	cp -pR $i/*	$RPM_BUILD_ROOT%{contentdir}/html/horde/$i
+	cp -pR $i/*	$RPM_BUILD_ROOT%{htmldir}/horde/$i
 done
 for i in config lib locale templates; do
-	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{contentdir}/html/horde/$i
+	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{htmldir}/horde/$i
 done
 
 # Described in documentation as dangerous file...
-rm $RPM_BUILD_ROOT%{contentdir}/html/horde/test.php
+rm $RPM_BUILD_ROOT%{htmldir}/horde/test.php
 
 # bit unclean..
-cd $RPM_BUILD_ROOT%{contentdir}/html/horde/config
+cd $RPM_BUILD_ROOT%{htmldir}/horde/config
 for i in *.dist; do cp $i `basename $i .dist`; done
 
 %clean
@@ -150,4 +150,4 @@ fi
 %attr(750,root,http) %dir %{htmldir}/horde/config
 %attr(640,root,http) %{htmldir}/horde/config/*.dist
 %attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/*.php
-%attr(640,root,http) %config(noreplace) %{contentdir}/html/horde/config/.htaccess
+%attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/.htaccess
