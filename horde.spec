@@ -74,17 +74,20 @@ com relação ao Horde e seus módulos), por favor visite
 http://www.horde.org/ .
 
 %package addons-turba
-Summary:        TURBA - Adress book for IMP
-Summary(pl):    TURBA - Ksi±¿ka adresowa dla IMP
-Group:          Applications/Mail
-Requires:       %{name} = %{version}-%{release}
+Summary:	TURBA - Adress book for IMP
+Summary(pl):	TURBA - Ksi±¿ka adresowa dla IMP
+Group:		Applications/Mail
+Requires:	%{name} = %{version}-%{release}
 
 %description addons-turba
-Turba is a complete basic contact management application. SQL, LDAP, and Horde Preferences backends are available and 
-are well tested. You can define the fields in your address books in a very flexible way, just by changing the config 
-files. You can import/export from/to Pine, Mulberry, CSV, TSV, and vCard contacts. You can create distribution lists 
-from your addressbooks, which are handled transparently by IMP and other Horde applications. And there are Horde API 
-functions to add and search for contacts..
+Turba is a complete basic contact management application. SQL, LDAP,
+and Horde Preferences backends are available and are well tested. You
+can define the fields in your address books in a very flexible way,
+just by changing the config files. You can import/export from/to Pine,
+Mulberry, CSV, TSV, and vCard contacts. You can create distribution
+lists from your addressbooks, which are handled transparently by IMP
+and other Horde applications. And there are Horde API functions to add
+and search for contacts..
 
 %prep
 %setup -q
@@ -174,6 +177,7 @@ fi
 %attr(640,root,http) %config(noreplace) %{htmldir}/horde/config/.htaccess
 
 %files addons-turba
+%defattr(644,root,root,755)
 %dir %{htmldir}/horde/turba
 %{htmldir}/horde/turba/*.php
 %{htmldir}/horde/turba/config
