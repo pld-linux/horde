@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.23
+Release:	2.24
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -41,8 +41,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
 
-%define		_sysconfdir	/etc/horde.org
 %define		hordedir	/usr/share/horde
+%define		_sysconfdir	/etc/horde.org
 %define		_apache1dir	/etc/apache
 %define		_apache2dir	/etc/httpd
 
@@ -116,7 +116,7 @@ sed -i -e 's,/tmp/horde.log,/var/log/%{name}/%{name}.log,' $RPM_BUILD_ROOT%{_sys
 
 > $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
-install	%{SOURCE1}		$RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
 ln -fs %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
 
 %clean
@@ -125,14 +125,14 @@ rm -rf $RPM_BUILD_ROOT
 %post
 # apache1
 if [ -d %{_apache1dir}/conf.d ]; then
-	ln -sf %{_sysconfdir}/apache.conf %{_apache1dir}/conf.d/99_%{name}.conf
+	ln -sf %{_sysconfdir}/apache-%{name}.conf %{_apache1dir}/conf.d/99_%{name}.conf
 	if [ -f /var/lock/subsys/apache ]; then
 		/etc/rc.d/init.d/apache restart 1>&2
 	fi
 fi
 # apache2
 if [ -d %{_apache2dir}/httpd.conf ]; then
-	ln -sf %{_sysconfdir}/apache.conf %{_apache2dir}/httpd.conf/99_%{name}.conf
+	ln -sf %{_sysconfdir}/apache-%{name}.conf %{_apache2dir}/httpd.conf/99_%{name}.conf
 	if [ -f /var/lock/subsys/httpd ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
@@ -185,7 +185,7 @@ for i in horde.php html.php lang.php mime_drivers.php mime_mapping.php motd.php 
 	fi
 done
 
-%triggerpostun -- horde <= 3.0.3-2
+%triggerpostun -- horde <= 3.0.3-2.23
 # apache1 confdir
 if [ -f /etc/apache/apache.conf ]; then
 	if grep -q '^Include conf\.d' /etc/apache/apache.conf; then
@@ -201,13 +201,19 @@ if [ -f /etc/apache/apache.conf ]; then
 fi
 
 if [ -f %{_apache1dir}/horde.conf.rpmsave ]; then
-	cp -f %{_sysconfdir}/apache.conf{,.rpmnew}
-	mv -f %{_apache1dir}/horde.conf.rpmsave %{_sysconfdir}/apache.conf
+	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
+	mv -f %{_apache1dir}/horde.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
 fi
 
 if [ -f %{_apache2dir}/horde.conf.rpmsave ]; then
-	cp -f %{_sysconfdir}/apache.conf{,.rpmnew}
-	mv -f %{_apache2dir}/horde.conf.rpmsave %{_sysconfdir}/apache.conf
+	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
+	mv -f %{_apache2dir}/horde.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
+fi
+
+# unified location
+if [ -f %{_sysconfdir}/apache.conf.rpmsave ]; then
+	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
+	mv -f %{_sysconfdir}/apache.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
 fi
 
 if [ -f /var/lock/subsys/apache ]; then
@@ -223,7 +229,7 @@ fi
 %doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES,INSTALL,scripts}
 %dir %{_sysconfdir}
 %attr(770,root,http) %dir %{_sysconfdir}/%{name}
-%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{name}.conf
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/*.php
 %attr(640,root,http) %{_sysconfdir}/%{name}/*.xml
 
