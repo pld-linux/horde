@@ -178,15 +178,17 @@ done
 
 %triggerpostun -- horde <= 3.0.3-2
 # apache1 confdir
-if [ -f /etc/apache/apache.conf ] && grep -q '^Include conf\.d' /etc/apache/apache.conf; then
-	sed -i -e '
-		/^Include.*mod_horde\.conf/d
-	' /etc/apache/apache.conf
-else
-	# they're still using old apache.conf
-	sed -i -e '
-		s,^Include.*mod_horde\.conf,Include %{_sysconfdir}/conf.d/*_mod_horde.conf,
-	' /etc/apache/apache.conf
+if [ -f /etc/apache/apache.conf ]; then
+	if grep -q '^Include conf\.d' /etc/apache/apache.conf; then
+		sed -i -e '
+			/^Include.*mod_horde\.conf/d
+		' /etc/apache/apache.conf
+	else
+		# they're still using old apache.conf
+		sed -i -e '
+			s,^Include.*mod_horde\.conf,Include %{_sysconfdir}/conf.d/*_mod_horde.conf,
+		' /etc/apache/apache.conf
+	fi
 fi
 
 if [ -f %{_apache1dir}/horde.conf.rpmsave ]; then
