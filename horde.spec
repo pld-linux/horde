@@ -95,12 +95,16 @@ com relação ao Horde e seus módulos), por favor visite
 # FIXME: package name?
 %package -n openldap-schema-horde
 Summary:	Horde LDAP schema
+Summary(pl):	Schemat LDAP dla Horde
 Group:		Networking/Daemons
 Requires(post,postun): sed >= 4.0
 Requires:	openldap-servers
 
 %description -n openldap-schema-horde
 This package contains horde.schema for openldap.
+
+%description -n openldap-schema-horde -l pl
+Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
 %setup -q
