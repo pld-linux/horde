@@ -6,7 +6,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	2.0
-Release:	1
+Release:	0.5
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -25,6 +25,8 @@ Requires:	php-pcre >= 4.1.0
 Requires:	php-posix >= 4.1.0
 Requires:	php-xml >= 4.1.0
 BuildArch:	noarch
+Obsoletes:	horde-mysql
+Obsoletes:	horde-pgsql
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		apachedir	/etc/httpd
