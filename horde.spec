@@ -52,7 +52,7 @@ with Horde and its modules) please visit http://www.horde.org/ .
 
 %description -l pl
 Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla modu³ów
-Horde, takich jak IMP (obs³uga poczty poprzez www). Ten pakiet jest
+Horde, takich jak IMP (obs³uga poczty poprzez WWW). Ten pakiet jest
 wymagany dla wszystkich innych modu³ów Horde.
 
 Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
