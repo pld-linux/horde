@@ -1,7 +1,5 @@
 # TODO:
 # - support for Oracle and Sybase
-# - make default install secure. so that it doesn't auto auth you to
-#   administrator. ip restriction in apache? any better ideas?
 # - remove config/ (and others in apache.conf) from document root, so
 #   apache deny from all not needed.
 # - put docs/CREDITS to package, rather in doc (so installations with
@@ -14,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.3
-Release:	2.36
+Release:	2.37
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -24,6 +22,7 @@ Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
+Patch3:		%{name}-blank-admins.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -97,6 +96,7 @@ com relação ao Horde e seus módulos), por favor visite
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p0
 
 # Described in documentation as dangerous file...
 rm test.php
@@ -157,21 +157,22 @@ if [ -d %{_apache2dir}/httpd.conf ]; then
 fi
 
 if [ "$1" = 1 ]; then
-# put this message all properly together.
 %banner %{name} -e <<EOF
 
 IMPORTANT:
-If You are installing horde for the first time, You must
-create the Horde database tables. Look into directory
-%{_defaultdocdir}/%{name}-%{version}/scripts/sql
+Default horde installation will auto authorize You as Administrator, but due
+security concerns the Administrator is not granted Administrator privileges.
+If You want to add Yourself to admins list (to administer Horde via web
+interface), please change %{_sysconfdir}/horde/conf.php:
+$conf['auth']['admins'] = array('Administrator');
+
+Depending on authorization You choose, You need to create Horde database tables.
+Look into directory %{_defaultdocdir}/%{name}-%{version}/scripts/sql
 to find out how to do this for Your database.
 
-Depending on authorization You choose,
-You need to install php-ldap package and setup ldap schema from
-%{_defaultdocdir}/%{name}-%{version}/scripts/ldap.
-
-NOTE: You don't need SQL database, if you use LDAP for
-authorization.
+If You've chosen LDAP authorization, please install php-ldap package and
+setup ldap schema from %{_defaultdocdir}/%{name}-%{version}/scripts/ldap.
+NOTE: You don't need SQL database, if You use LDAP for authorization.
 
 EOF
 # '
