@@ -12,7 +12,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.4
-Release:	1
+Release:	2
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
@@ -44,6 +44,7 @@ Requires:	php-posix >= 4.1.0
 Requires:	php-session >= 4.1.0
 Requires:	php-xml >= 4.1.0
 Requires:	php-zlib >= 4.1.0
+Requires:	php-dom
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
@@ -60,12 +61,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_apache2dir	/etc/httpd
 %define		schemadir	/usr/share/openldap/schema
 
-%define		_php5		%(rpm -q php | awk -F- '{print $2}' | awk -F. '{print $1}')
-%if "%{_php5}" == "5"
-Requires:	php-dom
-%else
-Requires:	php-domxml
-%endif
 
 %description
 The Horde Framework provides a common structure and interface for
