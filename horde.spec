@@ -7,13 +7,13 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	3.0.1
+Version:	3.0.2
 Release:	0.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
-# Source0-md5:	5c0dbab26a64b5e58d4cbb1724e472e0
+# Source0-md5:	620745a4e94dd848fff72edb3b45c184
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 URL:		http://www.horde.org/
