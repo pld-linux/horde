@@ -56,7 +56,7 @@ wymagany dla wszystkich innych modu³ów Horde.
 
 Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
 Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e help
-do IMP'a) zajrzyj na stronê http://www.horde.org
+do IMP-a) zajrzyj na stronê http://www.horde.org/.
 
 %description -l pt_BR
 Este pacote provê uma interface e estrutura comuns para os módulos Horde
