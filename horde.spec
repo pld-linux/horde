@@ -1,9 +1,13 @@
 # TODO:
 # - support for Oracle and Sybase
+# - remove config/ (and others in apache.conf) from document root, so
+#   apache deny from all not needed.
+# - put docs/CREDITS to package, rather in doc (so installations with
+#   --excludedocs have functional horde?)
 #
 
 %define name horde
-%define version 3.0.3
+%define version 3.0.4
 %define pre rc1
 %define fname %{name}-%{version}-%{pre}
 
@@ -19,14 +23,22 @@ License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}-%{pre}.tar.gz
-# Source0-md5:	0c9ebed41a82cc32eefc157530934115
+# Source0-md5:	296587f261cda99790d132da0425bad8
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
+Patch1:		%{name}-shell.disabled.patch
+Patch2:		%{name}-util-h3.patch
+Patch3:		%{name}-blank-admins.patch
+Patch4:		%{name}-ldap-choraprefs.patch
 URL:		http://www.horde.org/
+BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-PreReq:		apache-mod_dir >= 1.3.22
-Requires(post):	grep
-Requires:	apache >= 1.3.22
+Requires(triggerpostun):	grep
+Requires(triggerpostun):	sed >= 4.0
+Requires:	apache >= 1.3.33-3
+Requires:	apache(mod_dir) >= 1.3.22
+Requires:	apache(mod_access)
+Requires:	apache(mod_alias)
 Requires:	php >= 4.1.0
 Requires:	php-gettext >= 4.1.0
 Requires:	php-imap >= 4.1.0
@@ -37,21 +49,27 @@ Requires:	php-pcre >= 4.1.0
 Requires:	php-posix >= 4.1.0
 Requires:	php-session >= 4.1.0
 Requires:	php-xml >= 4.1.0
+Requires:	php-zlib >= 4.1.0
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+# horde accesses it directly in help->about
+%define		_noautocompressdoc  CREDITS
 %define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
 
 %define		hordedir	/usr/share/horde
-%define		confdir		/etc/horde.org
-%define		_apache2	%{?with_apache1:0}%{?!with_apache1:1}
-%if %{_apache2}
-%define		apachedir	/etc/httpd
+%define		_sysconfdir	/etc/horde.org
+%define		_appdir		%{hordedir}
+%define		_apache1dir	/etc/apache
+%define		_apache2dir	/etc/httpd
+%define		schemadir	/usr/share/openldap/schema
+
+%define		_php5		%(rpm -q php | awk -F- '{print $2}' | awk -F. '{print $1}')
+%if "%{_php5}" == "5"
 Requires:	php-dom
 %else
-%define		apachedir	/etc/apache
 Requires:	php-domxml
 %endif
 
@@ -62,7 +80,7 @@ required for all other Horde module RPMS.
 
 The Horde Project writes web applications in PHP and releases them
 under the GNU Public License. For more information (including help
-with Horde and its modules) please visit http://www.horde.org/ .
+with Horde and its modules) please visit <http://www.horde.org/>.
 
 %description -l pl
 Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla modu³ów
@@ -71,7 +89,7 @@ wymagany dla wszystkich innych modu³ów Horde.
 
 Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
 Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e help
-do IMP-a) zajrzyj na stronê http://www.horde.org/ .
+do IMP-a) zajrzyj na stronê <http://www.horde.org/>.
 
 %description -l pt_BR
 Este pacote provê uma interface e estrutura comuns para os módulos
@@ -81,107 +99,236 @@ outros módulos Horde.
 O Projeto Horde é constituído por diversos aplicativos web escritos em
 PHP, todos liberados sob a GPL. Para mais informações (incluindo ajuda
 com relação ao Horde e seus módulos), por favor visite
-http://www.horde.org/ .
+<http://www.horde.org/>.
+
+# FIXME: package name?
+%package -n openldap-schema-horde
+Summary:	Horde LDAP schema
+Summary(pl):	Schemat LDAP dla Horde
+Group:		Networking/Daemons
+Requires(post,postun):	sed >= 4.0
+Requires:	openldap-servers
+
+%description -n openldap-schema-horde
+This package contains horde.schema for openldap.
+
+%description -n openldap-schema-horde -l pl
+Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
 %setup -q -n %{fname}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p0
+%patch4 -p1
+
+# Described in documentation as dangerous file...
+rm test.php
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{apachedir},%{confdir}/horde} \
-	$RPM_BUILD_ROOT%{hordedir}/{admin,js,lib,locale,services} \
-	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util}
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
+	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services} \
+	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
+	$RPM_BUILD_ROOT/var/log/%{name} \
+	$RPM_BUILD_ROOT%{schemadir}
 
-cp -pR scripts docs
-cp -pR	*.php			$RPM_BUILD_ROOT%{hordedir}
-
-for i in admin js lib locale services templates themes util; do
-	cp -pR $i/*		$RPM_BUILD_ROOT%{hordedir}/$i
+cp -pR *.php			$RPM_BUILD_ROOT%{_appdir}
+for i in config/*.php.dist; do
+	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/$(basename $i .dist)
 done
-for i in lib locale templates; do
-	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{hordedir}/$i
-done
+sed -e '
+    s,/tmp/horde.log,/var/log/%{name}/%{name}.log,
+'< config/conf.xml > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.xml
+> $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.php.bak
 
-cp -pR config/*.php.dist	$RPM_BUILD_ROOT%{confdir}/horde
-cp -p  config/.htaccess		$RPM_BUILD_ROOT%{confdir}/horde
-cp -p  config/*.xml		$RPM_BUILD_ROOT%{confdir}/horde
+cp -pR  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
+cp -pR  js/*                    $RPM_BUILD_ROOT%{_appdir}/js
+cp -pR  services/*              $RPM_BUILD_ROOT%{_appdir}/services
 
-install	%{SOURCE1}		$RPM_BUILD_ROOT%{apachedir}
-ln -fs %{confdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
+cp -pR  lib/*                   $RPM_BUILD_ROOT%{_appdir}/lib
+cp -pR  locale/*                $RPM_BUILD_ROOT%{_appdir}/locale
+cp -pR  templates/*             $RPM_BUILD_ROOT%{_appdir}/templates
+cp -pR  themes/*                $RPM_BUILD_ROOT%{_appdir}/themes
 
-# Described in documentation as dangerous file...
-rm $RPM_BUILD_ROOT%{hordedir}/test.php
+ln -s %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{_appdir}/config
+ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 
-# bit unclean..
-cd $RPM_BUILD_ROOT%{confdir}/horde
-for i in *.dist; do cp $i `basename $i .dist`; done
+install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
+
+> $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
+
+install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*%{name}.conf" /etc/httpd/httpd.conf; then
-	echo "Include /etc/httpd/%{name}.conf" >> /etc/httpd/httpd.conf
-	if [ -f /var/lock/subsys/httpd ]; then
-		/usr/sbin/apachectl restart 1>&2
+if [ ! -f %{_sysconfdir}/%{name}/conf.php.bak ]; then
+	install /dev/null -o root -g http -m660 %{_sysconfdir}/%{name}/conf.php.bak
+fi
+
+# apache1
+if [ -d %{_apache1dir}/conf.d ]; then
+	ln -sf %{_sysconfdir}/apache-%{name}.conf %{_apache1dir}/conf.d/99_%{name}.conf
+	if [ -f /var/lock/subsys/apache ]; then
+		/etc/rc.d/init.d/apache restart 1>&2
 	fi
-elif [ -d /etc/httpd/httpd.conf ]; then
-	ln -sf /etc/httpd/%{name}.conf /etc/httpd/httpd.conf/99_%{name}.conf
+fi
+# apache2
+if [ -d %{_apache2dir}/httpd.conf ]; then
+	ln -sf %{_sysconfdir}/apache-%{name}.conf %{_apache2dir}/httpd.conf/99_%{name}.conf
 	if [ -f /var/lock/subsys/httpd ]; then
-		/usr/sbin/apachectl restart 1>&2
+		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
 fi
 
-cat <<_EOF2_
-IMPORTANT:
-If you are installing for the first time, you must now
-create the Horde database tables. Look into directory
-/usr/share/doc/%{name}-%{version}/scripts/db
-to find out how to do this for your database.
-_EOF2_
+if [ "$1" = 1 ]; then
+%banner %{name} -e <<EOF
 
-%preun
+IMPORTANT:
+Default horde installation will auto authorize You as Administrator, but due
+security concerns the Administrator is not granted Administrator privileges.
+If You want to add Yourself to admins list (to administer Horde via web
+interface), please change %{_sysconfdir}/horde/conf.php:
+$conf['auth']['admins'] = array('Administrator');
+
+Depending on authorization You choose, You need to create Horde database tables.
+Look into directory %{_defaultdocdir}/%{name}-%{version}/scripts/sql
+to find out how to do this for Your database.
+
+If You've chosen LDAP authorization, please install php-ldap package.
+To configure your openldap server to use horde schema, install
+openldap-schema-horde package.
+
+NOTE: You don't need SQL database if You use LDAP for authorization.
+
+EOF
+# '
+
+fi
+
+%postun
 if [ "$1" = "0" ]; then
-	umask 027
-	if [ -d /etc/httpd/httpd.conf ]; then
-	    rm -f /etc/httpd/httpd.conf/99_%{name}.conf
-	else
-		grep -v "^Include.*%{name}.conf" /etc/httpd/httpd.conf > \
-			/etc/httpd/httpd.conf.tmp
-		mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
+	# apache1
+	if [ -d %{_apache1dir}/conf.d ]; then
+		rm -f %{_apache1dir}/conf.d/99_%{name}.conf
+		if [ -f /var/lock/subsys/apache ]; then
+			/etc/rc.d/init.d/apache restart 1>&2
+		fi
 	fi
-	if [ -f /var/lock/subsys/httpd ]; then
-	    /usr/sbin/apachectl restart 1>&2
+	# apache2
+	if [ -d %{_apache2dir}/httpd.conf ]; then
+		rm -f %{_apache2dir}/httpd.conf/99_%{name}.conf
+		if [ -f /var/lock/subsys/httpd ]; then
+			/etc/rc.d/init.d/httpd restart 1>&2
+		fi
+	fi
+fi
+
+%post -n openldap-schema-horde
+if ! grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
+	sed -i -e '
+		/^include.*local.schema/{
+			i\
+include		%{schemadir}/horde.schema
+		}
+	' /etc/openldap/slapd.conf
+fi
+
+if [ -f /var/lock/subsys/ldap ]; then
+    /etc/rc.d/init.d/ldap restart >&2
+fi
+
+%postun -n openldap-schema-horde
+if [ "$1" = "0" ]; then
+	if grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
+		sed -i -e '
+		/^include.*\/usr\/share\/openldap\/schema\/horde.schema/d
+		' /etc/openldap/slapd.conf
+	fi
+
+	if [ -f /var/lock/subsys/ldap ]; then
+		/etc/rc.d/init.d/ldap restart >&2 || :
 	fi
 fi
 
 %triggerpostun -- horde <= 2.2.7-2
 for i in horde.php html.php lang.php mime_drivers.php mime_mapping.php motd.php prefs.php registry.php; do
 	if [ -f /home/services/httpd/html/horde/config/$i.rpmsave ]; then
-		cp -f %{confdir}/%{name}/$i %{confdir}/%{name}/$i.rpmnew
-		mv -f /home/services/httpd/html/horde/config/$i.rpmsave %{confdir}/%{name}/$i
+		cp -f %{_sysconfdir}/%{name}/$i %{_sysconfdir}/%{name}/$i.rpmnew
+		mv -f /home/services/httpd/html/horde/config/$i.rpmsave %{_sysconfdir}/%{name}/$i
 	fi
 done
- 
+
+%triggerpostun -- horde <= 3.0.3-2.23
+# apache1 confdir
+if [ -f /etc/apache/apache.conf ]; then
+	if grep -q '^Include conf\.d' /etc/apache/apache.conf; then
+		sed -i -e '
+			/^Include.*mod_horde\.conf/d
+		' /etc/apache/apache.conf
+	else
+		# they're still using old apache.conf
+		sed -i -e '
+			s,^Include.*mod_horde\.conf,Include %{_sysconfdir}/conf.d/*_mod_horde.conf,
+		' /etc/apache/apache.conf
+	fi
+fi
+
+if [ -f %{_apache1dir}/horde.conf.rpmsave ]; then
+	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
+	mv -f %{_apache1dir}/horde.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
+fi
+
+if [ -f %{_apache2dir}/horde.conf.rpmsave ]; then
+	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
+	mv -f %{_apache2dir}/horde.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
+fi
+
+# unified location
+if [ -f %{_sysconfdir}/apache.conf.rpmsave ]; then
+	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
+	mv -f %{_sysconfdir}/apache.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
+fi
+
+if [ -f /var/lock/subsys/apache ]; then
+	/etc/rc.d/init.d/apache restart 1>&2
+fi
+
+if [ -f /var/lock/subsys/httpd ]; then
+	/etc/rc.d/init.d/httpd restart 1>&2
+fi
+
 %files
 %defattr(644,root,root,755)
-%doc README docs/{HACKING,CONTRIBUTING,CODING_STANDARDS,CHANGES,INSTALL,scripts}
-%dir %{hordedir}
-%dir %{confdir}
-%{hordedir}/*.php
-%{hordedir}/admin
-%{hordedir}/config
-%{hordedir}/js
-%{hordedir}/lib
-%{hordedir}/locale
-%{hordedir}/services
-%{hordedir}/templates
-%{hordedir}/themes
-%{hordedir}/util
-%attr(640,root,http) %config(noreplace) %{apachedir}/horde.conf
-%attr(770,root,http) %dir %{confdir}/horde
-%attr(640,root,http) %{confdir}/horde/*.dist
-%attr(660,root,http) %config(noreplace) %{confdir}/horde/*.php
-%attr(640,root,http) %config(noreplace) %{confdir}/horde/.htaccess
-%attr(660,root,http) %config(noreplace) %{confdir}/horde/*.xml
+%doc README scripts util
+%doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
+%doc docs/{PERFORMANCE,RELEASE_NOTES,SECURITY,TODO,TRANSLATIONS,UPGRADING}
+%dir %{_sysconfdir}
+%attr(750,root,http) %dir %{_sysconfdir}/%{name}
+%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{name}.conf
+%attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/conf.php
+%attr(660,root,http) %config(noreplace) %ghost %{_sysconfdir}/%{name}/conf.php.bak
+%attr(640,root,http) %config(noreplace) %{_sysconfdir}/%{name}/[!c]*.php
+%attr(640,root,http) %{_sysconfdir}/%{name}/*.xml
+
+%dir %{_appdir}
+%{_appdir}/*.php
+%{_appdir}/admin
+%{_appdir}/config
+%{_appdir}/docs
+%{_appdir}/js
+%{_appdir}/lib
+%{_appdir}/locale
+%{_appdir}/services
+%{_appdir}/templates
+%{_appdir}/themes
+
+%dir %attr(750,root,http) /var/log/%{name}
+%ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
+
+%files -n openldap-schema-horde
+%defattr(644,root,root,755)
+%{schemadir}/*.schema
