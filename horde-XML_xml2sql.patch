@@ -1,0 +1,12 @@
+diff -u -r horde-2.1/lib/Serialize.php horde-2.1.new/lib/Serialize.php
+--- horde-2.1/lib/Serialize.php	Fri Apr  5 03:24:23 2002
++++ horde-2.1.new/lib/Serialize.php	Tue Oct  8 14:29:02 2002
+@@ -206,7 +206,7 @@
+         case SERIALIZEUNIT_SQLXML:
+             include_once ('DB.php');
+             include_once('XML/sql2xml.php');
+-            $sql2xml = new xml_sql2xml();
++            $sql2xml = new XML_sql2xml();
+             $out = $sql2xml->getXML($var);
+             break;
+ 
