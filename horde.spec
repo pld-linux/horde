@@ -88,10 +88,10 @@ install -d $RPM_BUILD_ROOT{%{apachedir},%{confdir}/horde} \
 	$RPM_BUILD_ROOT%{hordedir}/{templates,themes,util}
 
 cp -pR scripts docs
-cp -pR	*.php		$RPM_BUILD_ROOT%{hordedir}
+cp -pR	*.php			$RPM_BUILD_ROOT%{hordedir}
 
 for i in admin js lib locale services templates themes util; do
-	cp -pR $i/*	$RPM_BUILD_ROOT%{hordedir}/$i
+	cp -pR $i/*		$RPM_BUILD_ROOT%{hordedir}/$i
 done
 for i in lib locale templates; do
 	cp -p $i/.htaccess	$RPM_BUILD_ROOT%{hordedir}/$i
@@ -101,8 +101,8 @@ cp -pR config/*.php.dist	$RPM_BUILD_ROOT%{confdir}/horde
 cp -p  config/.htaccess		$RPM_BUILD_ROOT%{confdir}/horde
 cp -p  config/*.xml		$RPM_BUILD_ROOT%{confdir}/horde
 
-install	%{SOURCE1}	$RPM_BUILD_ROOT%{apachedir}
-ln -fs %{confdir}/%{name} $RPM_BUILD_ROOT%{hordedir}/config
+install	%{SOURCE1}		$RPM_BUILD_ROOT%{apachedir}
+ln -fs %{confdir}/%{name} 	$RPM_BUILD_ROOT%{hordedir}/config
 
 # Described in documentation as dangerous file...
 rm $RPM_BUILD_ROOT%{hordedir}/test.php
