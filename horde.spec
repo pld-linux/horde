@@ -47,7 +47,7 @@ required for all other Horde module RPMS.
 
 The Horde Project writes web applications in PHP and releases them
 under the GNU Public License. For more information (including help
-with Horde and its modules) please visit http://www.horde.org/.
+with Horde and its modules) please visit http://www.horde.org/ .
 
 %description -l pl
 Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla modu³ów
@@ -56,16 +56,17 @@ wymagany dla wszystkich innych modu³ów Horde.
 
 Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
 Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e help
-do IMP-a) zajrzyj na stronê http://www.horde.org/.
+do IMP-a) zajrzyj na stronê http://www.horde.org/ .
 
 %description -l pt_BR
-Este pacote provê uma interface e estrutura comuns para os módulos Horde
-(como IMP, um programa de webmail) e é requerido por todos os outros
-módulos Horde.
+Este pacote provê uma interface e estrutura comuns para os módulos
+Horde (como IMP, um programa de webmail) e é requerido por todos os
+outros módulos Horde.
 
-O Projeto Horde é constituído por diversos aplicativos web escritos em PHP,
-todos liberados sob a GPL. Para mais informações (incluindo ajuda com
-relação ao Horde e seus módulos), por favor visite http://www.horde.org/.
+O Projeto Horde é constituído por diversos aplicativos web escritos em
+PHP, todos liberados sob a GPL. Para mais informações (incluindo ajuda
+com relação ao Horde e seus módulos), por favor visite
+http://www.horde.org/ .
 
 %prep
 %setup -q
