@@ -8,7 +8,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.2
-Release:	0.4
+Release:	1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Development/Languages/PHP
