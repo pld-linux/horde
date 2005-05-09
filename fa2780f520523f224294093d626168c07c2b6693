@@ -1,0 +1,4 @@
+- 2.1 - release 0.1,
+- Horde_Auth patch added - don't make conflicts with PEAR
+- new doc
+  NOTE: needs more work...
