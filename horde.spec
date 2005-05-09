@@ -15,7 +15,7 @@ Version:	3.0.4
 Release:	5
 License:	LGPL
 Vendor:		The Horde Project
-Group:		Development/Languages/PHP
+Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
 # Source0-md5:	e2221d409ba1c8841ce4ecee981d7b61
 Source1:	%{name}.conf
