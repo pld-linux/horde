@@ -313,7 +313,7 @@ fi
 %{_appdir}/templates
 %{_appdir}/themes
 
-%dir %attr(750,root,http) /var/log/%{name}
+%dir %attr(770,root,http) /var/log/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
 
 %files -n openldap-schema-horde
