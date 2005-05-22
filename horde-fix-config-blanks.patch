@@ -1,0 +1,36 @@
+Don't provide default values for db fields that can be empty.
+
+===================================================================
+RCS file: /horde/cvs/framework/Horde/Horde/Config.php,v
+retrieving revision 1.87
+retrieving revision 1.88
+diff -p --unified=3 -r1.87 -r1.88
+--- ./lib/Horde/Config.php	2005/03/25 06:39:58	1.87
++++ ./lib/Horde/Config.php	2005/04/18 09:37:53	1.88
+@@ -552,22 +552,22 @@ class Horde_Config {
+             '_type' => 'text',
+             'required' => true,
+             'desc' => 'Database server/host',
+-            'default' => $this->_default($ctx . '|hostspec', 'localhost'));
++            'default' => $this->_default($ctx . '|hostspec', ''));
+         $username = array(
+             '_type' => 'text',
+             'required' => true,
+             'desc' => 'Username to connect to the database as',
+-            'default' => $this->_default($ctx . '|username', 'horde'));
++            'default' => $this->_default($ctx . '|username', ''));
+         $password = array(
+             '_type' => 'text',
+             'required' => false,
+             'desc' => 'Password to connect with',
+-            'default' => $this->_default($ctx . '|password', '*****'));
++            'default' => $this->_default($ctx . '|password', ''));
+         $database = array(
+             '_type' => 'text',
+             'required' => true,
+             'desc' => 'Database name to use',
+-            'default' => $this->_default($ctx . '|database', 'horde'));
++            'default' => $this->_default($ctx . '|database', ''));
+         $socket = array(
+             '_type' => 'text',
+             'required' => false,
