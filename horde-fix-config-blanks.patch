@@ -5,17 +5,8 @@ RCS file: /horde/cvs/framework/Horde/Horde/Config.php,v
 retrieving revision 1.87
 retrieving revision 1.88
 diff -p --unified=3 -r1.87 -r1.88
---- Config.php	2005/03/25 06:39:58	1.87
-+++ Config.php	2005/04/18 09:37:53	1.88
-@@ -13,7 +13,7 @@
-  *
-  *   http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/
-  *
-- * $Horde: framework/Horde/Horde/Config.php,v 1.86 2005/03/22 11:32:10 jan Exp $
-+ * $Horde: framework/Horde/Horde/Config.php,v 1.87 2005/03/25 06:39:58 slusarz Exp $
-  *
-  * Copyright 2002-2005 Chuck Hagenbuch <chuck@horde.org>
-  *
+--- ./lib/Horde/Config.php	2005/03/25 06:39:58	1.87
++++ ./lib/Horde/Config.php	2005/04/18 09:37:53	1.88
 @@ -552,22 +552,22 @@ class Horde_Config {
              '_type' => 'text',
              'required' => true,
