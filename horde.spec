@@ -17,7 +17,7 @@ Release:	0.%{_rc}.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Applications/WWW
-Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}%{?_rc:-%{_rc}}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}-%{_rc}.tar.gz
 # Source0-md5:	508ac78d38fa95b873153680729d6ca7
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
