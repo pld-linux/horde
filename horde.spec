@@ -11,19 +11,19 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
-Version:	3.0.4
-Release:	6
+Version:	3.0.5
+%define	_rc	rc1
+Release:	0.%{_rc}.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Applications/WWW
-Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
-# Source0-md5:	e2221d409ba1c8841ce4ecee981d7b61
+Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}%{?_rc:-%{_rc}}.tar.gz
+# Source0-md5:	508ac78d38fa95b873153680729d6ca7
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
-Patch4:		%{name}-fix-config-blanks.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -105,12 +105,16 @@ This package contains horde.schema for openldap.
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
-%setup -q
+%setup -q %{?_rc:-n %{name}-%{version}-%{_rc}}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p0
-%patch4 -p1
+
+sed -i -e "
+s#dirname(__FILE__) . '/..#'/usr/share/horde#g
+" config/registry.php.dist
+
 
 # Described in documentation as dangerous file...
 rm test.php
