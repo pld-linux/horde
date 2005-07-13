@@ -1,5 +1,7 @@
 # TODO:
 # - support for Oracle and Sybase
+# - Support SQLite and Oracle in all SQL configurations.
+# - LDAP and memcached session handlers.
 # - remove config/ (and others in apache.conf) from document root, so
 #   apache deny from all not needed.
 # - put docs/CREDITS to package, rather in doc (so installations with
