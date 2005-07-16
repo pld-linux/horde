@@ -14,13 +14,13 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.5
-%define	_rc	rc1
+%define	_rc	rc2
 Release:	0.%{_rc}.1
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}-%{_rc}.tar.gz
-# Source0-md5:	508ac78d38fa95b873153680729d6ca7
+# Source0-md5:	9c0a209c8b0e4ac2fdeb250acec4d352
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
@@ -62,7 +62,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_apache1dir	/etc/apache
 %define		_apache2dir	/etc/httpd
 %define		schemadir	/usr/share/openldap/schema
-
 
 %description
 The Horde Framework provides a common structure and interface for
@@ -116,7 +115,6 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 sed -i -e "
 s#dirname(__FILE__) . '/..#'/usr/share/horde#g
 " config/registry.php.dist
-
 
 # Described in documentation as dangerous file...
 rm test.php
