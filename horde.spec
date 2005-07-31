@@ -15,7 +15,7 @@ Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.5
 %define	_rc	rc2
-Release:	0.%{_rc}.2
+Release:	0.%{_rc}.3
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Applications/WWW
@@ -124,7 +124,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
 	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services} \
 	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
-	$RPM_BUILD_ROOT/var/log/%{name} \
+	$RPM_BUILD_ROOT/var/{lib,log}/%{name} \
 	$RPM_BUILD_ROOT%{schemadir}
 
 cp -pR *.php			$RPM_BUILD_ROOT%{_appdir}
@@ -298,6 +298,7 @@ fi
 %{_appdir}/themes
 
 %dir %attr(770,root,http) /var/log/%{name}
+%dir %attr(770,root,http) /var/lib/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
 
 %files -n openldap-schema-horde
