@@ -1,0 +1,22 @@
+--- horde-3.0.5-rc2/config/conf.xml~	2005-06-02 13:19:47.000000000 +0300
++++ horde-3.0.5-rc2/config/conf.xml	2005-07-31 13:23:52.000000000 +0300
+@@ -1086,7 +1086,7 @@
+   <configsection name="mime">
+    <configheader>MIME Detection</configheader>
+    <configstring name="magic_db" required="false" desc="Location of the MIME
+-   magic database. Usually /usr/share/misc/magic or /etc/magic."/>
++   magic database. Usually /usr/share/misc/magic or /etc/magic.">/usr/share/misc/magic</configstring>
+   </configsection>
+  </configtab>
+ 
+--- horde-3.0.5-rc2/config/conf.xml~	2005-07-31 13:23:52.000000000 +0300
++++ horde-3.0.5-rc2/config/conf.xml	2005-07-31 13:27:10.000000000 +0300
+@@ -596,7 +596,7 @@
+ 
+       <case name="file" desc="File">
+        <configstring name="name" desc="Path to the log
+-       file">/tmp/horde.log</configstring>
++       file">/var/log/horde/horde.log</configstring>
+        <configsection name="params">
+         <configboolean name="append" required="false" desc="Should new log
+         entries be appended to an existing log file? If this is false, new log files
