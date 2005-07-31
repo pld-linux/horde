@@ -26,6 +26,7 @@ Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
+Patch4:		%{name}-config-xml.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpmbuild(macros) >= 1.177
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -111,6 +112,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p0
+%patch4 -p1
 
 sed -i -e "
 s#dirname(__FILE__) . '/..#'/usr/share/horde#g
@@ -131,9 +133,8 @@ cp -pR *.php			$RPM_BUILD_ROOT%{_appdir}
 for i in config/*.php.dist; do
 	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/$(basename $i .dist)
 done
-sed -e '
-    s,/tmp/horde.log,/var/log/%{name}/%{name}.log,
-'< config/conf.xml > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.xml
+
+install config/conf.xml $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.xml
 > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.php.bak
 
 cp -pR  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
