@@ -15,7 +15,7 @@ Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.5
 %define	_rc	rc2
-Release:	0.%{_rc}.3
+Release:	0.%{_rc}.4
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Applications/WWW
@@ -113,7 +113,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch4 -p1
 
 sed -i -e "
-s#dirname(__FILE__) . '/..#'/usr/share/horde#g
+s#dirname(__FILE__) . '/..#'%{hordedir}#g
 " config/registry.php.dist
 
 # Described in documentation as dangerous file...
