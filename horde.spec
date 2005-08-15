@@ -28,26 +28,26 @@ Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
 URL:		http://www.horde.org/
-BuildRequires:	rpmbuild(macros) >= 1.226
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
+BuildRequires:	rpmbuild(macros) >= 1.226
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	apache >= 1.3.33-3
-Requires:	apache(mod_dir) >= 1.3.22
 Requires:	apache(mod_access)
 Requires:	apache(mod_alias)
+Requires:	apache(mod_dir) >= 1.3.22
 Requires:	php >= 4.1.0
+Requires:	php-domxml
 Requires:	php-gettext >= 4.1.0
 Requires:	php-imap >= 4.1.0
 Requires:	php-mcrypt >= 4.1.0
-Requires:	php-pear-PEAR
-Requires:	php-pear-Log
 Requires:	php-pcre >= 4.1.0
+Requires:	php-pear-Log
+Requires:	php-pear-PEAR
 Requires:	php-posix >= 4.1.0
 Requires:	php-session >= 4.1.0
 Requires:	php-xml >= 4.1.0
 Requires:	php-zlib >= 4.1.0
-Requires:	php-domxml
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
