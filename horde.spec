@@ -21,6 +21,8 @@ Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
 # Source0-md5:	31ee0819be4efe44819f8ffef5db5365
 Source1:	%{name}.conf
+Source2:	http://www.maxmind.com/download/geoip/database/GeoIP.dat.gz
+# Source2-md5:	4f29410e385065eaa37037c1b1a44695
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
@@ -148,6 +150,10 @@ ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/doc
 
 install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
 
+# MaxMind GeoIP Hostname Country lookup
+
+install %{SOURCE2}		$RPM_BUILD_ROOT/var/lib/horde/
+
 > $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
 
 install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
@@ -179,6 +185,9 @@ To configure your openldap server to use horde schema, install
 openldap-schema-horde package.
 
 NOTE: You don't need SQL database for Auhtorization if You use LDAP for authorization.
+
+If you want to use MaxMind GeoIP Hostname Country lookup do 'gunzip /var/lib/horde/GeoIP.dat.gz'
+and enable this function in horde configuration.
 
 EOF
 # '
@@ -299,6 +308,7 @@ fi
 %dir %attr(770,root,http) /var/log/%{name}
 %dir %attr(770,root,http) /var/lib/%{name}
 %ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
+%attr(640,root,http) /var/lib/%{name}/GeoIP.dat.gz
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
