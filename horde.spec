@@ -14,7 +14,7 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.5
-Release:	1
+Release:	2
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Applications/WWW
@@ -91,12 +91,12 @@ PHP, todos liberados sob a GPL. Para mais informações (incluindo ajuda
 com relação ao Horde e seus módulos), por favor visite
 <http://www.horde.org/>.
 
-# FIXME: package name?
 %package -n openldap-schema-horde
 Summary:	Horde LDAP schema
 Summary(pl):	Schemat LDAP dla Horde
 Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
+Requires:	sed >= 4.0
 Requires:	openldap-servers
 
 %description -n openldap-schema-horde
