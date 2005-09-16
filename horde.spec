@@ -37,18 +37,18 @@ Requires:	apache >= 1.3.33-3
 Requires:	apache(mod_access)
 Requires:	apache(mod_alias)
 Requires:	apache(mod_dir) >= 1.3.22
-Requires:	php >= 4.1.0
+Requires:	php >= 3:4.1.0
 Requires:	php-domxml
-Requires:	php-gettext >= 4.1.0
-Requires:	php-imap >= 4.1.0
-Requires:	php-mcrypt >= 4.1.0
-Requires:	php-pcre >= 4.1.0
+Requires:	php-gettext >= 3:4.1.0
+Requires:	php-imap >= 3:4.1.0
+Requires:	php-mcrypt >= 3:4.1.0
+Requires:	php-pcre >= 3:4.1.0
 Requires:	php-pear-Log
 Requires:	php-pear-PEAR
-Requires:	php-posix >= 4.1.0
-Requires:	php-session >= 4.1.0
-Requires:	php-xml >= 4.1.0
-Requires:	php-zlib >= 4.1.0
+Requires:	php-posix >= 3:4.1.0
+Requires:	php-session >= 3:4.1.0
+Requires:	php-xml >= 3:4.1.0
+Requires:	php-zlib >= 3:4.1.0
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
