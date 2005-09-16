@@ -201,6 +201,10 @@ if ! grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
 			i\
 include		%{schemadir}/horde.schema
 		}
+		# enable dependant schemas: core.schema
+		/^#include.*\(core\)\.schema/{
+			s/^#//
+		}
 	' /etc/openldap/slapd.conf
 fi
 
@@ -213,6 +217,9 @@ if [ "$1" = "0" ]; then
 	if grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
 		sed -i -e '
 		/^include.*\/usr\/share\/openldap\/schema\/horde.schema/d
+
+		# for symmetry it would be nice if we disable enabled schemas in post,
+		# but we really can not do that, it would break something else.
 		' /etc/openldap/slapd.conf
 	fi
 
