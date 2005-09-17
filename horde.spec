@@ -2,7 +2,7 @@
 #define	_snap	2005-08-01
 #define	_rc		rc1
 %define	_rel	2
-#
+
 # TODO:
 # - support for Oracle and Sybase
 # - Support SQLite and Oracle in all SQL configurations.
@@ -21,7 +21,6 @@ Name:		horde
 Version:	3.0.5
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
-Vendor:		The Horde Project
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
 # Source0-md5:	31ee0819be4efe44819f8ffef5db5365
@@ -64,7 +63,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautocompressdoc  CREDITS
 %define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
 
-%define		hordedir	%{_datadir}/horde
+%define		hordedir	/usr/share/horde
 %define		_sysconfdir	/etc/horde.org
 %define		_appdir		%{hordedir}
 %define		schemadir	/usr/share/openldap/schema
@@ -139,7 +138,6 @@ cp -a *.php			$RPM_BUILD_ROOT%{_appdir}
 for i in config/*.php.dist; do
 	cp -a $i $RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/$(basename $i .dist)
 done
-
 cp -p config/conf.xml	$RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/conf.xml
 touch					$RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/conf.php.bak
 
