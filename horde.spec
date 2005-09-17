@@ -256,7 +256,7 @@ done
 %triggerpostun -- horde <= 3.0.3-2.23
 # apache1 confdir
 if [ -f /etc/apache/apache.conf ]; then
-	if grep -q '^Include conf\.d/\*.conf' /etc/apache/apache.conf; then
+	if grep -q '^Include conf\.d/\*\.conf' /etc/apache/apache.conf; then
 		sed -i -e '
 			/^Include.*horde\.conf/d
 		' /etc/apache/apache.conf
