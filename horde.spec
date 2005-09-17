@@ -1,3 +1,8 @@
+%define	_hordeapp horde
+#define	_snap	2005-08-01
+#define	_rc		rc1
+%define	_rel	2
+#
 # TODO:
 # - support for Oracle and Sybase
 # - Support SQLite and Oracle in all SQL configurations.
@@ -14,11 +19,11 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		horde
 Version:	3.0.5
-Release:	2
+Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Vendor:		The Horde Project
 Group:		Applications/WWW
-Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
 # Source0-md5:	31ee0819be4efe44819f8ffef5db5365
 Source1:	%{name}.conf
 Source2:	http://www.maxmind.com/download/geoip/database/GeoIP.dat.gz
@@ -31,6 +36,7 @@ Patch4:		%{name}-config-xml.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.226
+BuildRequires:	tar >= 1:1.15.1
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	apache >= 1.3.33-3
@@ -58,7 +64,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautocompressdoc  CREDITS
 %define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
 
-%define		hordedir	/usr/share/horde
+%define		hordedir	%{_datadir}/horde
 %define		_sysconfdir	/etc/horde.org
 %define		_appdir		%{hordedir}
 %define		schemadir	/usr/share/openldap/schema
@@ -106,7 +112,8 @@ This package contains horde.schema for openldap.
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
-%setup -q %{?_rc:-n %{name}-%{version}-%{_rc}}
+%setup -q -c -T -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
+tar zxf %{SOURCE0} --strip-components=1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -122,19 +129,19 @@ rm test.php
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name} \
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp} \
 	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services} \
 	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
-	$RPM_BUILD_ROOT/var/{lib,log}/%{name} \
+	$RPM_BUILD_ROOT/var/{lib,log}/horde \
 	$RPM_BUILD_ROOT%{schemadir}
 
-cp -pR *.php			$RPM_BUILD_ROOT%{_appdir}
+cp -a *.php			$RPM_BUILD_ROOT%{_appdir}
 for i in config/*.php.dist; do
-	cp -p $i $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/$(basename $i .dist)
+	cp -a $i $RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/$(basename $i .dist)
 done
 
-install config/conf.xml $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.xml
-> $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/conf.php.bak
+cp -p config/conf.xml	$RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/conf.xml
+touch					$RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/conf.php.bak
 
 cp -pR  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
 cp -pR  js/*                    $RPM_BUILD_ROOT%{_appdir}/js
@@ -145,16 +152,14 @@ cp -pR  locale/*                $RPM_BUILD_ROOT%{_appdir}/locale
 cp -pR  templates/*             $RPM_BUILD_ROOT%{_appdir}/templates
 cp -pR  themes/*                $RPM_BUILD_ROOT%{_appdir}/themes
 
-ln -s %{_sysconfdir}/%{name} 	$RPM_BUILD_ROOT%{_appdir}/config
+ln -s %{_sysconfdir}/%{_hordeapp} $RPM_BUILD_ROOT%{_appdir}/config
 ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
-
-install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{name}.conf
+install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{_hordeapp}.conf
 
 # MaxMind GeoIP Hostname Country lookup
-
 install %{SOURCE2}		$RPM_BUILD_ROOT/var/lib/horde/
 
-> $RPM_BUILD_ROOT/var/log/%{name}/%{name}.log
+> $RPM_BUILD_ROOT/var/log/horde/%{_hordeapp}.log
 
 install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
 
@@ -162,22 +167,22 @@ install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ ! -f %{_sysconfdir}/%{name}/conf.php.bak ]; then
-	install /dev/null -o root -g http -m660 %{_sysconfdir}/%{name}/conf.php.bak
+if [ ! -f %{_sysconfdir}/%{_hordeapp}/conf.php.bak ]; then
+	install /dev/null -o root -g http -m660 %{_sysconfdir}/%{_hordeapp}/conf.php.bak
 fi
 
 if [ "$1" = 1 ]; then
-%banner %{name} -e <<EOF
+%banner %{name} -e <<'EOF'
 
 IMPORTANT:
 Default horde installation will auto authorize You as Administrator, but due
 security concerns the Administrator is not granted Administrator privileges.
 If You want to add Yourself to admins list (to administer Horde via web
-interface), please change %{_sysconfdir}/horde/conf.php:
+interface), please change %{_sysconfdir}/%{_hordeapp}/conf.php:
 $conf['auth']['admins'] = array('Administrator');
 
 Depending on authorization You choose, You need to create Horde database tables.
-Look into directory %{_defaultdocdir}/%{name}-%{version}/scripts/sql
+Look into directory %{_docdir}/%{name}-%{version}/scripts/sql
 to find out how to do this for Your database.
 
 If You've chosen LDAP authorization, please install php-ldap package.
@@ -229,13 +234,13 @@ if [ "$1" = "0" ]; then
 fi
 
 %triggerin -- apache1 >= 1.3.33-2
-%apache_config_install -v 1 -c %{_sysconfdir}/apache-%{name}.conf
+%apache_config_install -v 1 -c %{_sysconfdir}/apache-%{_hordeapp}.conf
 
 %triggerun -- apache1 >= 1.3.33-2
 %apache_config_uninstall -v 1
 
 %triggerin -- apache >= 2.0.0
-%apache_config_install -v 2 -c %{_sysconfdir}/apache-%{name}.conf
+%apache_config_install -v 2 -c %{_sysconfdir}/apache-%{_hordeapp}.conf
 
 %triggerun -- apache >= 2.0.0
 %apache_config_uninstall -v 2
@@ -243,8 +248,8 @@ fi
 %triggerpostun -- horde <= 2.2.7-2
 for i in horde.php html.php lang.php mime_drivers.php mime_mapping.php motd.php prefs.php registry.php; do
 	if [ -f /home/services/httpd/html/horde/config/$i.rpmsave ]; then
-		cp -f %{_sysconfdir}/%{name}/$i %{_sysconfdir}/%{name}/$i.rpmnew
-		mv -f /home/services/httpd/html/horde/config/$i.rpmsave %{_sysconfdir}/%{name}/$i
+		cp -f %{_sysconfdir}/%{_hordeapp}/$i %{_sysconfdir}/%{_hordeapp}/$i.rpmnew
+		mv -f /home/services/httpd/html/horde/config/$i.rpmsave %{_sysconfdir}/%{_hordeapp}/$i
 	fi
 done
 
@@ -264,19 +269,19 @@ if [ -f /etc/apache/apache.conf ]; then
 fi
 
 if [ -f /etc/apache/horde.conf.rpmsave ]; then
-	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
-	mv -f /etc/apache/horde.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
+	cp -f %{_sysconfdir}/apache-%{_hordeapp}.conf{,.rpmnew}
+	mv -f /etc/apache/horde.conf.rpmsave %{_sysconfdir}/apache-%{_hordeapp}.conf
 fi
 
 if [ -f /etc/httpd/horde.conf.rpmsave ]; then
-	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
-	mv -f /etc/httpd/horde.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
+	cp -f %{_sysconfdir}/apache-%{_hordeapp}.conf{,.rpmnew}
+	mv -f /etc/httpd/horde.conf.rpmsave %{_sysconfdir}/apache-%{_hordeapp}.conf
 fi
 
 # unified location
 if [ -f %{_sysconfdir}/apache.conf.rpmsave ]; then
-	cp -f %{_sysconfdir}/apache-%{name}.conf{,.rpmnew}
-	mv -f %{_sysconfdir}/apache.conf.rpmsave %{_sysconfdir}/apache-%{name}.conf
+	cp -f %{_sysconfdir}/apache-%{_hordeapp}.conf{,.rpmnew}
+	mv -f %{_sysconfdir}/apache.conf.rpmsave %{_sysconfdir}/apache-%{_hordeapp}.conf
 fi
 
 if [ -f /var/lock/subsys/apache ]; then
@@ -293,12 +298,12 @@ fi
 %doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
 %doc docs/{PERFORMANCE,RELEASE_NOTES,SECURITY,TODO,TRANSLATIONS,UPGRADING}
 %dir %{_sysconfdir}
-%attr(750,root,http) %dir %{_sysconfdir}/%{name}
-%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{name}.conf
-%attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{name}/conf.php
-%attr(660,root,http) %config(noreplace) %ghost %{_sysconfdir}/%{name}/conf.php.bak
-%attr(640,root,http) %config(noreplace) %{_sysconfdir}/%{name}/[!c]*.php
-%attr(640,root,http) %{_sysconfdir}/%{name}/*.xml
+%attr(750,root,http) %dir %{_sysconfdir}/%{_hordeapp}
+%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache-%{_hordeapp}.conf
+%attr(660,root,http) %config(noreplace) %{_sysconfdir}/%{_hordeapp}/conf.php
+%attr(660,root,http) %config(noreplace) %ghost %{_sysconfdir}/%{_hordeapp}/conf.php.bak
+%attr(640,root,http) %config(noreplace) %{_sysconfdir}/%{_hordeapp}/[!c]*.php
+%attr(640,root,http) %{_sysconfdir}/%{_hordeapp}/conf.xml
 
 %dir %{_appdir}
 %{_appdir}/*.php
@@ -312,10 +317,10 @@ fi
 %{_appdir}/templates
 %{_appdir}/themes
 
-%dir %attr(770,root,http) /var/log/%{name}
-%dir %attr(770,root,http) /var/lib/%{name}
-%ghost %attr(770,root,http) /var/log/%{name}/%{name}.log
-%attr(640,root,http) /var/lib/%{name}/GeoIP.dat.gz
+%dir %attr(770,root,http) /var/log/horde
+%dir %attr(770,root,http) /var/lib/horde
+%ghost %attr(770,root,http) /var/log/horde/%{_hordeapp}.log
+%attr(640,root,http) /var/lib/horde/GeoIP.dat.gz
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
