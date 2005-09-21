@@ -82,9 +82,10 @@ Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla modu³ów
 Horde, takich jak IMP (obs³uga poczty poprzez WWW). Ten pakiet jest
 wymagany dla wszystkich innych modu³ów Horde.
 
-Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
-Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e help
-do IMP-a) zajrzyj na stronê <http://www.horde.org/>.
+Projekt Horde tworzy aplikacje WWW w PHP i wydaje je na licencji GNU
+General Public License. Wiêcej informacji (w³±cznie z pomoc± dla
+Horde i jego modu³ów) mo¿na znale¼æ na stronie
+<http://www.horde.org/>.
 
 %description -l pt_BR
 Este pacote provê uma interface e estrutura comuns para os módulos
