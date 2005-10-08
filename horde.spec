@@ -1,7 +1,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-08-01
 #define	_rc		rc1
-%define	_rel	2
+%define	_rel	2.2
 
 # TODO:
 # - support for Oracle and Sybase
@@ -32,6 +32,7 @@ Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
+Patch5:		%{name}-sql2xml.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.226
@@ -61,7 +62,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # horde accesses it directly in help->about
 %define		_noautocompressdoc  CREDITS
-%define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)'
+%define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
 
 %define		hordedir	/usr/share/horde
 %define		_sysconfdir	/etc/horde.org
@@ -119,6 +120,7 @@ tar zxf %{SOURCE0} --strip-components=1
 %patch2 -p1
 %patch3 -p0
 %patch4 -p1
+%patch5 -p1
 
 sed -i -e "
 s#dirname(__FILE__) . '/..#'%{hordedir}#g
