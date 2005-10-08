@@ -1,7 +1,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-08-01
 #define	_rc		rc1
-%define	_rel	2.2
+%define	_rel	3
 
 # TODO:
 # - support for Oracle and Sybase
