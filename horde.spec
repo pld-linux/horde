@@ -1,7 +1,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-08-01
 #define	_rc		rc1
-%define	_rel	3
+%define	_rel	4
 
 # TODO:
 # - support for Oracle and Sybase
@@ -128,6 +128,9 @@ s#dirname(__FILE__) . '/..#'%{hordedir}#g
 
 # Described in documentation as dangerous file...
 rm test.php
+
+# remove backup files from patching
+find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
 %install
 rm -rf $RPM_BUILD_ROOT
