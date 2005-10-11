@@ -42,3 +42,14 @@
      'provides' => 'wiki',
      'menu_parent' => 'website'
  );
+--- ./config/registry.php.dist~	2005-10-10 17:19:00.000000000 +0300
++++ ./config/registry.php.dist	2005-10-11 16:05:09.000000000 +0300
+@@ -351,7 +351,7 @@
+     'fileroot' => '/usr/share/horde/passwd',
+     'webroot' => $this->applications['horde']['webroot'] . '/passwd',
+     'name' => _("Password"),
+-    'status' => 'inactive',
++    'status' => 'active',
+     'menu_parent' => 'myaccount'
+ );
+ 
