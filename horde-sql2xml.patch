@@ -5,7 +5,7 @@
              return Util::extensionExists('zlib');
  
 +        case SERIALIZE_SQLXML:
-+            return file_exists("/usr/share/pear/XML/sql2xml.php");
++            return @include_once 'XML/sql2xml.php';
 +
          case SERIALIZE_NONE:
          case SERIALIZE_BASIC:
