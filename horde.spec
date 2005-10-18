@@ -1,7 +1,7 @@
 %define	_hordeapp horde
-#define	_snap	2005-08-01
-#define	_rc		rc1
-%define	_rel	4
+#define	_snap	2005-10-17
+%define	_rc		rc1
+%define	_rel	0.1
 
 # TODO:
 # - support for Oracle and Sybase
@@ -18,15 +18,17 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{_hordeapp}
-Version:	3.0.5
+Version:	3.0.6
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
-Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
-# Source0-md5:	31ee0819be4efe44819f8ffef5db5365
+#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
+#Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-HEAD-%{_snap}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
+# Source0-md5:	cdf8ee374372a1f1171a673fd582d2a3
 Source1:	%{name}.conf
 Source2:	http://www.maxmind.com/download/geoip/database/GeoIP.dat.gz
-# Source2-md5:	4f29410e385065eaa37037c1b1a44695
+# Source2-md5:	2125f413a975859ab6495fb2cb45f11f
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
@@ -115,12 +117,12 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %prep
 %setup -q -c -T -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
 tar zxf %{SOURCE0} --strip-components=1
-%patch0 -p1
-%patch1 -p1
+#%patch0 -p1
+#%patch1 -p1
 %patch2 -p1
 %patch3 -p0
 %patch4 -p1
-%patch5 -p1
+#%patch5 -p1
 
 sed -i -e "
 s#dirname(__FILE__) . '/..#'%{hordedir}#g
