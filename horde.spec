@@ -1,7 +1,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
 %define	_rc		rc1
-%define	_rel	0.1
+%define	_rel	0.2
 
 # TODO:
 # - support for Oracle and Sybase
@@ -117,8 +117,8 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %prep
 %setup -q -c -T -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
 tar zxf %{SOURCE0} --strip-components=1
-#%patch0 -p1
-#%patch1 -p1
+%patch0 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p0
 %patch4 -p1
