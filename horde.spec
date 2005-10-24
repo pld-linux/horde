@@ -1,7 +1,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
 %define	_rc		rc1
-%define	_rel	0.2
+%define	_rel	0.3
 
 # TODO:
 # - support for Oracle and Sybase
@@ -122,17 +122,21 @@ tar zxf %{SOURCE0} --strip-components=1
 %patch2 -p1
 %patch3 -p0
 %patch4 -p1
-#%patch5 -p1
-
-sed -i -e "
-s#dirname(__FILE__) . '/..#'%{hordedir}#g
-" config/registry.php.dist
+%patch5 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
 
 # remove backup files from patching
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
+
+# enable if you want to update patch0
+%if 0
+sed -i -e "
+s#dirname(__FILE__) . '/..#'%{hordedir}#g
+" config/registry.php.dist
+exit 1
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
