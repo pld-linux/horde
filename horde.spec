@@ -27,8 +27,6 @@ Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
 # Source0-md5:	cdf8ee374372a1f1171a673fd582d2a3
 Source1:	%{name}.conf
-Source2:	http://www.maxmind.com/download/geoip/database/GeoIP.dat.gz
-# Source2-md5:	2125f413a975859ab6495fb2cb45f11f
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
@@ -41,6 +39,7 @@ BuildRequires:	rpmbuild(macros) >= 1.226
 BuildRequires:	tar >= 1:1.15.1
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
+Requires:	GeoIP
 Requires:	apache >= 1.3.33-3
 Requires:	apache(mod_access)
 Requires:	apache(mod_alias)
@@ -166,9 +165,6 @@ ln -s %{_sysconfdir}/%{_hordeapp} $RPM_BUILD_ROOT%{_appdir}/config
 ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 install %{SOURCE1} 		$RPM_BUILD_ROOT%{_sysconfdir}/apache-%{_hordeapp}.conf
 
-# MaxMind GeoIP Hostname Country lookup
-install %{SOURCE2}		$RPM_BUILD_ROOT/var/lib/horde/
-
 > $RPM_BUILD_ROOT/var/log/horde/%{_hordeapp}.log
 
 install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
@@ -201,8 +197,8 @@ openldap-schema-horde package.
 
 NOTE: You don't need SQL database for Auhtorization if You use LDAP for authorization.
 
-If you want to use MaxMind GeoIP Hostname Country lookup do 'gunzip /var/lib/horde/GeoIP.dat.gz'
-and enable this function in horde configuration.
+If you want to use MaxMind GeoIP Hostname Country lookup do go to : 
+Configuration -> Horde -> Hostname->Country Lookup and set GeoIP.dat path to: /usr/share/GeoIP/GeoIP.dat
 
 EOF
 # '
@@ -330,7 +326,6 @@ fi
 %dir %attr(770,root,http) /var/log/horde
 %dir %attr(770,root,http) /var/lib/horde
 %ghost %attr(770,root,http) /var/log/horde/%{_hordeapp}.log
-%attr(640,root,http) /var/lib/horde/GeoIP.dat.gz
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
