@@ -11,6 +11,7 @@
 #   apache deny from all not needed.
 # - put docs/CREDITS to package, rather in doc (so installations with
 #   --excludedocs have functional horde?)
+# - patch prefs.xml to include default path to GeoIP /usr/share/GeoIP/GeoIP.dat
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -39,7 +40,6 @@ BuildRequires:	rpmbuild(macros) >= 1.226
 BuildRequires:	tar >= 1:1.15.1
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-Requires:	GeoIP
 Requires:	apache >= 1.3.33-3
 Requires:	apache(mod_access)
 Requires:	apache(mod_alias)
@@ -197,8 +197,10 @@ openldap-schema-horde package.
 
 NOTE: You don't need SQL database for Auhtorization if You use LDAP for authorization.
 
-If you want to use MaxMind GeoIP Hostname Country lookup do go to : 
-Configuration -> Horde -> Hostname->Country Lookup and set GeoIP.dat path to: /usr/share/GeoIP/GeoIP.dat
+If you want to use MaxMind GeoIP Hostname Country lookup, install
+GeoIP package and go to:
+
+Configuration -> Horde -> Hostname -> Country Lookup and set GeoIP.dat path to: /usr/share/GeoIP/GeoIP.dat
 
 EOF
 # '
