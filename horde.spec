@@ -1,7 +1,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
-%define	_rc		rc1
-%define	_rel	0.3
+#define	_rc		rc1
+%define	_rel	1
 
 # TODO:
 # - support for Oracle and Sybase
@@ -23,17 +23,16 @@ Version:	3.0.6
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
-#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
+# Source0-md5:	e1148c8f04125851660ff9643cf46db8
 #Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-HEAD-%{_snap}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
-# Source0-md5:	cdf8ee374372a1f1171a673fd582d2a3
+#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
-Patch5:		%{name}-sql2xml.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.226
@@ -121,7 +120,6 @@ tar zxf %{SOURCE0} --strip-components=1
 %patch2 -p1
 %patch3 -p0
 %patch4 -p1
-%patch5 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
