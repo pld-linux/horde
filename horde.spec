@@ -39,7 +39,6 @@ BuildRequires:	rpmbuild(macros) >= 1.226
 BuildRequires:	tar >= 1:1.15.1
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-Requires:	apache >= 1.3.33-3
 Requires:	apache(mod_access)
 Requires:	apache(mod_alias)
 Requires:	apache(mod_dir) >= 1.3.22
@@ -55,8 +54,10 @@ Requires:	php-posix >= 3:4.1.0
 Requires:	php-session >= 3:4.1.0
 Requires:	php-xml >= 3:4.1.0
 Requires:	php-zlib >= 3:4.1.0
+Requires:	webserver = apache
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
+Conflicts:	apache < 1.3.33-2
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -84,9 +85,8 @@ Horde, takich jak IMP (obs³uga poczty poprzez WWW). Ten pakiet jest
 wymagany dla wszystkich innych modu³ów Horde.
 
 Projekt Horde tworzy aplikacje WWW w PHP i wydaje je na licencji GNU
-General Public License. Wiêcej informacji (w³±cznie z pomoc± dla
-Horde i jego modu³ów) mo¿na znale¼æ na stronie
-<http://www.horde.org/>.
+General Public License. Wiêcej informacji (w³±cznie z pomoc± dla Horde
+i jego modu³ów) mo¿na znale¼æ na stronie <http://www.horde.org/>.
 
 %description -l pt_BR
 Este pacote provê uma interface e estrutura comuns para os módulos
@@ -103,8 +103,8 @@ Summary:	Horde LDAP schema
 Summary(pl):	Schemat LDAP dla Horde
 Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
-Requires:	sed >= 4.0
 Requires:	openldap-servers
+Requires:	sed >= 4.0
 
 %description -n openldap-schema-horde
 This package contains horde.schema for openldap.
