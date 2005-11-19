@@ -1,8 +1,3 @@
-%define	_hordeapp horde
-#define	_snap	2005-10-17
-#define	_rc		rc1
-%define	_rel	1
-
 # TODO:
 # - support for Oracle and Sybase
 # - Support SQLite and Oracle in all SQL configurations.
@@ -12,6 +7,14 @@
 # - put docs/CREDITS to package, rather in doc (so installations with
 #   --excludedocs have functional horde?)
 # - patch prefs.xml to include default path to GeoIP /usr/share/GeoIP/GeoIP.dat
+#
+# Conditional build:
+%bcond_without	autodeps	# don't BR packages needed only for resolving deps
+#
+%define	_hordeapp horde
+#define	_snap	2005-10-17
+#define	_rc		rc1
+%define	_rel	1.2
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -37,6 +40,23 @@ URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.226
 BuildRequires:	tar >= 1:1.15.1
+%if %{with autodeps}
+BuildRequires:	php-pear-Crypt_Rc4
+BuildRequires:	php-pear-DB
+BuildRequires:	php-pear-Date
+BuildRequires:	php-pear-File
+BuildRequires:	php-pear-HTTP_Request
+BuildRequires:	php-pear-HTTP_WebDAV_Server
+BuildRequires:	php-pear-Log
+BuildRequires:	php-pear-Mail
+BuildRequires:	php-pear-Mail_Mime
+BuildRequires:	php-pear-Net_IMAP
+BuildRequires:	php-pear-PEAR
+BuildRequires:	php-pear-SOAP
+BuildRequires:	php-pear-Services_Weather
+BuildRequires:	php-pear-VFS
+BuildRequires:	php-pear-XML_SVG
+%endif
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	apache(mod_access)
@@ -48,8 +68,6 @@ Requires:	php-gettext >= 3:4.1.0
 Requires:	php-imap >= 3:4.1.0
 Requires:	php-mcrypt >= 3:4.1.0
 Requires:	php-pcre >= 3:4.1.0
-Requires:	php-pear-Log
-Requires:	php-pear-PEAR
 Requires:	php-posix >= 3:4.1.0
 Requires:	php-session >= 3:4.1.0
 Requires:	php-xml >= 3:4.1.0
