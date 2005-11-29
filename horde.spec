@@ -72,11 +72,10 @@ Requires:	php-posix >= 3:4.1.0
 Requires:	php-session >= 3:4.1.0
 Requires:	php-xml >= 3:4.1.0
 Requires:	php-zlib >= 3:4.1.0
-Requires:	webapps
-Requires:	webserver
+Requires:	webserver = apache
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
-Conflicts:	apache1 < 1.3.34-3.2
+Conflicts:	apache1 < 1.3.33-2
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -88,8 +87,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	/etc/horde.org
 %define		_appdir		%{hordedir}
 %define		schemadir	/usr/share/openldap/schema
-%define		_webapps	/etc/webapps
-%define		_webapp		horde
 
 %description
 The Horde Framework provides a common structure and interface for
