@@ -131,7 +131,7 @@ This package contains horde.schema for openldap.
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
-%setup -q -c -T -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
+%setup -qcT -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
 tar zxf %{SOURCE0} --strip-components=1
 %patch0 -p1
 %patch1 -p1
@@ -168,14 +168,14 @@ done
 cp -p config/conf.xml	$RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/conf.xml
 touch					$RPM_BUILD_ROOT%{_sysconfdir}/%{_hordeapp}/conf.php.bak
 
-cp -pR  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
-cp -pR  js/*                    $RPM_BUILD_ROOT%{_appdir}/js
-cp -pR  services/*              $RPM_BUILD_ROOT%{_appdir}/services
+cp -a  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
+cp -a  js/*                    $RPM_BUILD_ROOT%{_appdir}/js
+cp -a  services/*              $RPM_BUILD_ROOT%{_appdir}/services
 
-cp -pR  lib/*                   $RPM_BUILD_ROOT%{_appdir}/lib
-cp -pR  locale/*                $RPM_BUILD_ROOT%{_appdir}/locale
-cp -pR  templates/*             $RPM_BUILD_ROOT%{_appdir}/templates
-cp -pR  themes/*                $RPM_BUILD_ROOT%{_appdir}/themes
+cp -a  lib/*                   $RPM_BUILD_ROOT%{_appdir}/lib
+cp -a  locale/*                $RPM_BUILD_ROOT%{_appdir}/locale
+cp -a  templates/*             $RPM_BUILD_ROOT%{_appdir}/templates
+cp -a  themes/*                $RPM_BUILD_ROOT%{_appdir}/themes
 
 ln -s %{_sysconfdir}/%{_hordeapp} $RPM_BUILD_ROOT%{_appdir}/config
 ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
