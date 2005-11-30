@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
 #define	_rc		rc1
-%define	_rel	1.4
+%define	_rel	1.6
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -141,6 +141,11 @@ tar zxf %{SOURCE0} --strip-components=1
 %patch3 -p0
 %patch4 -p1
 
+rm -f {,*/}.htaccess
+for i in config/*.dist; do
+	mv $i config/$(basename $i .dist)
+done
+
 # Described in documentation as dangerous file...
 rm test.php
 
@@ -157,27 +162,12 @@ exit 1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir} \
-	$RPM_BUILD_ROOT%{_appdir}/{admin,js,services} \
-	$RPM_BUILD_ROOT%{_appdir}/{docs,lib,locale,templates,themes} \
-	$RPM_BUILD_ROOT/var/{lib,log}/horde \
-	$RPM_BUILD_ROOT%{schemadir}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir}}
 
-cp -a *.php			$RPM_BUILD_ROOT%{_appdir}
-for i in config/*.php.dist; do
-	cp -a $i $RPM_BUILD_ROOT%{_sysconfdir}/$(basename $i .dist)
-done
-cp -p config/conf.xml	$RPM_BUILD_ROOT%{_sysconfdir}/conf.xml
-touch					$RPM_BUILD_ROOT%{_sysconfdir}/conf.php.bak
-
-cp -a  admin/*                 $RPM_BUILD_ROOT%{_appdir}/admin
-cp -a  js/*                    $RPM_BUILD_ROOT%{_appdir}/js
-cp -a  services/*              $RPM_BUILD_ROOT%{_appdir}/services
-
-cp -a  lib/*                   $RPM_BUILD_ROOT%{_appdir}/lib
-cp -a  locale/*                $RPM_BUILD_ROOT%{_appdir}/locale
-cp -a  templates/*             $RPM_BUILD_ROOT%{_appdir}/templates
-cp -a  themes/*                $RPM_BUILD_ROOT%{_appdir}/themes
+cp -a *.php $RPM_BUILD_ROOT%{_appdir}
+cp -a config/* $RPM_BUILD_ROOT%{_sysconfdir}
+touch $RPM_BUILD_ROOT%{_sysconfdir}/conf.php.bak
+cp -a admin js services lib locale templates themes $RPM_BUILD_ROOT%{_appdir}
 
 ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
 ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
@@ -185,7 +175,6 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/apache.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/httpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{_hordeapp}.log
-
 install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
 
 %clean
