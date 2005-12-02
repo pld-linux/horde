@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
 #define	_rc		rc1
-%define	_rel	1.6
+%define	_rel	2
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
