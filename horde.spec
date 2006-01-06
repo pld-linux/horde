@@ -81,7 +81,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # horde accesses it directly in help->about
 %define		_noautocompressdoc  CREDITS
-%define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
+%define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(SyncML.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
 
 %define		hordedir	/usr/share/horde
 %define		_appdir		%{hordedir}
