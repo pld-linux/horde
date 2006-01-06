@@ -1,13 +1,14 @@
---- horde-3.0.3/lib/api.php	2004-12-11 13:11:53.000000000 +0100
-+++ horde-3.0.3-new/lib/api.php	2005-02-23 16:20:35.131403128 +0100
-@@ -121,18 +121,18 @@
-                      'link' => '%application%/admin/datatree.php',
-                      'name' => _("_DataTree"),
-                      'icon' => 'perms.png'),
+diff -ur horde-3.1-rc1/lib/api.php horde-3.1-rc1.new/lib/api.php
+--- horde-3.1-rc1/lib/api.php	2005-10-18 11:33:39.000000000 +0000
++++ horde-3.1-rc1.new/lib/api.php	2006-01-06 15:56:02.321528000 +0000
+@@ -144,18 +144,18 @@
+                      'link' => '%application%/admin/sessions.php',
+                      'name' => _("Sessions"),
+                      'icon' => 'user.png'),
 -                 'phpshell' => array(
 -                     'link' => '%application%/admin/phpshell.php',
 -                     'name' => _("P_HP Shell"),
--                     'icon' => 'shell.png'),
+-                     'icon' => 'mime/php.png'),
 -                 'sqlshell' => array(
 -                     'link' => '%application%/admin/sqlshell.php',
 -                     'name' => _("S_QL Shell"),
