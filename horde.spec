@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
 %define	_rc		rc1
-%define	_rel	1
+%define	_rel	1.1
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -38,7 +38,7 @@ Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-BuildRequires:	rpmbuild(macros) >= 1.264
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	tar >= 1:1.15.1
 %if %{with autodeps}
 BuildRequires:	php-pear-Crypt_Rc4
@@ -280,16 +280,12 @@ fi
 if [ -L /etc/apache/conf.d/99_horde.conf ]; then
 	/usr/sbin/webapp register apache %{_webapp}
 	rm -f /etc/apache/conf.d/99_horde.conf
-	if [ -f /var/lock/subsys/apache ]; then
-		/etc/rc.d/init.d/apache reload 1>&2
-	fi
+	%service -q apache reload
 fi
 if [ -L /etc/httpd/httpd.conf/99_horde.conf ]; then
 	/usr/sbin/webapp register httpd %{_webapp}
 	rm -f /etc/httpd/httpd.conf/99_horde.conf
-	if [ -f /var/lock/subsys/httpd ]; then
-		/etc/rc.d/init.d/httpd reload 1>&2
-	fi
+	%service -q httpd reload
 fi
 
 %files
