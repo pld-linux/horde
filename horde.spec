@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
 %define	_rc		rc1
-%define	_rel	1.1
+%define	_rel	1.2
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -293,7 +293,6 @@ fi
 %doc README scripts util
 %doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
 %doc docs/{PERFORMANCE,RELEASE_NOTES,SECURITY,TODO,TRANSLATIONS,UPGRADING}
-%dir %{_sysconfdir}
 %attr(750,root,http) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/httpd.conf
