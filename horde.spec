@@ -12,9 +12,9 @@
 %bcond_without	autodeps	# don't BR packages needed only for resolving deps
 #
 %define	_hordeapp horde
-#define	_snap	2005-10-17
-%define	_rc		rc1
-%define	_rel	1.2
+%define	_snap	2006-01-12
+#define	_rc		rc1
+%define	_rel	0.1
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -27,9 +27,9 @@ Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
 #Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
-# Source0-md5:	335099b51642b7a12862eb1ee5f62b3a
-#Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-HEAD-%{_snap}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
+# Source0-md5:	a4d415789955046fc441801acc63df9a
+#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
