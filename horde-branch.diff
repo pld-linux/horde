@@ -179,15 +179,6 @@ diff -ur -Nur horde-3.1-rc1/lib/core.php horde-FRAMEWORK_3/lib/core.php
   *
   * Copyright 1999-2006 Chuck Hagenbuch <chuck@horde.org>
   *
-@@ -39,7 +39,7 @@
- /* If the Horde Framework packages are not installed in PHP's global
-  * include_path, you must add an ini_set() call here to add their location to
-  * the include_path. */
--ini_set('include_path', dirname(__FILE__) . PATH_SEPARATOR . ini_get('include_path'));
-+// ini_set('include_path', dirname(__FILE__) . PATH_SEPARATOR . ini_get('include_path'));
- 
- /* PEAR base class. */
- include_once 'PEAR.php';
 diff -ur -Nur horde-3.1-rc1/lib/version.php horde-FRAMEWORK_3/lib/version.php
 --- horde-3.1-rc1/lib/version.php	2006-01-04 23:06:55.000000000 +0200
 +++ horde-FRAMEWORK_3/lib/version.php	2006-01-04 23:19:44.000000000 +0200
