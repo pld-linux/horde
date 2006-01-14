@@ -13,8 +13,8 @@
 #
 %define	_hordeapp horde
 %define	_snap	2006-01-12
-#define	_rc		rc1
-%define	_rel	0.1
+%define	_rc		rc1
+%define	_rel	1.4
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -23,19 +23,21 @@ Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{_hordeapp}
 Version:	3.1
-Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
+Release:	%{?_rc:1.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
 #Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
-# Source0-md5:	a4d415789955046fc441801acc63df9a
-#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
+#Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
+# Source0-md5:	335099b51642b7a12862eb1ee5f62b3a
 Source1:	%{name}.conf
+# Source2-md5:	80654e2e721f97465221f70b6a7055f8
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
+Patch100:	%{name}-branch.diff
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -72,6 +74,14 @@ Requires:	php-posix >= 3:4.1.0
 Requires:	php-session >= 3:4.1.0
 Requires:	php-xml >= 3:4.1.0
 Requires:	php-zlib >= 3:4.1.0
+# Requires: php-pear-{Log,Mail,Mail_Mime
+# Requires: php-pear-DB >= 1.6.0 if database_used
+# Requires: php-pear-File if import cvs wanted
+# Requires: php-pear-Date if import calendar data is accessed
+# Requires: php-pear-Services_Weather if weather.com service block is used in portal.
+# Suggests: php-pecl-fileinfo || (deprecated)php-mime_magic
+# Suggests: php-pecl-memcache if memcached SessionHandler is used
+# Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
 Requires:	webapps
 Requires:	webserver = apache
 Obsoletes:	horde-mysql
@@ -135,6 +145,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %prep
 %setup -qcT -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
 tar zxf %{SOURCE0} --strip-components=1
+%patch100 -p1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -171,7 +182,7 @@ cp -a admin js services lib locale templates themes $RPM_BUILD_ROOT%{_appdir}
 
 ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
 ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
-install %{SOURCE1} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/apache.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/httpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{_hordeapp}.log
@@ -208,7 +219,7 @@ NOTE: You don't need SQL database for Auhtorization if You use LDAP for authoriz
 If you want to use MaxMind GeoIP Hostname Country lookup, install
 GeoIP package and go to:
 
-Configuration -> Horde -> Hostname -> Country Lookup and set GeoIP.dat path to: /usr/share/GeoIP/GeoIP.dat
+Configuration -> Horde -> Hostname -> Country Lookup and set GeoIP.dat path to: %{_datadir}/GeoIP/GeoIP.dat
 
 EOF
 # '
