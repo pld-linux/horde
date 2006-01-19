@@ -12,9 +12,9 @@
 %bcond_without	autodeps	# don't BR packages needed only for resolving deps
 #
 %define	_hordeapp horde
-#define	_snap	2006-01-12
+#define	_snap	2006-01-15
 %define	_rc		rc1
-%define	_rel	1.5
+%define	_rel	1.7
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -75,7 +75,7 @@ Requires:	php-xml >= 3:4.1.0
 Requires:	php-zlib >= 3:4.1.0
 # Requires: php-pear-{Log,Mail,Mail_Mime
 # Requires: php-pear-DB >= 1.6.0 if database_used
-# Requires: php-pear-File if import cvs wanted
+# Requires: php-pear-File if import csv wanted
 # Requires: php-pear-Date if import calendar data is accessed
 # Requires: php-pear-Services_Weather if weather.com service block is used in portal.
 # Suggests: php-pecl-fileinfo || (deprecated)php-mime_magic
@@ -170,6 +170,32 @@ s#dirname(__FILE__) . '/..#'%{hordedir}#g
 exit 1
 %endif
 
+cat > README.PLD << 'EOF'
+IMPORTANT:
+Default horde installation will auto authorize You as Administrator, but due
+security concerns the Administrator is not granted Administrator privileges.
+If You want to add Yourself to admins list (to administer Horde via web
+interface), please change %{_sysconfdir}/conf.php:
+$conf['auth']['admins'] = array('Administrator');
+
+Depending on authorization You choose, You need to create Horde database tables.
+Look into directory %{_docdir}/%{name}-%{version}/scripts/sql
+to find out how to do this for Your database.
+
+If You've chosen LDAP authorization, please install php-ldap package.
+To configure your openldap server to use horde schema, install
+openldap-schema-horde package.
+
+NOTE: You don't need SQL database for Auhtorization if You use LDAP for authorization.
+
+If you want to use MaxMind GeoIP Hostname Country lookup, install
+GeoIP package and go to:
+
+Configuration -> Horde -> Hostname -> Country Lookup and set GeoIP.dat path to: %{_datadir}/GeoIP/GeoIP.dat
+
+EOF
+# '
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir}}
@@ -197,31 +223,8 @@ fi
 
 if [ "$1" = 1 ]; then
 %banner %{name} -e <<'EOF'
-
-IMPORTANT:
-Default horde installation will auto authorize You as Administrator, but due
-security concerns the Administrator is not granted Administrator privileges.
-If You want to add Yourself to admins list (to administer Horde via web
-interface), please change %{_sysconfdir}/conf.php:
-$conf['auth']['admins'] = array('Administrator');
-
-Depending on authorization You choose, You need to create Horde database tables.
-Look into directory %{_docdir}/%{name}-%{version}/scripts/sql
-to find out how to do this for Your database.
-
-If You've chosen LDAP authorization, please install php-ldap package.
-To configure your openldap server to use horde schema, install
-openldap-schema-horde package.
-
-NOTE: You don't need SQL database for Auhtorization if You use LDAP for authorization.
-
-If you want to use MaxMind GeoIP Hostname Country lookup, install
-GeoIP package and go to:
-
-Configuration -> Horde -> Hostname -> Country Lookup and set GeoIP.dat path to: %{_datadir}/GeoIP/GeoIP.dat
-
+Please read README.PLD from documentation.
 EOF
-# '
 
 fi
 
@@ -300,7 +303,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README scripts util
+%doc README README.PLD scripts util
 %doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
 %doc docs/{PERFORMANCE,RELEASE_NOTES,SECURITY,TODO,TRANSLATIONS,UPGRADING}
 %attr(750,root,http) %dir %{_sysconfdir}
