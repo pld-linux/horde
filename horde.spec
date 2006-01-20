@@ -172,7 +172,7 @@ exit 1
 
 cat > README.PLD << 'EOF'
 IMPORTANT:
-Default horde installation will auto authorize You as Administrator, but due
+Default horde installation will auto authorize You as Administrator, but due to
 security concerns the Administrator is not granted Administrator privileges.
 If You want to add Yourself to admins list (to administer Horde via web
 interface), please change %{_sysconfdir}/conf.php:
@@ -186,7 +186,7 @@ If You've chosen LDAP authorization, please install php-ldap package.
 To configure your openldap server to use horde schema, install
 openldap-schema-horde package.
 
-NOTE: You don't need SQL database for Auhtorization if You use LDAP for authorization.
+NOTE: You don't need SQL database for Authorization if You use LDAP for authorization.
 
 If you want to use MaxMind GeoIP Hostname Country lookup, install
 GeoIP package and go to:
