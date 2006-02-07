@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2005-10-17
 #define	_rc		rc1
-%define	_rel	1
+%define	_rel	2
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -36,6 +36,7 @@ Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
+Patch5:		%{name}-set-language.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.264
@@ -140,6 +141,7 @@ tar zxf %{SOURCE0} --strip-components=1
 %patch2 -p1
 %patch3 -p0
 %patch4 -p1
+%patch5 -p1
 
 rm -f {,*/}.htaccess
 for i in config/*.dist; do
