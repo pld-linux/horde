@@ -13,8 +13,8 @@
 #
 %define	_hordeapp horde
 #define	_snap	2006-01-15
-%define	_rc		rc1
-%define	_rel	1.7
+%define	_rc		rc2
+%define	_rel	0.1
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -29,7 +29,7 @@ Group:		Applications/WWW
 #Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
 #Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
 Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
-# Source0-md5:	335099b51642b7a12862eb1ee5f62b3a
+# Source0-md5:	531a5be618a239385e48c74bf9dc5289
 Source1:	%{name}.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
@@ -144,7 +144,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %prep
 %setup -qcT -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
 tar zxf %{SOURCE0} --strip-components=1
-%patch100 -p1
+#%patch100 -p1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
