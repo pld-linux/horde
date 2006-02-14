@@ -31,6 +31,7 @@ Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
 # Source0-md5:	ed640e7118a20a66ea6667c494a98fd5
 Source1:	%{name}.conf
+Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
@@ -209,6 +210,7 @@ ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
 ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/httpd.conf
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{_hordeapp}.log
 install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
@@ -274,6 +276,13 @@ fi
 %triggerun -- apache < 2.2.0, apache-base
 %webapp_unregister httpd %{_webapp}
 
+%triggerin -- lighttpd
+%webapp_register lighttpd %{_webapp}
+
+%triggerun -- lighttpd
+%webapp_unregister lighttpd %{_webapp}
+
+
 %triggerpostun -- horde < 3.0.7-1.4
 for i in conf.php hooks.php mime_drivers.php motd.php nls.php prefs.php registry.php; do
 	if [ -f /etc/horde.org/%{_hordeapp}/$i.rpmsave ]; then
@@ -309,6 +318,7 @@ fi
 %attr(750,root,http) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %{_sysconfdir}/httpd.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/conf.php
 %attr(660,root,http) %config(noreplace) %ghost %{_sysconfdir}/conf.php.bak
 %attr(640,root,http) %config(noreplace) %{_sysconfdir}/[!c]*.php
