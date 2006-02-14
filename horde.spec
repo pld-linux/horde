@@ -209,7 +209,7 @@ cp -a admin js services lib locale templates themes $RPM_BUILD_ROOT%{_appdir}
 ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
 ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
-install %{SOURCE1} $RPM_BUILD_ROOT%{_webapps}/%{_webapp}/httpd.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{_hordeapp}.log
@@ -315,9 +315,9 @@ fi
 %doc README README.PLD scripts util
 %doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
 %doc docs/{PERFORMANCE,RELEASE_NOTES,SECURITY,TODO,TRANSLATIONS,UPGRADING}
-%attr(750,root,http) %dir %{_sysconfdir}
-%attr(640,root,root) %config(noreplace) %{_sysconfdir}/apache.conf
-%attr(640,root,root) %config(noreplace) %{_sysconfdir}/httpd.conf
+%dir %attr(750,root,http) %{_sysconfdir}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
 %attr(660,root,http) %config(noreplace) %{_sysconfdir}/conf.php
 %attr(660,root,http) %config(noreplace) %ghost %{_sysconfdir}/conf.php.bak
