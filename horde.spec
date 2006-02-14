@@ -61,9 +61,6 @@ BuildRequires:	php-pear-XML_SVG
 %endif
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-Requires:	apache(mod_access)
-Requires:	apache(mod_alias)
-Requires:	apache(mod_dir) >= 1.3.22
 Requires:	php >= 3:4.1.0
 Requires:	php-domxml
 Requires:	php-gettext >= 3:4.1.0
@@ -83,7 +80,6 @@ Requires:	php-zlib >= 3:4.1.0
 # Suggests: php-pecl-memcache if memcached SessionHandler is used
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
 Requires:	webapps
-Requires:	webserver = apache
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
@@ -244,24 +240,20 @@ include		%{schemadir}/horde.schema
 	' /etc/openldap/slapd.conf
 fi
 
-if [ -f /var/lock/subsys/ldap ]; then
-    /etc/rc.d/init.d/ldap restart >&2
-fi
+%service -q ldap restart
 
 %postun -n openldap-schema-horde
 if [ "$1" = "0" ]; then
 	if grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
 		sed -i -e '
-		/^include.*\/usr\/share\/openldap\/schema\/horde.schema/d
+		/^include.*\/''usr\/share\/openldap\/schema\/horde.schema/d
 
 		# for symmetry it would be nice if we disable enabled schemas in post,
 		# but we really can not do that, it would break something else.
 		' /etc/openldap/slapd.conf
 	fi
 
-	if [ -f /var/lock/subsys/ldap ]; then
-		/etc/rc.d/init.d/ldap restart >&2 || :
-	fi
+	%service -q ldap restart
 fi
 
 %triggerin -- apache1
@@ -281,7 +273,6 @@ fi
 
 %triggerun -- lighttpd
 %webapp_unregister lighttpd %{_webapp}
-
 
 %triggerpostun -- horde < 3.0.7-1.4
 for i in conf.php hooks.php mime_drivers.php motd.php nls.php prefs.php registry.php; do
