@@ -13,7 +13,7 @@
 #
 %define	_hordeapp horde
 #define	_snap	2006-01-15
-%define	_rc		rc3
+#define	_rc		rc3
 %define	_rel	0.1
 #
 %include	/usr/lib/rpm/macros.php
@@ -26,10 +26,10 @@ Version:	3.1
 Release:	%{?_rc:1.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
-#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
+# Source0-md5:	4761fc976e72ece7e8257cfb5c5f86b9
 #Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
-# Source0-md5:	ed640e7118a20a66ea6667c494a98fd5
+#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
@@ -139,7 +139,7 @@ This package contains horde.schema for openldap.
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
-%setup -qcT -n %{?_snap:%{_hordeapp}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
+%setup -qcT -n %{?_snap:%{name}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
 tar zxf %{SOURCE0} --strip-components=1
 #%patch100 -p1
 %patch0 -p1
