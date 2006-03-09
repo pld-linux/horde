@@ -1,61 +1,49 @@
 diff -u horde-3.1/config/mime_drivers.php horde-3.1/config/mime_drivers.php
---- horde-3.1/config/mime_drivers.php	2006-03-09 16:12:53.000000000 +0200
-+++ horde-3.1/config/mime_drivers.php	2006-03-09 16:37:22.000000000 +0200
-@@ -161,7 +161,7 @@
-  * Web C Plus Plus driver settings
-  * http://webcpp.sourceforge.net/
+--- horde-3.1/config/mime_drivers.php	2006-03-09 16:37:22.000000000 +0200
++++ horde-3.1/config/mime_drivers.php	2006-03-09 17:17:26.000000000 +0200
+@@ -37,10 +37,19 @@
+  * zip            Zip files
   */
--$mime_drivers['horde']['webcpp']['location'] = '/usr/bin/webcpp';
-+#$mime_drivers['horde']['webcpp']['location'] = '/usr/bin/webcpp';
- $mime_drivers['horde']['webcpp']['inline'] = true;
- $mime_drivers['horde']['webcpp']['handles'] = array(
-     'text/xml', 'text/sgml', 'application/xml',
-@@ -188,7 +188,7 @@
-  * Source-Highlight driver settings
-  * http://www.gnu.org/software/src-highlite/
-  */
--$mime_drivers['horde']['srchighlite']['location'] = '/usr/bin/source-highlight';
-+#$mime_drivers['horde']['srchighlite']['location'] = '/usr/bin/source-highlight';
- $mime_drivers['horde']['srchighlite']['inline'] = true;
- $mime_drivers['horde']['srchighlite']['handles'] = array(
-     'text/x-csrc', 'text/x-c++src', 'text/x-java',
-@@ -204,7 +204,7 @@
+ $mime_drivers_map['horde']['registered'] = array(
+-    'css', 'deb', 'enriched', 'enscript', 'html', 'images', 'msword',
+-    'msexcel', 'mspowerpoint', 'ooo', 'pdf', 'php', 'plain', 'rar', 'report',
+-    'rfc822', 'richtext', 'rpm', 'security', 'simple', 'srchighlite', 'tgz',
+-    'tnef', 'vcard', 'webcpp', 'zip');
++    'css', 'enriched', 'html', 'images',
++    'ooo', 'pdf', 'php', 'plain', 'rar', 'report',
++    'rfc822', 'richtext', 'rpm', 'security', 'simple', 'tgz',
++	'tnef', 'vcard', 'zip',
++	# enable these if you have program defined in location installed on system
++#	'webcpp', 
++#	'srchighlite', 
++#	'enscript', 
++#	'msword',
++#	'msexcel', 
++#	'mspowerpoint', 
++#	'deb', 
++);
+ 
+ 
  /**
-  * GNU Enscript driver settings
-  */
--$mime_drivers['horde']['enscript']['location'] = '/usr/bin/enscript';
-+#$mime_drivers['horde']['enscript']['location'] = '/usr/bin/enscript';
- $mime_drivers['horde']['enscript']['inline'] = true;
- $mime_drivers['horde']['enscript']['handles'] = array(
-     'application/x-cgi', 'application/x-shellscript', 'application/x-javascript',
-@@ -272,7 +272,7 @@
-  * The 'location' entry should point to the 'wvHtml' program, NOT the
-  * 'wvWare' program.
-  */
--$mime_drivers['horde']['msword']['location'] = '/usr/bin/wvHtml';
-+#$mime_drivers['horde']['msword']['location'] = '/usr/bin/wvHtml';
- $mime_drivers['horde']['msword']['inline'] = false;
- $mime_drivers['horde']['msword']['handles'] = array(
-     'application/vnd.ms-word',
-@@ -288,7 +288,7 @@
+@@ -288,7 +297,7 @@
   * This driver requires xlhtml to be installed.
   * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
   */
 -$mime_drivers['horde']['msexcel']['location'] = '/usr/local/bin/xlhtml';
-+#$mime_drivers['horde']['msexcel']['location'] = '/usr/bin/xlhtml';
++$mime_drivers['horde']['msexcel']['location'] = '/usr/bin/xlhtml';
  $mime_drivers['horde']['msexcel']['inline'] = false;
  $mime_drivers['horde']['msexcel']['handles'] = array(
      'application/vnd.ms-excel',
-@@ -303,7 +303,7 @@
+@@ -303,7 +312,7 @@
   * This driver requires ppthtml, included with xlhtml, to be installed.
   * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
   */
 -$mime_drivers['horde']['mspowerpoint']['location'] = '/usr/local/bin/ppthtml';
-+#$mime_drivers['horde']['mspowerpoint']['location'] = '/usr/bin/ppthtml';
++$mime_drivers['horde']['mspowerpoint']['location'] = '/usr/bin/ppthtml';
  $mime_drivers['horde']['mspowerpoint']['inline'] = false;
  $mime_drivers['horde']['mspowerpoint']['handles'] = array(
      'application/vnd.ms-powerpoint',
-@@ -325,7 +325,7 @@
+@@ -325,7 +334,7 @@
  /**
   * RPM driver settings
   */
@@ -64,12 +52,3 @@ diff -u horde-3.1/config/mime_drivers.php horde-3.1/config/mime_drivers.php
  $mime_drivers['horde']['rpm']['inline'] = false;
  $mime_drivers['horde']['rpm']['handles'] = array(
      'application/x-rpm');
-@@ -336,7 +336,7 @@
- /**
-  * Debian package driver settings
-  */
--$mime_drivers['horde']['deb']['location'] = '/usr/bin/dpkg';
-+#$mime_drivers['horde']['deb']['location'] = '/usr/bin/dpkg';
- $mime_drivers['horde']['deb']['inline'] = false;
- $mime_drivers['horde']['deb']['handles'] = array(
-     'application/x-deb',
