@@ -1,0 +1,47 @@
+--- horde-3.1/config/mime_drivers.php~	2005-10-18 14:33:37.000000000 +0300
++++ horde-3.1/config/mime_drivers.php	2006-03-09 16:12:53.000000000 +0200
+@@ -161,7 +161,7 @@
+  * Web C Plus Plus driver settings
+  * http://webcpp.sourceforge.net/
+  */
+-$mime_drivers['horde']['webcpp']['location'] = '/usr/bin/webcpp';
++#$mime_drivers['horde']['webcpp']['location'] = '/usr/bin/webcpp';
+ $mime_drivers['horde']['webcpp']['inline'] = true;
+ $mime_drivers['horde']['webcpp']['handles'] = array(
+     'text/xml', 'text/sgml', 'application/xml',
+@@ -288,7 +288,7 @@
+  * This driver requires xlhtml to be installed.
+  * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
+  */
+-$mime_drivers['horde']['msexcel']['location'] = '/usr/local/bin/xlhtml';
++#$mime_drivers['horde']['msexcel']['location'] = '/usr/bin/xlhtml';
+ $mime_drivers['horde']['msexcel']['inline'] = false;
+ $mime_drivers['horde']['msexcel']['handles'] = array(
+     'application/vnd.ms-excel',
+@@ -303,7 +303,7 @@
+  * This driver requires ppthtml, included with xlhtml, to be installed.
+  * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
+  */
+-$mime_drivers['horde']['mspowerpoint']['location'] = '/usr/local/bin/ppthtml';
++#$mime_drivers['horde']['mspowerpoint']['location'] = '/usr/bin/ppthtml';
+ $mime_drivers['horde']['mspowerpoint']['inline'] = false;
+ $mime_drivers['horde']['mspowerpoint']['handles'] = array(
+     'application/vnd.ms-powerpoint',
+@@ -325,7 +325,7 @@
+ /**
+  * RPM driver settings
+  */
+-$mime_drivers['horde']['rpm']['location'] = '/usr/bin/rpm';
++$mime_drivers['horde']['rpm']['location'] = '/bin/rpm';
+ $mime_drivers['horde']['rpm']['inline'] = false;
+ $mime_drivers['horde']['rpm']['handles'] = array(
+     'application/x-rpm');
+@@ -336,7 +336,7 @@
+ /**
+  * Debian package driver settings
+  */
+-$mime_drivers['horde']['deb']['location'] = '/usr/bin/dpkg';
++#$mime_drivers['horde']['deb']['location'] = '/usr/bin/dpkg';
+ $mime_drivers['horde']['deb']['inline'] = false;
+ $mime_drivers['horde']['deb']['handles'] = array(
+     'application/x-deb',
