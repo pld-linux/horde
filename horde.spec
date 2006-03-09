@@ -37,6 +37,7 @@ Patch1:		%{name}-shell.disabled.patch
 Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
+Patch5:		%{name}-mime_drivers.patch
 Patch100:	%{name}-branch.diff
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -71,7 +72,7 @@ Requires:	php-posix >= 3:4.1.0
 Requires:	php-session >= 3:4.1.0
 Requires:	php-xml >= 3:4.1.0
 Requires:	php-zlib >= 3:4.1.0
-# Requires: php-pear-{Log,Mail,Mail_Mime
+# Requires: php-pear-{Log,Mail,Mail_Mime}
 # Requires: php-pear-DB >= 1.6.0 if database_used
 # Requires: php-pear-File if import csv wanted
 # Requires: php-pear-Date if import calendar data is accessed
@@ -79,6 +80,12 @@ Requires:	php-zlib >= 3:4.1.0
 # Suggests: php-pecl-fileinfo || (deprecated)php-mime_magic
 # Suggests: php-pecl-memcache if memcached SessionHandler is used
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
+# for mime_drivers.php
+#Suggests:	source-highlight
+#Suggests:	enscript
+#Suggests:	wv
+#Suggests:	xlhtml
+#Suggests:	dpkg
 Requires:	webapps
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
@@ -152,6 +159,8 @@ rm -f {,*/}.htaccess
 for i in config/*.dist; do
 	mv $i config/$(basename $i .dist)
 done
+
+%patch5 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
