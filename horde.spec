@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2006-01-15
 #define	_rc		rc3
-%define	_rel	2
+%define	_rel	1
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -22,12 +22,12 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{_hordeapp}
-Version:	3.1
+Version:	3.1.1
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
-# Source0-md5:	4761fc976e72ece7e8257cfb5c5f86b9
+# Source0-md5:	ef5001144b80422b71454d285056e90a
 #Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
 #Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
 Source1:	%{name}.conf
