@@ -41,7 +41,7 @@ Patch5:		%{name}-mime_drivers.patch
 Patch100:	%{name}-branch.diff
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.304
 BuildRequires:	tar >= 1:1.15.1
 %if %{with autodeps}
 BuildRequires:	php-pear-Crypt_Rc4
@@ -236,32 +236,12 @@ EOF
 fi
 
 %post -n openldap-schema-horde
-if ! grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
-	sed -i -e '
-		/^include.*local.schema/{
-			i\
-include		%{schemadir}/horde.schema
-		}
-		# enable dependant schemas: core.schema
-		/^#include.*\(core\)\.schema/{
-			s/^#//
-		}
-	' /etc/openldap/slapd.conf
-fi
-
+%openldap_schema_register %{schemadir}/horde.schema -d core
 %service -q ldap restart
 
 %postun -n openldap-schema-horde
 if [ "$1" = "0" ]; then
-	if grep -q %{schemadir}/horde.schema /etc/openldap/slapd.conf; then
-		sed -i -e '
-		/^include.*\/''usr\/share\/openldap\/schema\/horde.schema/d
-
-		# for symmetry it would be nice if we disable enabled schemas in post,
-		# but we really can not do that, it would break something else.
-		' /etc/openldap/slapd.conf
-	fi
-
+	%openldap_schema_unregister %{schemadir}/horde.schema
 	%service -q ldap restart
 fi
 
