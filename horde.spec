@@ -22,12 +22,12 @@ Summary(es):	Elementos básicos do Horde Web Application Suite
 Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
 Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{_hordeapp}
-Version:	3.1.1
+Version:	3.1.2
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
-# Source0-md5:	ef5001144b80422b71454d285056e90a
+# Source0-md5:	2c1f3e5759fa6bca07483d584151771f
 #Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
 #Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
 Source1:	%{name}.conf
@@ -160,7 +160,7 @@ for i in config/*.dist; do
 	mv $i config/$(basename $i .dist)
 done
 
-%patch5 -p1
+#%patch5 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
