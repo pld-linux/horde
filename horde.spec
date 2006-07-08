@@ -160,7 +160,7 @@ for i in config/*.dist; do
 	mv $i config/$(basename $i .dist)
 done
 
-#%patch5 -p1
+%patch5 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
