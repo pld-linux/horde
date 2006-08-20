@@ -5,8 +5,8 @@ diff -ur horde-3.1-rc1/config/registry.php.dist horde-3.1-rc1.new/config/registr
  // this.
  if (isset($_SERVER['PHP_SELF'])) {
      $webroot = preg_split(';/;', $_SERVER['PHP_SELF'], 2, PREG_SPLIT_NO_EMPTY);
--    $webroot = strstr(dirname(__FILE__), '/' . array_shift($webroot));
-+    $webroot = strstr("/usr/share/horde", '/' . array_shift($webroot));
+-    $webroot = strstr(dirname(__FILE__), DIRECTORY_SEPARATOR . array_shift($webroot));
++    $webroot = strstr("/usr/share/horde", DIRECTORY_SEPARATOR . array_shift($webroot));
      if ($webroot !== false) {
          $webroot = preg_replace(';/config$;', '', $webroot);
      } elseif ($webroot === false) {
