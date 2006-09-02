@@ -212,7 +212,7 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/conf.php.bak
 cp -a admin js services lib locale templates themes $RPM_BUILD_ROOT%{_appdir}
 
 ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
-ln -s %{_defaultdocdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
+ln -s %{_docdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
