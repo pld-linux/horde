@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2006-01-15
 #define	_rc		rc3
-%define	_rel	2
+%define	_rel	3
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -62,21 +62,21 @@ BuildRequires:	php-pear-XML_SVG
 %endif
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-Requires:	php >= 3:4.1.0
-Requires:	php-domxml
-Requires:	php-gettext >= 3:4.1.0
-Requires:	php-imap >= 3:4.1.0
-Requires:	php-mcrypt >= 3:4.1.0
-Requires:	php-pcre >= 3:4.1.0
-Requires:	php-posix >= 3:4.1.0
-Requires:	php-session >= 3:4.1.0
-Requires:	php-xml >= 3:4.1.0
-Requires:	php-zlib >= 3:4.1.0
-# Requires: php-pear-{Log,Mail,Mail_Mime}
 # Requires: php-pear-DB >= 1.6.0 if database_used
-# Requires: php-pear-File if import csv wanted
 # Requires: php-pear-Date if import calendar data is accessed
+# Requires: php-pear-File if import csv wanted
 # Requires: php-pear-Services_Weather if weather.com service block is used in portal.
+# Requires: php-pear-{Log,Mail,Mail_Mime}
+Requires:	php(domxml)
+Requires:	php(gettext)
+Requires:	php(imap)
+Requires:	php(mcrypt)
+Requires:	php(pcre)
+Requires:	php(posix)
+Requires:	php(session)
+Requires:	php(xml)
+Requires:	php(zlib)
+Requires:	webserver(php) >= 4.1.0
 # Suggests: php-pecl-fileinfo || (deprecated)php-mime_magic
 # Suggests: php-pecl-memcache if memcached SessionHandler is used
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
