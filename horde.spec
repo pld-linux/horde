@@ -9,9 +9,9 @@
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
-Summary(es):	Elementos básicos do Horde Web Application Suite
-Summary(pl):	Wspólny szkielet Horde do wszystkich modu³ów Horde
-Summary(pt_BR):	Componentes comuns do Horde usados por todos os módulos
+Summary(es.UTF-8):   Elementos bÃ¡sicos do Horde Web Application Suite
+Summary(pl.UTF-8):   WspÃ³lny szkielet Horde do wszystkich moduÅ‚Ã³w Horde
+Summary(pt_BR.UTF-8):   Componentes comuns do Horde usados por todos os mÃ³dulos
 Name:		horde
 Version:	3.0.5
 %define	_rc	rc2
@@ -71,29 +71,29 @@ The Horde Project writes web applications in PHP and releases them
 under the GNU Public License. For more information (including help
 with Horde and its modules) please visit <http://www.horde.org/>.
 
-%description -l pl
-Szkielet Horde dostarcza wspóln± strukturê oraz interfejs dla modu³ów
-Horde, takich jak IMP (obs³uga poczty poprzez WWW). Ten pakiet jest
-wymagany dla wszystkich innych modu³ów Horde.
+%description -l pl.UTF-8
+Szkielet Horde dostarcza wspÃ³lnÄ… strukturÄ™ oraz interfejs dla moduÅ‚Ã³w
+Horde, takich jak IMP (obsÅ‚uga poczty poprzez WWW). Ten pakiet jest
+wymagany dla wszystkich innych moduÅ‚Ã³w Horde.
 
 Projekt Horde tworzy aplikacje w PHP i dostarcza je na licencji GNU
-Public License. Je¿eli chcesz siê dowiedzieæ czego¶ wiêcej (tak¿e help
-do IMP-a) zajrzyj na stronê <http://www.horde.org/>.
+Public License. JeÅ¼eli chcesz siÄ™ dowiedzieÄ‡ czegoÅ› wiÄ™cej (takÅ¼e help
+do IMP-a) zajrzyj na stronÄ™ <http://www.horde.org/>.
 
-%description -l pt_BR
-Este pacote provê uma interface e estrutura comuns para os módulos
-Horde (como IMP, um programa de webmail) e é requerido por todos os
-outros módulos Horde.
+%description -l pt_BR.UTF-8
+Este pacote provÃª uma interface e estrutura comuns para os mÃ³dulos
+Horde (como IMP, um programa de webmail) e Ã© requerido por todos os
+outros mÃ³dulos Horde.
 
-O Projeto Horde é constituído por diversos aplicativos web escritos em
-PHP, todos liberados sob a GPL. Para mais informações (incluindo ajuda
-com relação ao Horde e seus módulos), por favor visite
+O Projeto Horde Ã© constituÃ­do por diversos aplicativos web escritos em
+PHP, todos liberados sob a GPL. Para mais informaÃ§Ãµes (incluindo ajuda
+com relaÃ§Ã£o ao Horde e seus mÃ³dulos), por favor visite
 <http://www.horde.org/>.
 
 # FIXME: package name?
 %package -n openldap-schema-horde
 Summary:	Horde LDAP schema
-Summary(pl):	Schemat LDAP dla Horde
+Summary(pl.UTF-8):   Schemat LDAP dla Horde
 Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
 Requires:	openldap-servers
@@ -101,7 +101,7 @@ Requires:	openldap-servers
 %description -n openldap-schema-horde
 This package contains horde.schema for openldap.
 
-%description -n openldap-schema-horde -l pl
+%description -n openldap-schema-horde -l pl.UTF-8
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
