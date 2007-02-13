@@ -18,9 +18,9 @@
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
-Summary(es.UTF-8):   Elementos básicos do Horde Web Application Suite
-Summary(pl.UTF-8):   Wspólny szkielet Horde do wszystkich modułów Horde
-Summary(pt_BR.UTF-8):   Componentes comuns do Horde usados por todos os módulos
+Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
+Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
+Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{_hordeapp}
 Version:	3.1.3
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
@@ -133,7 +133,7 @@ com relação ao Horde e seus módulos), por favor visite
 
 %package -n openldap-schema-horde
 Summary:	Horde LDAP schema
-Summary(pl.UTF-8):   Schemat LDAP dla Horde
+Summary(pl.UTF-8):	Schemat LDAP dla Horde
 Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
 Requires:	openldap-servers
