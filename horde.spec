@@ -13,7 +13,7 @@
 #
 %define	_hordeapp horde
 #define	_snap	2006-01-15
-%define	_rc		rc1
+#define	_rc		rc1
 %define	_rel	1
 #
 %include	/usr/lib/rpm/macros.php
@@ -26,10 +26,10 @@ Version:	3.1.4
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
-#Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
 #Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
-# Source0-md5:	5a494f618568c4682a2483240a1f4a1a
+#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
+# Source0-md5:	90bb96e810f165c2a853175303bd2dbb
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
