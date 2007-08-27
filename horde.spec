@@ -13,8 +13,8 @@
 #
 %define	_hordeapp horde
 #define	_snap	2006-01-15
-#define	_rc		rc1
-%define	_rel	2
+%define	_rc		alpha
+%define	_rel	0.1
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -22,19 +22,18 @@ Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{_hordeapp}
-Version:	3.1.4
+Version:	3.2
 Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
 License:	LGPL
 Group:		Applications/WWW
 #Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
 #Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}.tar.gz
-# Source0-md5:	90bb96e810f165c2a853175303bd2dbb
+Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}-%{_rc}.tar.gz
+# Source0-md5:	1de0cdbf07c990db1eafb4c19b9a2ae6
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
-Patch2:		%{name}-util-h3.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
 Patch5:		%{name}-mime_drivers.patch
@@ -151,7 +150,6 @@ tar zxf %{SOURCE0} --strip-components=1
 #%patch100 -p1
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 %patch3 -p0
 %patch4 -p1
 
@@ -303,6 +301,8 @@ fi
 %attr(660,root,http) %config(noreplace) %ghost %{_sysconfdir}/conf.php.bak
 %attr(640,root,http) %config(noreplace) %{_sysconfdir}/[!c]*.php
 %attr(640,root,http) %{_sysconfdir}/conf.xml
+%dir %{_sysconfdir}/registry.d
+%{_sysconfdir}/registry.d/README
 
 %dir %{_appdir}
 %{_appdir}/*.php
