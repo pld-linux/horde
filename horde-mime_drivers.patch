@@ -1,42 +1,38 @@
---- horde-3.1.2/config/mime_drivers.php~	2006-07-06 14:24:31.169722631 +0300
-+++ horde-3.1.2/config/mime_drivers.php	2006-07-08 14:28:38.307961693 +0300
-@@ -39,10 +39,10 @@
- $mime_drivers_map['horde']['registered'] = array(
-     'css', 'enriched', 'html', 'images', 'ooo', 'pdf', 'php', 'plain', 'rar',
-     'report', 'rfc822', 'richtext', 'security', 'simple', 'tgz', 'tnef',
--    'vcard', 'zip',
-+    'vcard', 'zip', 'rpm',
-     // The following mime drivers require external applications to be
-     // installed.
--    // 'deb', 'enscript', 'msword', 'msexcel', 'mspowerpoint', 'rpm',
-+    // 'deb', 'enscript', 'msword', 'msexcel', 'mspowerpoint',
-     // 'srchighlite', 'webcpp'
- );
- 
-@@ -288,7 +297,7 @@
-  * This driver requires xlhtml to be installed.
+--- horde-3.2-alpha/config/mime_drivers.php~	2007-08-27 12:44:27.337252725 +0300
++++ horde-3.2-alpha/config/mime_drivers.php	2007-08-27 12:44:29.067291838 +0300
+@@ -68,7 +68,7 @@
+     // 'msword',
+     // 'msexcel',
+     // 'mspowerpoint',
+-    // 'rpm',
++    'rpm',
+     // 'rtf',
+     // 'srchighlite',
+     // 'webcpp',
+@@ -403,7 +403,7 @@
   * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
   */
--$mime_drivers['horde']['msexcel']['location'] = '/usr/local/bin/xlhtml';
-+$mime_drivers['horde']['msexcel']['location'] = '/usr/bin/xlhtml';
- $mime_drivers['horde']['msexcel']['inline'] = false;
- $mime_drivers['horde']['msexcel']['handles'] = array(
-     'application/vnd.ms-excel',
-@@ -303,7 +312,7 @@
-  * This driver requires ppthtml, included with xlhtml, to be installed.
+ $mime_drivers['horde']['msexcel'] = array(
+-    'location' => '/usr/local/bin/xlhtml',
++    'location' => '/usr/bin/xlhtml',
+     'inline' => false,
+     'handles' => array(
+         'application/vnd.ms-excel', 'application/msexcel',
+@@ -421,7 +421,7 @@
   * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
   */
--$mime_drivers['horde']['mspowerpoint']['location'] = '/usr/local/bin/ppthtml';
-+$mime_drivers['horde']['mspowerpoint']['location'] = '/usr/bin/ppthtml';
- $mime_drivers['horde']['mspowerpoint']['inline'] = false;
- $mime_drivers['horde']['mspowerpoint']['handles'] = array(
-     'application/vnd.ms-powerpoint',
-@@ -325,7 +334,7 @@
- /**
+ $mime_drivers['horde']['mspowerpoint'] = array(
+-    'location' => '/usr/local/bin/ppthtml',
++    'location' => '/usr/bin/ppthtml',
+     'inline' => false,
+     'handles' => array(
+         'application/vnd.ms-powerpoint', 'application/mspowerpoint'
+@@ -449,7 +449,7 @@
   * RPM driver settings
   */
--$mime_drivers['horde']['rpm']['location'] = '/usr/bin/rpm';
-+$mime_drivers['horde']['rpm']['location'] = '/bin/rpm';
- $mime_drivers['horde']['rpm']['inline'] = false;
- $mime_drivers['horde']['rpm']['handles'] = array(
-     'application/x-rpm');
+ $mime_drivers['horde']['rpm'] = array(
+-    'location' => '/usr/bin/rpm',
++    'location' => '/bin/rpm',
+     'inline' => false,
+     'handles' => array(
+         'application/x-rpm'
