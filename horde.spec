@@ -37,6 +37,7 @@ Patch1:		%{name}-shell.disabled.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
 Patch5:		%{name}-mime_drivers.patch
+Patch6:		%{name}-webroot.patch
 Patch100:	%{name}-branch.diff
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
@@ -159,6 +160,7 @@ for i in config/*.dist; do
 done
 
 %patch5 -p1
+%patch6 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
