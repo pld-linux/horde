@@ -11,25 +11,25 @@
 # Conditional build:
 %bcond_without	autodeps	# don't BR packages needed only for resolving deps
 #
-%define	_hordeapp horde
-#define	_snap	2006-01-15
-%define	_rc		alpha
-%define	_rel	0.1
+%define		hordeapp horde
+#define		_snap	2006-01-15
+%define		subver		rc2
+%define		rel	0.1
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
 Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
-Name:		%{_hordeapp}
+Name:		%{hordeapp}
 Version:	3.2
-Release:	%{?_rc:0.%{_rc}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{_rel}
+Release:	%{?subver:0.%{subver}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{rel}
 License:	LGPL
 Group:		Applications/WWW
-#Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{_hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
-#Source0:	ftp://ftp.horde.org/pub/horde/%{_hordeapp}-%{version}-%{_rc}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/horde/%{name}-%{version}-%{_rc}.tar.gz
-# Source0-md5:	1de0cdbf07c990db1eafb4c19b9a2ae6
+#Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
+#Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}-%{subver}.tar.gz
+Source0:	ftp://ftp.horde.org/pub/horde/horde-%{version}-%{subver}.tar.gz
+# Source0-md5:	a04e001cedcc0819c81fec5e71f2baf8
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
@@ -81,12 +81,12 @@ Requires:	webserver(php) >= 4.1.0
 # Suggests: php-pecl-memcache if memcached SessionHandler is used
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
 # for mime_drivers.php
-#Suggests:	source-highlight
-#Suggests:	enscript
-#Suggests:	wv
-#Suggests:	xlhtml
-#Suggests:	dpkg
 Requires:	webapps
+Suggests:	dpkg
+Suggests:	enscript
+Suggests:	source-highlight
+Suggests:	wv
+Suggests:	xlhtml
 Obsoletes:	horde-mysql
 Obsoletes:	horde-pgsql
 BuildArch:	noarch
@@ -99,7 +99,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		hordedir	/usr/share/horde
 %define		_appdir		%{hordedir}
 %define		_webapps	/etc/webapps
-%define		_webapp		%{_hordeapp}
+%define		_webapp		%{hordeapp}
 %define		_sysconfdir	%{_webapps}/%{_webapp}
 %define		schemadir	/usr/share/openldap/schema
 
@@ -146,7 +146,7 @@ This package contains horde.schema for openldap.
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
-%setup -qcT -n %{?_snap:%{name}-%{_snap}}%{!?_snap:%{_hordeapp}-%{version}%{?_rc:-%{_rc}}}
+%setup -qcT -n %{?_snap:%{name}-%{_snap}}%{!?_snap:%{hordeapp}-%{version}%{?subver:-%{subver}}}
 tar zxf %{SOURCE0} --strip-components=1
 #%patch100 -p1
 %patch0 -p1
@@ -217,7 +217,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
-> $RPM_BUILD_ROOT/var/log/horde/%{_hordeapp}.log
+> $RPM_BUILD_ROOT/var/log/horde/%{hordeapp}.log
 install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
 
 %clean
@@ -265,18 +265,18 @@ fi
 
 %triggerpostun -- horde < 3.0.7-1.4
 for i in conf.php hooks.php mime_drivers.php motd.php nls.php prefs.php registry.php; do
-	if [ -f /etc/horde.org/%{_hordeapp}/$i.rpmsave ]; then
+	if [ -f /etc/horde.org/%{hordeapp}/$i.rpmsave ]; then
 		mv -f %{_sysconfdir}/$i{,.rpmnew}
-		mv -f /etc/horde.org/%{_hordeapp}/$i.rpmsave %{_sysconfdir}/$i
+		mv -f /etc/horde.org/%{hordeapp}/$i.rpmsave %{_sysconfdir}/$i
 	fi
 done
 
-if [ -f /etc/horde.org/apache-%{_hordeapp}.conf.rpmsave ]; then
+if [ -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave ]; then
 	mv -f %{_sysconfdir}/apache.conf{,.rpmnew}
 	mv -f %{_sysconfdir}/httpd.conf{,.rpmnew}
-	cp -f /etc/horde.org/apache-%{_hordeapp}.conf.rpmsave %{_sysconfdir}/apache.conf
-	cp -f /etc/horde.org/apache-%{_hordeapp}.conf.rpmsave %{_sysconfdir}/httpd.conf
-	rm -f /etc/horde.org/apache-%{_hordeapp}.conf.rpmsave
+	cp -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave %{_sysconfdir}/apache.conf
+	cp -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave %{_sysconfdir}/httpd.conf
+	rm -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave
 fi
 
 if [ -L /etc/apache/conf.d/99_horde.conf ]; then
@@ -320,7 +320,7 @@ fi
 
 %dir %attr(770,root,http) /var/log/horde
 %dir %attr(770,root,http) /var/lib/horde
-%ghost %attr(770,root,http) /var/log/horde/%{_hordeapp}.log
+%ghost %attr(770,root,http) /var/log/horde/%{hordeapp}.log
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
