@@ -199,15 +199,6 @@
      'webroot' => $this->applications['horde']['webroot'] . '/jeta',
      'name' => _("SSH"),
      'status' => 'active',
-@@ -443,7 +443,7 @@
- );
- 
- $this->applications['giapeto'] = array(
--    'fileroot' => dirname(__FILE__) . '/../giapeto',
-+    'fileroot' => '/usr/share/horde/giapeto',
-     'webroot' => $this->applications['horde']['webroot'] . '/giapeto',
-     'name' => _("CMS"),
-     'status' => 'active',
 @@ -452,7 +452,7 @@
  );
  
