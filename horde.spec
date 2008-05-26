@@ -14,7 +14,7 @@
 %define	_hordeapp horde
 #define	_snap	2006-01-15
 #define	_rc		rc1
-%define	_rel	1
+%define	_rel	2
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -136,6 +136,7 @@ Summary:	Horde LDAP schema
 Summary(pl):	Schemat LDAP dla Horde
 Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
+Requires:	openldap-schema-rfc2739
 Requires:	openldap-servers
 Requires:	sed >= 4.0
 
@@ -236,7 +237,7 @@ EOF
 fi
 
 %post -n openldap-schema-horde
-%openldap_schema_register %{schemadir}/horde.schema -d core
+%openldap_schema_register %{schemadir}/horde.schema -d core,rfc2739
 %service -q ldap restart
 
 %postun -n openldap-schema-horde
