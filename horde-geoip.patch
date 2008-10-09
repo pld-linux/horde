@@ -1,0 +1,12 @@
+--- horde-3.3/config/conf.php.dist~	2008-10-09 17:02:05.000000000 +0200
++++ horde-3.3/config/conf.php.dist	2008-10-09 17:07:38.000000000 +0200
+@@ -55,6 +55,9 @@
+ //    http://lists.horde.org/archives/imp/Week-of-Mon-20030113/029149.html
+ $conf['cookie']['path'] = '/horde';
+ 
++// Path to GeoIP Country Database
++$conf['geoip']['datafile'] = '/usr/share/GeoIP/GeoIP.dat';
++
+ // YOU SHOULDN'T CHANGE ANTHING BELOW THIS LINE.
+ $conf['debug_level'] = E_ALL;
+ $conf['umask'] = 077;
