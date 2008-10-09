@@ -1,5 +1,5 @@
---- horde-3.2-alpha/config/registry.php~	2007-09-14 00:45:09.302977889 +0200
-+++ horde-3.2-alpha/config/registry.php	2007-09-14 00:48:17.163400003 +0200
+--- horde-3.2-alpha/config/registry.php.dist~	2007-09-14 00:45:09.302977889 +0200
++++ horde-3.2-alpha/config/registry.php.dist	2007-09-14 00:48:17.163400003 +0200
 @@ -546,7 +546,7 @@
              $_SERVER['SCRIPT_NAME'] :
              $_SERVER['SCRIPT_URL'];

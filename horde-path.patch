@@ -1,5 +1,5 @@
---- horde-3.3/config/registry.php~	2008-10-09 16:26:10.000000000 +0200
-+++ horde-3.3/config/registry.php	2008-10-09 16:35:56.000000000 +0200
+--- horde-3.3/config/registry.php.dist~	2008-10-09 16:26:10.000000000 +0200
++++ horde-3.3/config/registry.php.dist	2008-10-09 16:35:56.000000000 +0200
 @@ -44,24 +44,24 @@
  // 'horde' stanza below.
  

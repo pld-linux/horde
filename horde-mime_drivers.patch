@@ -1,5 +1,5 @@
---- horde-3.2-alpha/config/mime_drivers.php~	2007-08-27 12:44:27.337252725 +0300
-+++ horde-3.2-alpha/config/mime_drivers.php	2007-08-27 12:44:29.067291838 +0300
+--- horde-3.2-alpha/config/mime_drivers.php.dist~	2007-08-27 12:44:27.337252725 +0300
++++ horde-3.2-alpha/config/mime_drivers.php.dist	2007-08-27 12:44:29.067291838 +0300
 @@ -68,7 +68,7 @@
      // 'msword',
      // 'msexcel',
