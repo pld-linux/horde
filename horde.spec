@@ -34,7 +34,6 @@ Patch7:		%{name}-geoip.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.304
-BuildRequires:	tar >= 1:1.15.1
 %if %{with autodeps}
 BuildRequires:	php-pear-Crypt_Rc4
 BuildRequires:	php-pear-Date
