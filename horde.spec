@@ -4,17 +4,11 @@
 # - LDAP and memcached session handlers.
 # - remove config/ (and others in apache.conf) from document root, so
 #   apache deny from all not needed.
-# - put docs/CREDITS to package, rather in doc (so installations with
-#   --excludedocs have functional horde?)
-# - patch prefs.xml to include default path to GeoIP /usr/share/GeoIP/GeoIP.dat
 #
 # Conditional build:
 %bcond_without	autodeps	# don't BR packages needed only for resolving deps
 #
 %define		hordeapp horde
-#define		_snap	2006-01-15
-%define		subver		rc2
-%define		rel	0.1
 #
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
@@ -22,14 +16,12 @@ Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
-Version:	3.2
-Release:	%{?subver:0.%{subver}.}%{?_snap:0.%(echo %{_snap} | tr -d -).}%{rel}
+Version:	3.3
+Release:	0.1
 License:	LGPL
 Group:		Applications/WWW
-#Source0:	ftp://ftp.horde.org/pub/snaps/%{_snap}/%{hordeapp}-FRAMEWORK_3-%{_snap}.tar.gz
-#Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}-%{subver}.tar.gz
-Source0:	ftp://ftp.horde.org/pub/horde/horde-%{version}-%{subver}.tar.gz
-# Source0-md5:	a04e001cedcc0819c81fec5e71f2baf8
+Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
+# Source0-md5:	f66c438970ca01f89f40632286788bc2
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
@@ -38,25 +30,32 @@ Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
 Patch5:		%{name}-mime_drivers.patch
 Patch6:		%{name}-webroot.patch
-Patch100:	%{name}-branch.diff
+Patch7:		%{name}-geoip.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.304
 BuildRequires:	tar >= 1:1.15.1
 %if %{with autodeps}
 BuildRequires:	php-pear-Crypt_Rc4
-BuildRequires:	php-pear-DB
 BuildRequires:	php-pear-Date
+BuildRequires:	php-pear-DB
 BuildRequires:	php-pear-File
+BuildRequires:	php-pear-File_Fstab
 BuildRequires:	php-pear-HTTP_Request
 BuildRequires:	php-pear-HTTP_WebDAV_Server
 BuildRequires:	php-pear-Log
 BuildRequires:	php-pear-Mail
 BuildRequires:	php-pear-Mail_Mime
+BuildRequires:	php-pear-Mail_mimeDecode
+BuildRequires:	php-pear-MDB2
+BuildRequires:	php-pear-MDB2_Schema
 BuildRequires:	php-pear-Net_IMAP
+BuildRequires:	php-pear-Net_SMPP_Client
 BuildRequires:	php-pear-PEAR
-BuildRequires:	php-pear-SOAP
 BuildRequires:	php-pear-Services_Weather
+BuildRequires:	php-pear-SOAP
+BuildRequires:	php-pear-Text_CAPTCHA
+BuildRequires:	php-pear-Text_Figlet
 BuildRequires:	php-pear-VFS
 BuildRequires:	php-pear-XML_SVG
 %endif
@@ -84,6 +83,7 @@ Requires:	webserver(php) >= 4.1.0
 Requires:	webapps
 Suggests:	dpkg
 Suggests:	enscript
+Suggests:	php-pear-Net_GeoIP
 Suggests:	source-highlight
 Suggests:	wv
 Suggests:	xlhtml
@@ -92,9 +92,7 @@ Obsoletes:	horde-pgsql
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-# horde accesses it directly in help->about
-%define		_noautocompressdoc  CREDITS
-%define		_noautoreq	'pear(XML/WBXML.*)' 'pear(Horde.*)' 'pear(SyncML.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
+%define		_noautoreq	'pear(Horde.*)' 'pear(XML/WBXML.*)' 'pear(SyncML.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
 
 %define		hordedir	/usr/share/horde
 %define		_appdir		%{hordedir}
@@ -146,21 +144,19 @@ This package contains horde.schema for openldap.
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
 %prep
-%setup -qcT -n %{?_snap:%{name}-%{_snap}}%{!?_snap:%{hordeapp}-%{version}%{?subver:-%{subver}}}
-tar zxf %{SOURCE0} --strip-components=1
-#%patch100 -p1
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch3 -p0
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 rm -f {,*/}.htaccess
 for i in config/*.dist; do
 	mv $i config/$(basename $i .dist)
 done
-
-%patch5 -p1
-%patch6 -p1
 
 # Described in documentation as dangerous file...
 rm test.php
@@ -209,10 +205,10 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%
 cp -a *.php $RPM_BUILD_ROOT%{_appdir}
 cp -a config/* $RPM_BUILD_ROOT%{_sysconfdir}
 touch $RPM_BUILD_ROOT%{_sysconfdir}/conf.php.bak
-cp -a admin js services lib locale templates themes $RPM_BUILD_ROOT%{_appdir}
+cp -a admin js lib locale rpc services templates themes $RPM_BUILD_ROOT%{_appdir}
+cp -a docs/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 
 ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
-ln -s %{_docdir}/%{name}-%{version}/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
@@ -314,6 +310,7 @@ fi
 %{_appdir}/js
 %{_appdir}/lib
 %{_appdir}/locale
+%{_appdir}/rpc
 %{_appdir}/services
 %{_appdir}/templates
 %{_appdir}/themes
