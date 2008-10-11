@@ -87,8 +87,16 @@ Suggests:	php-pear-HTTP_WebDAV_Server
 Suggests:	php-pear-Net_GeoIP
 Suggests:	php-pear-Services_Weather
 Suggests:	php-pecl-fileinfo
+Suggests:	php-pecl-geoip
 Suggests:	php-pecl-lzf
 Suggests:	php-pecl-memcache
+Suggests:	php-pecl-pam
+Suggests:	php-pecl-radius
+Suggests:	php-pecl-sasl
+Suggests:	php-pecl-ssh2
+Suggests:	php-pecl-uuid
+Suggests:	php-pecl-xdiff
+Suggests:	samba-client
 Suggests:	source-highlight
 Suggests:	wv
 Suggests:	xlhtml
