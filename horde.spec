@@ -58,9 +58,6 @@ BuildRequires:	php-pear-Text_Figlet
 BuildRequires:	php-pear-VFS
 BuildRequires:	php-pear-XML_SVG
 %endif
-BuildRequires:	php-pear-Console_Getopt
-BuildRequires:	php-pear-Console_Table
-BuildRequires:	php-pear-File_Find
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	php-pear-Log
