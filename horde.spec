@@ -17,7 +17,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -58,16 +58,20 @@ BuildRequires:	php-pear-Text_Figlet
 BuildRequires:	php-pear-VFS
 BuildRequires:	php-pear-XML_SVG
 %endif
+BuildRequires:	php-pear-Console_Getopt
+BuildRequires:	php-pear-Console_Table
+BuildRequires:	php-pear-File_Find
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-# Requires: php-pear-DB >= 1.6.0 if database_used
-# Requires: php-pear-Date if import calendar data is accessed
-# Requires: php-pear-File if import csv wanted
-# Requires: php-pear-Services_Weather if weather.com service block is used in portal.
-# Requires: php-pear-{Log,Mail,Mail_Mime}
+Requires:	php-pear-Log
+Requires:	php-pear-Mail
+Requires:	php-pear-Mail_Mime
 Requires:	php(domxml)
+Requires:	php(gd)
 Requires:	php(gettext)
 Requires:	php(imap)
+Requires:	php(json)
+Requires:	php(mbstring)
 Requires:	php(mcrypt)
 Requires:	php(pcre)
 Requires:	php(posix)
@@ -75,14 +79,19 @@ Requires:	php(session)
 Requires:	php(xml)
 Requires:	php(zlib)
 Requires:	webserver(php) >= 4.1.0
-# Suggests: php-pecl-fileinfo || (deprecated)php-mime_magic
-# Suggests: php-pecl-memcache if memcached SessionHandler is used
-# Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
-# for mime_drivers.php
 Requires:	webapps
+# Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
 Suggests:	dpkg
 Suggests:	enscript
+Suggests:	php-pear-Date
+Suggests:	php-pear-DB >= 1.7.8
+Suggests:	php-pear-File
+Suggests:	php-pear-HTTP_WebDAV_Server
 Suggests:	php-pear-Net_GeoIP
+Suggests:	php-pear-Services_Weather
+Suggests:	php-pecl-fileinfo
+Suggests:	php-pecl-lzf
+Suggests:	php-pecl-memcache
 Suggests:	source-highlight
 Suggests:	wv
 Suggests:	xlhtml
