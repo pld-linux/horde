@@ -165,7 +165,6 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
-%patch8 -p1
 
 rm -f {,*/}.htaccess
 for i in config/*.dist; do
@@ -214,7 +213,7 @@ EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir},%{_bindir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir}}
 
 cp -a *.php $RPM_BUILD_ROOT%{_appdir}
 cp -a config/* $RPM_BUILD_ROOT%{_sysconfdir}
