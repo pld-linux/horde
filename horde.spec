@@ -161,6 +161,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 Summary:	PHP script for regenerating Horde translations
 Summary(pl.UTF-8):	Skrypt PHP służący do regeneracji tłumaczeń Horde
 Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
 Requires:	gettext
 Requires:	php-pear-Console_Getopt
 Requires:	php-pear-Console_Table
