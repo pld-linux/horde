@@ -357,5 +357,4 @@ fi
 
 %files localegen
 %defattr(644,root,root,755)
-%attr(755,root,root)
-%{_bindir}/horde-localegen.php
+%attr(755,root,root) %{_bindir}/horde-localegen.php
