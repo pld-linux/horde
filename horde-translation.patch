@@ -19,6 +19,15 @@ diff -ur horde-3.3/po/translation.php horde-3.3-trans/po/translation.php
  }
  
  function usage()
+@@ -1429,7 +1429,7 @@
+     $language = getenv('LANGUAGE');
+ }
+ 
+-@define('HORDE_BASE', dirname(__FILE__) . '/..');
++@define('HORDE_BASE', '/usr/share/horde');
+ require_once HORDE_BASE . '/lib/core.php';
+ require_once 'Horde/CLI.php';
+ 
 @@ -1616,4 +1616,4 @@
      footer();
  }
