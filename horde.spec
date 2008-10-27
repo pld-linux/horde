@@ -17,7 +17,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3
-Release:	2
+Release:	3
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -31,6 +31,7 @@ Patch4:		%{name}-config-xml.patch
 Patch5:		%{name}-mime_drivers.patch
 Patch6:		%{name}-webroot.patch
 Patch7:		%{name}-geoip.patch
+Patch8:		%{name}-translation.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.304
@@ -156,6 +157,21 @@ This package contains horde.schema for openldap.
 %description -n openldap-schema-horde -l pl.UTF-8
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
+%package localegen
+Summary:	PHP script for regenerating Horde translations
+Summary(pl.UTF-8):	Skrypt PHP służący do regeneracji tłumaczeń Horde
+Group:		Networking/Daemons
+Requires:	gettext
+Requires:	php-pear-Console_Getopt
+Requires:	php-pear-Console_Table
+Requires:	php-pear-File_Find
+
+%description localegen
+PHP script for regenerating Horde translations.
+
+%description localegen -l pl.UTF-8
+Skrypt PHP służący do regeneracji tłumaczeń Horde.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -165,6 +181,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 rm -f {,*/}.htaccess
 for i in config/*.dist; do
@@ -213,7 +230,7 @@ EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir},%{_bindir}}
 
 cp -a *.php $RPM_BUILD_ROOT%{_appdir}
 cp -a config/* $RPM_BUILD_ROOT%{_sysconfdir}
@@ -228,6 +245,8 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{hordeapp}.log
 install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
+
+install po/translation.php $RPM_BUILD_ROOT%{_bindir}/horde-localegen.php
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -335,3 +354,8 @@ fi
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
 %{schemadir}/*.schema
+
+%files localegen
+%defattr(644,root,root,755)
+%attr(755,root,root)
+%{_bindir}/horde-localegen.php
