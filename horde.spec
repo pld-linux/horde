@@ -331,7 +331,7 @@ fi
 
 %dir %attr(770,root,http) /var/log/horde
 %dir %attr(770,root,http) /var/lib/horde
-%ghost %attr(770,root,http) /var/log/horde/%{hordeapp}.log
+%attr(770,root,http) %ghost /var/log/horde/%{hordeapp}.log
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
