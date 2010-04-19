@@ -16,12 +16,12 @@ Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
-Version:	3.3.4
+Version:	3.3.6
 Release:	1
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
-# Source0-md5:	4b8f8e73e87ca5f8833515e1c7e4fc64
+# Source0-md5:	ab810c465f15e774f7fd6e4c761fa7b8
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
