@@ -17,7 +17,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.6
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -84,6 +84,7 @@ Suggests:	php-pear-Date
 Suggests:	php-pear-DB >= 1.7.8
 Suggests:	php-pear-File
 Suggests:	php-pear-HTTP_WebDAV_Server
+Suggests:	php-pear-Net_DNS
 Suggests:	php-pear-Net_GeoIP
 Suggests:	php-pear-Services_Weather
 Suggests:	php-pecl-fileinfo
@@ -105,7 +106,7 @@ Obsoletes:	horde-pgsql
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	'pear(Horde.*)' 'pear(XML/WBXML.*)' 'pear(SyncML.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
+%define		_noautoreq	'pear(Horde.*)' 'pear(Net/DNS.*)' 'pear(XML/WBXML.*)' 'pear(SyncML.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
 
 %define		hordedir	/usr/share/horde
 %define		_appdir		%{hordedir}
