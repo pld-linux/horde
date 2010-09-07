@@ -7,21 +7,20 @@
 #
 # Conditional build:
 %bcond_without	autodeps	# don't BR packages needed only for resolving deps
-#
+
 %define		hordeapp horde
-#
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
 Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
-Version:	3.3.6
-Release:	2
+Version:	3.3.8
+Release:	1
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
-# Source0-md5:	ab810c465f15e774f7fd6e4c761fa7b8
+# Source0-md5:	7aa5c743e2c3411b29b614406cda6305
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Patch0:		%{name}-path.patch
@@ -106,7 +105,7 @@ Obsoletes:	horde-pgsql
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	'pear(Horde.*)' 'pear(Net/DNS.*)' 'pear(XML/WBXML.*)' 'pear(SyncML.*)' 'pear(Text/.*)' 'pear(Net/IMSP.*)' 'pear(XML/sql2xml.php)'
+%define		_noautoreq	pear(Horde.*) pear(Net/DNS.*) pear(XML/WBXML.*) pear(SyncML.*) pear(Text/.*) pear(Net/IMSP.*) pear(XML/sql2xml.php)
 
 %define		hordedir	/usr/share/horde
 %define		_appdir		%{hordedir}
