@@ -16,7 +16,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.8
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications/WWW
 Source0:	ftp://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -30,6 +30,7 @@ Patch4:		%{name}-config-xml.patch
 Patch5:		%{name}-mime_drivers.patch
 Patch6:		%{name}-webroot.patch
 Patch7:		%{name}-geoip.patch
+Patch8:		%{name}-crypt-detect.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.304
@@ -166,6 +167,7 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 rm -f {,*/}.htaccess
 for i in config/*.dist; do

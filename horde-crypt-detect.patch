@@ -1,0 +1,35 @@
+diff -ur horde-3.3.8/lib/Horde/Auth.php horde-3.3.8-crypt/lib/Horde/Auth.php
+--- horde-3.3.8/lib/Horde/Auth.php	2010-04-28 15:39:32.000000000 +0200
++++ horde-3.3.8-crypt/lib/Horde/Auth.php	2010-09-09 12:38:49.569091001 +0200
+@@ -299,6 +299,19 @@ function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '')
+     {
+         switch ($encryption) {
+         case 'crypt':
++            if ($seed) {
++                $enctmp = explode('$', $seed);
++                if ($enctmp[1] == 1) {
++                    return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 12);
++                } elseif ($enctmp[1] == 2) {
++                    return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 30);
++                } else {
++                    return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 2);
++                }
++            } else {
++                return substr(md5(mt_rand()), 0, 2);
++            }
++
+         case 'crypt-des':
+             if ($seed) {
+                 return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 2);
+@@ -316,9 +329,9 @@
+ 
+         case 'crypt-blowfish':
+             if ($seed) {
+-                return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 16);
++                return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 30);
+             } else {
+-                return '$2$' . substr(md5(mt_rand()), 0, 12) . '$';
++                return '$2a$08$' . substr(md5(mt_rand()), 0, 23);
+             }
+ 
+         case 'ssha':
