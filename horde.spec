@@ -23,6 +23,7 @@ Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
 # Source0-md5:	ee6aee3ab7891913f6faf615f37748e3
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
+Source3:	README.PLD
 Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch3:		%{name}-blank-admins.patch
@@ -33,26 +34,26 @@ Patch7:		%{name}-geoip.patch
 Patch8:		%{name}-crypt-detect.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-BuildRequires:	rpmbuild(macros) >= 1.304
+BuildRequires:	rpmbuild(macros) >= 1.595
 %if %{with autodeps}
 BuildRequires:	php-pear-Crypt_Rc4
-BuildRequires:	php-pear-Date
 BuildRequires:	php-pear-DB
+BuildRequires:	php-pear-Date
 BuildRequires:	php-pear-File
 BuildRequires:	php-pear-File_Fstab
 BuildRequires:	php-pear-HTTP_Request
 BuildRequires:	php-pear-HTTP_WebDAV_Server
 BuildRequires:	php-pear-Log
+BuildRequires:	php-pear-MDB2
+BuildRequires:	php-pear-MDB2_Schema
 BuildRequires:	php-pear-Mail
 BuildRequires:	php-pear-Mail_Mime
 BuildRequires:	php-pear-Mail_mimeDecode
-BuildRequires:	php-pear-MDB2
-BuildRequires:	php-pear-MDB2_Schema
 BuildRequires:	php-pear-Net_IMAP
 BuildRequires:	php-pear-Net_SMPP_Client
 BuildRequires:	php-pear-PEAR
-BuildRequires:	php-pear-Services_Weather
 BuildRequires:	php-pear-SOAP
+BuildRequires:	php-pear-Services_Weather
 BuildRequires:	php-pear-Text_CAPTCHA
 BuildRequires:	php-pear-Text_Figlet
 BuildRequires:	php-pear-VFS
@@ -60,9 +61,6 @@ BuildRequires:	php-pear-XML_SVG
 %endif
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-Requires:	php-pear-Log
-Requires:	php-pear-Mail
-Requires:	php-pear-Mail_Mime
 Requires:	php(domxml)
 Requires:	php(gd)
 Requires:	php(gettext)
@@ -75,13 +73,16 @@ Requires:	php(posix)
 Requires:	php(session)
 Requires:	php(xml)
 Requires:	php(zlib)
-Requires:	webserver(php) >= 4.1.0
+Requires:	php-pear-Log
+Requires:	php-pear-Mail
+Requires:	php-pear-Mail_Mime
 Requires:	webapps
+Requires:	webserver(php) >= 4.1.0
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
 Suggests:	dpkg
 Suggests:	enscript
-Suggests:	php-pear-Date
 Suggests:	php-pear-DB >= 1.7.8
+Suggests:	php-pear-Date
 Suggests:	php-pear-File
 Suggests:	php-pear-HTTP_WebDAV_Server
 Suggests:	php-pear-Net_DNS
@@ -169,6 +170,8 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 %patch7 -p1
 %patch8 -p1
 
+cp -p %{SOURCE3} .
+
 rm -f {,*/}.htaccess
 for i in config/*.dist; do
 	mv $i config/$(basename $i .dist)
@@ -187,32 +190,6 @@ s#dirname(__FILE__) . '/..#'%{hordedir}#g
 " config/registry.php.dist
 exit 1
 %endif
-
-cat > README.PLD << 'EOF'
-IMPORTANT:
-Default horde installation will auto authorize You as Administrator, but due to
-security concerns the Administrator is not granted Administrator privileges.
-If You want to add Yourself to admins list (to administer Horde via web
-interface), please change %{_sysconfdir}/conf.php:
-$conf['auth']['admins'] = array('Administrator');
-
-Depending on authorization You choose, You need to create Horde database tables.
-Look into directory %{_docdir}/%{name}-%{version}/scripts/sql
-to find out how to do this for Your database.
-
-If You've chosen LDAP authorization, please install php-ldap package.
-To configure your openldap server to use horde schema, install
-openldap-schema-horde package.
-
-NOTE: You don't need SQL database for Authorization if You use LDAP for authorization.
-
-If you want to use MaxMind GeoIP Hostname Country lookup, install
-GeoIP package and go to:
-
-Configuration -> Horde -> Hostname -> Country Lookup and set GeoIP.dat path to: %{_datadir}/GeoIP/GeoIP.dat
-
-EOF
-# '
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -244,8 +221,7 @@ if [ ! -f %{_sysconfdir}/conf.php.bak ]; then
 	install /dev/null -o root -g http -m660 %{_sysconfdir}/conf.php.bak
 fi
 
-if [ "$1" = 1 ]; then
-%banner %{name} -e <<'EOF'
+%banner -o %{name} -e <<'EOF'
 Please read README.PLD from documentation.
 EOF
 
