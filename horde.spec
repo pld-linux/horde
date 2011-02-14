@@ -16,7 +16,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.11
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -225,12 +225,16 @@ cp -a admin js lib locale rpc services templates themes $RPM_BUILD_ROOT%{_appdir
 cp -a docs/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 
 ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{hordeapp}.log
-install scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
+cp -p scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
+
+# don't package tests
+rm $RPM_BUILD_ROOT%{_appdir}/lib/Horde/Kolab/Test.php
+rm -r $RPM_BUILD_ROOT%{_appdir}/lib/Horde/Kolab/Test
 
 %clean
 rm -rf $RPM_BUILD_ROOT
