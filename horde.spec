@@ -16,7 +16,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.11
-Release:	2
+Release:	3
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -224,8 +224,6 @@ fi
 %banner -o %{name} -e <<'EOF'
 Please read README.PLD from documentation.
 EOF
-
-fi
 
 %post -n openldap-schema-horde
 %openldap_schema_register %{schemadir}/horde.schema -d core
