@@ -6,6 +6,7 @@
 #   apache deny from all not needed.
 
 %define		hordeapp horde
+%define		php_min_version 5.2.0
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
 Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
@@ -13,7 +14,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.11
-Release:	3
+Release:	4
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -32,23 +33,22 @@ Patch8:		%{name}-crypt-detect.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.595
-Requires(triggerpostun):	grep
-Requires(triggerpostun):	sed >= 4.0
-Requires:	php(domxml)
-Requires:	php(gd)
-Requires:	php(gettext)
-Requires:	php(imap)
-Requires:	php(json)
-Requires:	php(mbstring)
-Requires:	php(mcrypt)
-Requires:	php(pcre)
-Requires:	php(posix)
-Requires:	php(session)
-Requires:	php(xml)
-Requires:	php(zlib)
+Requires:	php-common >= 4:%{php_min_version}
+Requires:	php-domxml
+Requires:	php-gd
+Requires:	php-gettext
+Requires:	php-imap
+Requires:	php-json
+Requires:	php-mbstring
+Requires:	php-mcrypt
+Requires:	php-pcre
 Requires:	php-pear-Log
 Requires:	php-pear-Mail
 Requires:	php-pear-Mail_Mime
+Requires:	php-posix
+Requires:	php-session
+Requires:	php-xml
+Requires:	php-zlib
 Requires:	webapps
 Requires:	webserver(php) >= 4.1.0
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
@@ -225,33 +225,6 @@ fi
 
 %triggerun -- lighttpd
 %webapp_unregister lighttpd %{_webapp}
-
-%triggerpostun -- horde < 3.0.7-1.4
-for i in conf.php hooks.php mime_drivers.php motd.php nls.php prefs.php registry.php; do
-	if [ -f /etc/horde.org/%{hordeapp}/$i.rpmsave ]; then
-		mv -f %{_sysconfdir}/$i{,.rpmnew}
-		mv -f /etc/horde.org/%{hordeapp}/$i.rpmsave %{_sysconfdir}/$i
-	fi
-done
-
-if [ -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave ]; then
-	mv -f %{_sysconfdir}/apache.conf{,.rpmnew}
-	mv -f %{_sysconfdir}/httpd.conf{,.rpmnew}
-	cp -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave %{_sysconfdir}/apache.conf
-	cp -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave %{_sysconfdir}/httpd.conf
-	rm -f /etc/horde.org/apache-%{hordeapp}.conf.rpmsave
-fi
-
-if [ -L /etc/apache/conf.d/99_horde.conf ]; then
-	/usr/sbin/webapp register apache %{_webapp}
-	rm -f /etc/apache/conf.d/99_horde.conf
-	%service -q apache reload
-fi
-if [ -L /etc/httpd/httpd.conf/99_horde.conf ]; then
-	/usr/sbin/webapp register httpd %{_webapp}
-	rm -f /etc/httpd/httpd.conf/99_horde.conf
-	%service -q httpd reload
-fi
 
 %files
 %defattr(644,root,root,755)
