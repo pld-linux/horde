@@ -4,9 +4,6 @@
 # - LDAP and memcached session handlers.
 # - remove config/ (and others in apache.conf) from document root, so
 #   apache deny from all not needed.
-#
-# Conditional build:
-%bcond_without	autodeps	# don't BR packages needed only for resolving deps
 
 %define		hordeapp horde
 %include	/usr/lib/rpm/macros.php
@@ -35,30 +32,6 @@ Patch8:		%{name}-crypt-detect.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.595
-%if %{with autodeps}
-BuildRequires:	php-pear-Crypt_Rc4
-BuildRequires:	php-pear-DB
-BuildRequires:	php-pear-Date
-BuildRequires:	php-pear-File
-BuildRequires:	php-pear-File_Fstab
-BuildRequires:	php-pear-HTTP_Request
-BuildRequires:	php-pear-HTTP_WebDAV_Server
-BuildRequires:	php-pear-Log
-BuildRequires:	php-pear-MDB2
-BuildRequires:	php-pear-MDB2_Schema
-BuildRequires:	php-pear-Mail
-BuildRequires:	php-pear-Mail_Mime
-BuildRequires:	php-pear-Mail_mimeDecode
-BuildRequires:	php-pear-Net_IMAP
-BuildRequires:	php-pear-Net_SMPP_Client
-BuildRequires:	php-pear-PEAR
-BuildRequires:	php-pear-SOAP
-BuildRequires:	php-pear-Services_Weather
-BuildRequires:	php-pear-Text_CAPTCHA
-BuildRequires:	php-pear-Text_Figlet
-BuildRequires:	php-pear-VFS
-BuildRequires:	php-pear-XML_SVG
-%endif
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	php(domxml)
