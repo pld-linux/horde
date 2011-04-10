@@ -1,34 +1,39 @@
-diff -ur horde-3.1-rc1/lib/api.php horde-3.1-rc1.new/lib/api.php
---- horde-3.1-rc1/lib/api.php	2005-10-18 11:33:39.000000000 +0000
-+++ horde-3.1-rc1.new/lib/api.php	2006-01-06 15:56:02.321528000 +0000
-@@ -144,18 +144,18 @@
-                      'link' => '%application%/admin/sessions.php',
-                      'name' => _("Sessions"),
-                      'icon' => 'user.png'),
--                 'phpshell' => array(
--                     'link' => '%application%/admin/phpshell.php',
--                     'name' => _("P_HP Shell"),
--                     'icon' => 'mime/php.png'),
--                 'sqlshell' => array(
--                     'link' => '%application%/admin/sqlshell.php',
--                     'name' => _("S_QL Shell"),
--                     'icon' => 'sql.png'),
--                 'cmdshell' => array(
--                     'link' => '%application%/admin/cmdshell.php',
--                     'name' => _("_CLI"),
--                     'icon' => 'shell.png'),
-+#                 'phpshell' => array(
-+#                     'link' => '%application%/admin/phpshell.php',
-+#                     'name' => _("P_HP Shell"),
-+#                     'icon' => 'shell.png'),
-+#                 'sqlshell' => array(
-+#                     'link' => '%application%/admin/sqlshell.php',
-+#                     'name' => _("S_QL Shell"),
-+#                     'icon' => 'sql.png'),
-+#                 'cmdshell' => array(
-+#                     'link' => '%application%/admin/cmdshell.php',
-+#                     'name' => _("_CLI"),
-+#                     'icon' => 'shell.png'),
-                  );
- }
+--- horde/lib/Api.php~	2011-04-09 01:01:50.000000000 +0300
++++ horde/lib/Api.php	2011-04-09 01:02:19.292467869 +0300
+@@ -57,21 +57,21 @@
+                 'name' => _("Sessions"),
+                 'icon' => Horde_Themes::img('user.png')
+             ),
+-            'phpshell' => array(
+-                'link' => '%application%/admin/phpshell.php',
+-                'name' => _("P_HP Shell"),
+-                'icon' => Horde_Themes::img('mime/php.png')
+-            ),
+-            'sqlshell' => array(
+-                'link' => '%application%/admin/sqlshell.php',
+-                'name' => _("S_QL Shell"),
+-                'icon' => Horde_Themes::img('sql.png')
+-            ),
+-            'cmdshell' => array(
+-                'link' => '%application%/admin/cmdshell.php',
+-                'name' => _("_CLI"),
+-                'icon' => Horde_Themes::img('shell.png')
+-            )
++#            'phpshell' => array(
++#                'link' => '%application%/admin/phpshell.php',
++#                'name' => _("P_HP Shell"),
++#                'icon' => Horde_Themes::img('mime/php.png')
++#            ),
++#            'sqlshell' => array(
++#                'link' => '%application%/admin/sqlshell.php',
++#                'name' => _("S_QL Shell"),
++#                'icon' => Horde_Themes::img('sql.png')
++#            ),
++#            'cmdshell' => array(
++#                'link' => '%application%/admin/cmdshell.php',
++#                'name' => _("_CLI"),
++#                'icon' => Horde_Themes::img('shell.png')
++#            )
+         );
  
+         if (!empty($GLOBALS['conf']['activesync']['enabled'])) {

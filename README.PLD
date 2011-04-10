@@ -6,7 +6,7 @@ interface), please change /etc/webapps/horde/conf.php:
 $conf['auth']['admins'] = array('Administrator');
 
 Depending on authorization You choose, You need to create Horde database tables.
-Look into directory /usr/share/doc/horde-3.3.11/scripts/sql
+Look into directory /usr/share/doc/horde-*/scripts/sql
 to find out how to do this for Your database.
 
 If You've chosen LDAP authorization, please install php-ldap package.
