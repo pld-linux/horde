@@ -15,7 +15,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	4.0.1
-Release:	0.5
+Release:	0.6
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://pear.horde.org/get/horde-%{version}.tgz
@@ -33,6 +33,7 @@ Patch7:		%{name}-geoip.patch
 #Patch8:	%{name}-crypt-detect.patch
 URL:		http://www.horde.org/
 BuildRequires:	php-channel(pear.horde.org)
+BuildRequires:	php-horde-Horde_Role
 BuildRequires:	php-pear-PEAR >= 1:1.7.0
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.595
