@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.12
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -136,7 +136,9 @@ Ten pakiet zawiera horde.schema dla pakietu openldap.
 Summary:	Horde developmnent tools
 Summary(pl.UTF-8):	Narzędzia deweloperskie horde
 Group:		Development
+Requires:	%{name} = %{version}-%{release}
 Requires:	php-cli
+Requires:	php-pear-File_Find
 
 %description devel
 Horde developmnent tools.
