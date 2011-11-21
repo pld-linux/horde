@@ -13,12 +13,12 @@ Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
-Version:	3.3.11
-Release:	4
+Version:	3.3.12
+Release:	1
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
-# Source0-md5:	ee6aee3ab7891913f6faf615f37748e3
+# Source0-md5:	4e99757cf1a584682316cba0ada28c48
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Source3:	README.PLD
@@ -132,6 +132,18 @@ This package contains horde.schema for openldap.
 %description -n openldap-schema-horde -l pl.UTF-8
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
+%package devel
+Summary:	Horde developmnent tools
+Summary(pl.UTF-8):	Narzędzia deweloperskie horde
+Group:		Development
+Requires:	php-cli
+
+%description devel
+Horde developmnent tools.
+
+%description devel -l pl.UTF-8
+Narzędzia deweloperskie horde.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -166,7 +178,8 @@ exit 1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_bindir},%{_appdir}/docs} \
+	$RPM_BUILD_ROOT{/var/{lib,log}/horde,%{schemadir}}
 
 cp -a *.php $RPM_BUILD_ROOT%{_appdir}
 cp -a config/* $RPM_BUILD_ROOT%{_sysconfdir}
@@ -181,6 +194,8 @@ cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{hordeapp}.log
 cp -p scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
+
+install -p po/translation.php $RPM_BUILD_ROOT%{_bindir}/horde-translation.php
 
 # don't package tests
 rm $RPM_BUILD_ROOT%{_appdir}/lib/Horde/Kolab/Test.php
@@ -258,6 +273,10 @@ fi
 %dir %attr(770,root,http) /var/log/horde
 %dir %attr(770,root,http) /var/lib/horde
 %attr(770,root,http) %ghost /var/log/horde/%{hordeapp}.log
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/*
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)
