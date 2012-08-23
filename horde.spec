@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.12
-Release:	3
+Release:	4
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -33,7 +33,7 @@ Patch8:		%{name}-crypt-detect.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.595
-Requires:	php-common >= 4:%{php_min_version}
+Requires:	php(core) >= %{php_min_version}
 Requires:	php-domxml
 Requires:	php-gd
 Requires:	php-gettext
