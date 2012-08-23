@@ -37,8 +37,8 @@ BuildRequires:	php-horde-Horde_Role
 BuildRequires:	php-pear-PEAR >= 1:1.7.0
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.595
+Requires:	php(core) >= %{php_min_version}
 Requires:	php-channel(pear.horde.org)
-Requires:	php-common >= 4:%{php_min_version}
 Requires:	php-domxml
 Requires:	php-filter
 Requires:	php-gd
