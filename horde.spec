@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.13
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -33,7 +33,7 @@ Patch8:		%{name}-crypt-detect.patch
 Patch9:		%{name}-ssh2-vfs-realpath.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-BuildRequires:	rpmbuild(macros) >= 1.595
+BuildRequires:	rpmbuild(macros) >= 1.654
 Requires:	php(core) >= %{php_min_version}
 Requires:	php-domxml
 Requires:	php-gd
@@ -81,7 +81,7 @@ Obsoletes:	horde-pgsql
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	pear(Horde.*) pear(Net/DNS.*) pear(XML/WBXML.*) pear(SyncML.*) pear(Text/.*) pear(Net/IMSP.*) pear(XML/sql2xml.php)
+%define		_noautoreq_pear Horde.* Net/DNS.* XML/WBXML.* SyncML.* Text/.* Net/IMSP.* XML/sql2xml.php
 
 %define		hordedir	/usr/share/horde
 %define		_appdir		%{hordedir}
