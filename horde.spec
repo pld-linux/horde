@@ -13,12 +13,12 @@ Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
-Version:	3.3.12
-Release:	4
+Version:	3.3.13
+Release:	1
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
-# Source0-md5:	4e99757cf1a584682316cba0ada28c48
+# Source0-md5:	5a0486a5f6f96a9957e770ddabe71b38
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Source3:	README.PLD
@@ -30,6 +30,7 @@ Patch5:		%{name}-mime_drivers.patch
 Patch6:		%{name}-webroot.patch
 Patch7:		%{name}-geoip.patch
 Patch8:		%{name}-crypt-detect.patch
+Patch9:		%{name}-ssh2-vfs-realpath.patch
 URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.595
@@ -155,6 +156,7 @@ Narzędzia deweloperskie horde.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 cp -p %{SOURCE3} .
 
