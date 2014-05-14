@@ -38,12 +38,21 @@ BuildRequires:	php-pear-PEAR >= 1:1.7.0
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.595
 Requires:	php(core) >= %{php_min_version}
+Requires:	php(domxml)
+Requires:	php(filter)
+Requires:	php(gd)
+Requires:	php(gettext)
+Requires:	php(hash)
+Requires:	php(imap)
+Requires:	php(json)
+Requires:	php(mbstring)
+Requires:	php(mcrypt)
+Requires:	php(pcre)
+Requires:	php(posix)
+Requires:	php(session)
+Requires:	php(xml)
+Requires:	php(zlib)
 Requires:	php-channel(pear.horde.org)
-Requires:	php-domxml
-Requires:	php-filter
-Requires:	php-gd
-Requires:	php-gettext
-Requires:	php-hash
 Requires:	php-horde-Horde_Alarm < 2.0.0
 Requires:	php-horde-Horde_Argv < 2.0.0
 Requires:	php-horde-Horde_Auth < 2.0.0
@@ -73,19 +82,10 @@ Requires:	php-horde-Horde_Url < 2.0.0
 Requires:	php-horde-Horde_Util < 2.0.0
 Requires:	php-horde-Horde_Vfs < 2.0.0
 Requires:	php-horde-Horde_View < 2.0.0
-Requires:	php-imap
-Requires:	php-json
-Requires:	php-mbstring
-Requires:	php-mcrypt
-Requires:	php-pcre
 Requires:	php-pear-Log
 Requires:	php-pear-Mail
 Requires:	php-pear-Mail_Mime
 Requires:	php-pear-Net_DNS2
-Requires:	php-posix
-Requires:	php-session
-Requires:	php-xml
-Requires:	php-zlib
 Requires:	webapps
 Requires:	webserver(php) >= 4.1.0
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
