@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.13
-Release:	4
+Release:	5
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -35,21 +35,21 @@ URL:		http://www.horde.org/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.654
 Requires:	php(core) >= %{php_min_version}
-Requires:	php-domxml
-Requires:	php-gd
-Requires:	php-gettext
-Requires:	php-imap
-Requires:	php-json
-Requires:	php-mbstring
-Requires:	php-mcrypt
-Requires:	php-pcre
+Requires:	php(domxml)
+Requires:	php(gd)
+Requires:	php(gettext)
+Requires:	php(imap)
+Requires:	php(json)
+Requires:	php(mbstring)
+Requires:	php(mcrypt)
+Requires:	php(pcre)
+Requires:	php(posix)
+Requires:	php(session)
+Requires:	php(xml)
+Requires:	php(zlib)
 Requires:	php-pear-Log
 Requires:	php-pear-Mail
 Requires:	php-pear-Mail_Mime
-Requires:	php-posix
-Requires:	php-session
-Requires:	php-xml
-Requires:	php-zlib
 Requires:	webapps
 Requires:	webserver(php) >= 4.1.0
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
