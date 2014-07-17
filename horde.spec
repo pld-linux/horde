@@ -14,7 +14,7 @@ Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
 Version:	3.3.13
-Release:	5
+Release:	6
 License:	LGPL
 Group:		Applications/WWW
 Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
@@ -55,6 +55,16 @@ Requires:	webserver(php) >= 4.1.0
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
 Suggests:	dpkg
 Suggests:	enscript
+Suggests:	php(fileinfo)
+Suggests:	php(geoip)
+Suggests:	php(lzf)
+Suggests:	php(memcache)
+Suggests:	php(pam)
+Suggests:	php(radius)
+Suggests:	php(sasl)
+Suggests:	php(ssh2)
+Suggests:	php(uuid)
+Suggests:	php(xdiff)
 Suggests:	php-pear-DB >= 1.7.8
 Suggests:	php-pear-Date
 Suggests:	php-pear-File
@@ -62,16 +72,6 @@ Suggests:	php-pear-HTTP_WebDAV_Server
 Suggests:	php-pear-Net_DNS
 Suggests:	php-pear-Net_GeoIP
 Suggests:	php-pear-Services_Weather
-Suggests:	php-pecl-fileinfo
-Suggests:	php-pecl-geoip
-Suggests:	php-pecl-lzf
-Suggests:	php-pecl-memcache
-Suggests:	php-pecl-pam
-Suggests:	php-pecl-radius
-Suggests:	php-pecl-sasl
-Suggests:	php-pecl-ssh2
-Suggests:	php-pecl-uuid
-Suggests:	php-pecl-xdiff
 Suggests:	samba-client
 Suggests:	source-highlight
 Suggests:	wv
