@@ -7,7 +7,6 @@
 
 %define		hordeapp horde
 %define		php_min_version 5.2.0
-%define		pearname	horde
 %include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
 Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
@@ -23,19 +22,16 @@ Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Source3:	README.PLD
-#Patch0:	%{name}-path.patch
+Patch0:		%{name}-path.patch
 Patch1:		%{name}-shell.disabled.patch
 Patch3:		%{name}-blank-admins.patch
 Patch4:		%{name}-config-xml.patch
 Patch5:		%{name}-mime_drivers.patch
-#Patch6:	%{name}-webroot.patch
+Patch6:		%{name}-webroot.patch
 Patch7:		%{name}-geoip.patch
 Patch8:		%{name}-crypt-detect.patch
 Patch9:		%{name}-ssh2-vfs-realpath.patch
 URL:		http://www.horde.org/
-BuildRequires:	php-channel(pear.horde.org)
-BuildRequires:	php-horde-Horde_Role
-BuildRequires:	php-pear-PEAR >= 1:1.7.0
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	rpmbuild(macros) >= 1.654
 Requires:	php(core) >= %{php_min_version}
@@ -59,33 +55,23 @@ Requires:	webserver(php) >= 4.1.0
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
 Suggests:	dpkg
 Suggests:	enscript
-Suggests:	php(fileinfo)
-Suggests:	php(geoip)
-Suggests:	php(iconv)
-Suggests:	php(lzf)
-Suggests:	php(memcache)
-Suggests:	php(pam)
-Suggests:	php(radius)
-Suggests:	php(sasl)
-Suggests:	php(ssh2)
-Suggests:	php(uuid)
-Suggests:	php(xdiff)
-Suggests:	php-horde-Horde_ActiveSync
-Suggests:	php-horde-Horde_DataTree
-Suggests:	php-horde-Horde_Db
-Suggests:	php-horde-Horde_Feed
-Suggests:	php-horde-Horde_Oauth
-Suggests:	php-horde-Horde_Service_Facebook
-Suggests:	php-horde-Horde_Service_Twitter
-Suggests:	php-horde-Horde_SyncMl
 Suggests:	php-pear-DB >= 1.7.8
 Suggests:	php-pear-Date
 Suggests:	php-pear-File
 Suggests:	php-pear-HTTP_WebDAV_Server
 Suggests:	php-pear-Net_DNS
 Suggests:	php-pear-Net_GeoIP
-Suggests:	php-pear-SOAP
 Suggests:	php-pear-Services_Weather
+Suggests:	php-pecl-fileinfo
+Suggests:	php-pecl-geoip
+Suggests:	php-pecl-lzf
+Suggests:	php-pecl-memcache
+Suggests:	php-pecl-pam
+Suggests:	php-pecl-radius
+Suggests:	php-pecl-sasl
+Suggests:	php-pecl-ssh2
+Suggests:	php-pecl-uuid
+Suggests:	php-pecl-xdiff
 Suggests:	samba-client
 Suggests:	source-highlight
 Suggests:	wv
@@ -161,21 +147,13 @@ Horde developmnent tools.
 Narzędzia deweloperskie horde.
 
 %prep
-%pear_package_setup -d horde_dir=%{_appdir}
-
-mv ./%{php_pear_dir}/data/horde/* .
-mv docs/horde/* docs
-
-cp -p %{SOURCE3} .
-
-cd ./%{_appdir}
-
-#%patch0 -p1
+%setup -q
+%patch0 -p1
 %patch1 -p1
 %patch3 -p0
 %patch4 -p1
 %patch5 -p1
-#%patch6 -p1
+%patch6 -p1
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
@@ -193,18 +171,24 @@ rm test.php
 # remove backup files from patching
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
+# enable if you want to update patch0
+%if 0
+sed -i -e "
+s#dirname(__FILE__) . '/..#'%{hordedir}#g
+" config/registry.php.dist
+exit 1
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_bindir},%{_appdir}/docs} \
 	$RPM_BUILD_ROOT{/var/{lib,log}/horde,%{schemadir}}
 
-cd ./%{_appdir}
 cp -a *.php $RPM_BUILD_ROOT%{_appdir}
 cp -a config/* $RPM_BUILD_ROOT%{_sysconfdir}
 touch $RPM_BUILD_ROOT%{_sysconfdir}/conf.php.bak
 cp -a admin js lib locale rpc services templates themes $RPM_BUILD_ROOT%{_appdir}
-#cp -a docs/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
-cd -
+cp -a docs/CREDITS $RPM_BUILD_ROOT%{_appdir}/docs
 
 ln -s %{_sysconfdir} $RPM_BUILD_ROOT%{_appdir}/config
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
@@ -227,6 +211,10 @@ rm -rf $RPM_BUILD_ROOT
 if [ ! -f %{_sysconfdir}/conf.php.bak ]; then
 	install /dev/null -o root -g http -m660 %{_sysconfdir}/conf.php.bak
 fi
+
+%banner -o %{name} -e <<'EOF'
+Please read README.PLD from documentation.
+EOF
 
 %post -n openldap-schema-horde
 %openldap_schema_register %{schemadir}/horde.schema -d core
@@ -258,9 +246,9 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README README.PLD scripts
-%doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,INSTALL}
-%doc docs/{PERFORMANCE,RELEASE,RELEASE_NOTES,SECURITY,TRANSLATIONS,UPGRADING}
+%doc README README.PLD scripts util
+%doc docs/{CHANGES,CODING_STANDARDS,CONTRIBUTING,CREDITS,HACKING,INSTALL}
+%doc docs/{PERFORMANCE,RELEASE_NOTES,SECURITY,TODO,TRANSLATIONS,UPGRADING}
 %dir %attr(750,root,http) %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf

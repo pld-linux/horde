@@ -1,21 +1,38 @@
---- horde/config/mime_drivers.php~	2011-04-09 01:03:15.000000000 +0300
-+++ horde/config/mime_drivers.php	2011-04-09 01:04:13.509122695 +0300
-@@ -326,8 +326,7 @@
- 
-     /* RPM archive display. */
-     'rpm' => array(
--        // Disabled by default
--        'disable' => true,
-+        'disable' => false,
-         'handles' => array(
-             'application/x-rpm'
-         ),
-@@ -336,7 +335,7 @@
-         ),
- 
-         // REQUIRED: Location of the rpm binary
--        'location' => '/usr/bin/rpm'
-+        'location' => '/bin/rpm'
-     ),
- 
-     /* Debian archive display. */
+--- horde-3.2-alpha/config/mime_drivers.php.dist~	2007-08-27 12:44:27.337252725 +0300
++++ horde-3.2-alpha/config/mime_drivers.php.dist	2007-08-27 12:44:29.067291838 +0300
+@@ -68,7 +68,7 @@
+     // 'msword',
+     // 'msexcel',
+     // 'mspowerpoint',
+-    // 'rpm',
++    'rpm',
+     // 'rtf',
+     // 'srchighlite',
+     // 'webcpp',
+@@ -403,7 +403,7 @@
+  * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
+  */
+ $mime_drivers['horde']['msexcel'] = array(
+-    'location' => '/usr/local/bin/xlhtml',
++    'location' => '/usr/bin/xlhtml',
+     'inline' => false,
+     'handles' => array(
+         'application/vnd.ms-excel', 'application/msexcel',
+@@ -421,7 +421,7 @@
+  * xlhtml homepage: http://chicago.sourceforge.net/xlhtml/
+  */
+ $mime_drivers['horde']['mspowerpoint'] = array(
+-    'location' => '/usr/local/bin/ppthtml',
++    'location' => '/usr/bin/ppthtml',
+     'inline' => false,
+     'handles' => array(
+         'application/vnd.ms-powerpoint', 'application/mspowerpoint'
+@@ -449,7 +449,7 @@
+  * RPM driver settings
+  */
+ $mime_drivers['horde']['rpm'] = array(
+-    'location' => '/usr/bin/rpm',
++    'location' => '/bin/rpm',
+     'inline' => false,
+     'handles' => array(
+         'application/x-rpm'
