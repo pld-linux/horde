@@ -14,12 +14,12 @@ Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
 Summary(pt_BR.UTF-8):	Componentes comuns do Horde usados por todos os módulos
 Name:		%{hordeapp}
-Version:	4.0.3
-Release:	0.7
+Version:	3.3.13
+Release:	5
 License:	LGPL
 Group:		Applications/WWW
-Source0:	http://pear.horde.org/get/horde-%{version}.tgz
-# Source0-md5:	7aa018cf39f92f9f5fc8003a979481d9
+Source0:	http://ftp.horde.org/pub/horde/%{hordeapp}-%{version}.tar.gz
+# Source0-md5:	5a0486a5f6f96a9957e770ddabe71b38
 Source1:	%{name}.conf
 Source2:	%{name}-lighttpd.conf
 Source3:	README.PLD
@@ -30,19 +30,18 @@ Patch4:		%{name}-config-xml.patch
 Patch5:		%{name}-mime_drivers.patch
 #Patch6:	%{name}-webroot.patch
 Patch7:		%{name}-geoip.patch
-#Patch8:	%{name}-crypt-detect.patch
+Patch8:		%{name}-crypt-detect.patch
+Patch9:		%{name}-ssh2-vfs-realpath.patch
 URL:		http://www.horde.org/
 BuildRequires:	php-channel(pear.horde.org)
 BuildRequires:	php-horde-Horde_Role
 BuildRequires:	php-pear-PEAR >= 1:1.7.0
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-BuildRequires:	rpmbuild(macros) >= 1.595
+BuildRequires:	rpmbuild(macros) >= 1.654
 Requires:	php(core) >= %{php_min_version}
 Requires:	php(domxml)
-Requires:	php(filter)
 Requires:	php(gd)
 Requires:	php(gettext)
-Requires:	php(hash)
 Requires:	php(imap)
 Requires:	php(json)
 Requires:	php(mbstring)
@@ -52,40 +51,9 @@ Requires:	php(posix)
 Requires:	php(session)
 Requires:	php(xml)
 Requires:	php(zlib)
-Requires:	php-channel(pear.horde.org)
-Requires:	php-horde-Horde_Alarm < 2.0.0
-Requires:	php-horde-Horde_Argv < 2.0.0
-Requires:	php-horde-Horde_Auth < 2.0.0
-Requires:	php-horde-Horde_Autoloader < 2.0.0
-Requires:	php-horde-Horde_Browser < 2.0.0
-Requires:	php-horde-Horde_Core < 2.0.0
-Requires:	php-horde-Horde_Date < 2.0.0
-Requires:	php-horde-Horde_Exception < 2.0.0
-Requires:	php-horde-Horde_Form < 2.0.0
-Requires:	php-horde-Horde_Group < 2.0.0
-Requires:	php-horde-Horde_Http < 2.0.0
-Requires:	php-horde-Horde_Image < 2.0.0
-Requires:	php-horde-Horde_LoginTasks < 2.0.0
-Requires:	php-horde-Horde_Mime < 2.0.0
-Requires:	php-horde-Horde_Nls < 2.0.0
-Requires:	php-horde-Horde_Perms < 2.0.0
-Requires:	php-horde-Horde_Prefs < 2.0.0
-Requires:	php-horde-Horde_Rpc < 2.0.0
-Requires:	php-horde-Horde_Serialize < 2.0.0
-Requires:	php-horde-Horde_Support < 2.0.0
-Requires:	php-horde-Horde_Template < 2.0.0
-Requires:	php-horde-Horde_Text_Diff < 2.0.0
-Requires:	php-horde-Horde_Text_Filter < 2.0.0
-Requires:	php-horde-Horde_Token < 2.0.0
-Requires:	php-horde-Horde_Tree < 2.0.0
-Requires:	php-horde-Horde_Url < 2.0.0
-Requires:	php-horde-Horde_Util < 2.0.0
-Requires:	php-horde-Horde_Vfs < 2.0.0
-Requires:	php-horde-Horde_View < 2.0.0
 Requires:	php-pear-Log
 Requires:	php-pear-Mail
 Requires:	php-pear-Mail_Mime
-Requires:	php-pear-Net_DNS2
 Requires:	webapps
 Requires:	webserver(php) >= 4.1.0
 # Suggests: smtpserver(for /usr/lib/sendmail) || smtp server
@@ -127,7 +95,7 @@ Obsoletes:	horde-pgsql
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	pear(SOAP.*) pear(Services/Weather.*)
+%define		_noautoreq_pear Horde.* Net/DNS.* XML/WBXML.* SyncML.* Text/.* Net/IMSP.* XML/sql2xml.php
 
 %define		hordedir	/usr/share/horde
 %define		_appdir		%{hordedir}
@@ -179,6 +147,19 @@ This package contains horde.schema for openldap.
 %description -n openldap-schema-horde -l pl.UTF-8
 Ten pakiet zawiera horde.schema dla pakietu openldap.
 
+%package devel
+Summary:	Horde developmnent tools
+Summary(pl.UTF-8):	Narzędzia deweloperskie horde
+Group:		Development
+Requires:	%{name} = %{version}-%{release}
+Requires:	php-pear-File_Find
+
+%description devel
+Horde developmnent tools.
+
+%description devel -l pl.UTF-8
+Narzędzia deweloperskie horde.
+
 %prep
 %pear_package_setup -d horde_dir=%{_appdir}
 
@@ -196,7 +177,10 @@ cd ./%{_appdir}
 %patch5 -p1
 #%patch6 -p1
 %patch7 -p1
-#%patch8 -p1 # likely in Horde_Auth package now
+%patch8 -p1
+%patch9 -p1
+
+cp -p %{SOURCE3} .
 
 rm -f {,*/}.htaccess
 for i in config/*.dist; do
@@ -211,7 +195,8 @@ find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_appdir}/docs,/var/{lib,log}/horde,%{schemadir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_bindir},%{_appdir}/docs} \
+	$RPM_BUILD_ROOT{/var/{lib,log}/horde,%{schemadir}}
 
 cd ./%{_appdir}
 cp -a *.php $RPM_BUILD_ROOT%{_appdir}
@@ -228,6 +213,12 @@ cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 > $RPM_BUILD_ROOT/var/log/horde/%{hordeapp}.log
 cp -p scripts/ldap/horde.schema $RPM_BUILD_ROOT%{schemadir}
+
+install -p po/translation.php $RPM_BUILD_ROOT%{_bindir}/horde-translation.php
+
+# don't package tests
+rm $RPM_BUILD_ROOT%{_appdir}/lib/Horde/Kolab/Test.php
+rm -r $RPM_BUILD_ROOT%{_appdir}/lib/Horde/Kolab/Test
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -297,6 +288,10 @@ fi
 %dir %attr(770,root,http) /var/log/horde
 %dir %attr(770,root,http) /var/lib/horde
 %attr(770,root,http) %ghost /var/log/horde/%{hordeapp}.log
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/*
 
 %files -n openldap-schema-horde
 %defattr(644,root,root,755)

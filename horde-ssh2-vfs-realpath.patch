@@ -1,0 +1,17 @@
+--- horde-3.3.13/lib/VFS/ssh2.php~	2012-02-07 15:53:48.000000000 +0100
++++ horde-3.3.13/lib/VFS/ssh2.php	2013-01-24 14:14:23.120039169 +0100
+@@ -1018,8 +1018,12 @@
+      */
+     function _wrap($remote)
+     {
+-        return 'ssh2.sftp://' . $this->_params['username'] . ':' . $this->_params['password']
+-            . '@' . $this->_params['hostspec'] . ':' . $this->_params['port'] . ssh2_sftp_realpath($this->_sftp, $remote);
++	if (ssh2_sftp_stat($this->_sftp, $remote))
++	    $realpath = ssh2_sftp_realpath($this->_sftp, $remote);
++	else
++	    $realpath = $remote;
++	return 'ssh2.sftp://' . $this->_params['username'] . ':' . $this->_params['password']
++	    . '@' . $this->_params['hostspec'] . ':' . $this->_params['port'] . $realpath;
+     }
+ 
+ }

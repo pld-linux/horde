@@ -344,3 +344,14 @@
          if ($webroot !== false) {
              $webroot = preg_replace(array('/\\\\/', ';/config$;'), array('/', ''), $webroot);
          } elseif ($webroot === false) {
+--- horde-3.3.12/po/translation.php~	2008-07-29 08:55:09.000000000 +0200
++++ horde-3.3.12/po/translation.php	2011-11-21 11:57:31.679471025 +0100
+@@ -1429,7 +1429,7 @@
+     $language = getenv('LANGUAGE');
+ }
+ 
+-@define('HORDE_BASE', dirname(__FILE__) . '/..');
++@define('HORDE_BASE', '/usr/share/horde');
+ require_once HORDE_BASE . '/lib/core.php';
+ require_once 'Horde/CLI.php';
+ 
