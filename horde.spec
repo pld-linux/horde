@@ -7,7 +7,6 @@
 
 %define		hordeapp horde
 %define		php_min_version 5.2.0
-%include	/usr/lib/rpm/macros.php
 Summary:	The common Horde Framework for all Horde modules
 Summary(es.UTF-8):	Elementos básicos do Horde Web Application Suite
 Summary(pl.UTF-8):	Wspólny szkielet Horde do wszystkich modułów Horde
